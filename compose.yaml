@@ -3,9 +3,13 @@ version: '3.8'
 services:
   postgres:
     image: postgres
+    depends_on:
+      - postgres
+    env_file:
+        Credential.env
     environment:
       POSTGRES_DB: Shop
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: viewsonic1986@@
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     ports:
       - "5432:5432"
