@@ -49,5 +49,6 @@ class ProductManager {
     }
 
     public void removeProduct(Long id) {
+        productRepository.deleteById(id);
     }
 }
