@@ -1,0 +1,55 @@
+POST http://localhost:8080/products
+Content-Type: application/json
+
+{
+  "name": "Zegarek Męski Casio G-Shock GA-2100",
+  "category": "Zegarki",
+  "price": 199.99,
+  "currency": "EUR",
+  "description": "Solidny zegarek męski z funkcją wodoszczelności i funkcjami sportowymi."
+}
+{
+  "name": "Laptop SuperPro X1",
+  "category": "Komputery",
+  "price": 1499.99,
+  "currency": "EUR",
+  "description": "Najnowszy laptop z procesorem Intel i7, 16GB RAM i SSD 512GB."
+}
+{
+  "name": "Telewizor LED 4K",
+  "category": "Elektronika",
+  "price": 799.99,
+  "currency": "USD",
+  "description": "Wspaniały telewizor z rozdzielczością 4K, idealny do oglądania filmów i gier."
+}
+
+{
+  "name": "Buty Biegowe Nike Air Zoom",
+  "category": "Obuwie Sportowe",
+  "price": 129.99,
+  "currency": "USD",
+  "description": "Komfortowe buty do biegania z technologią Air Zoom dla doskonałej amortyzacji."
+}
+{
+  "name": "Książka: Władca Pierścieni",
+  "category": "Książki",
+  "price": 39.99,
+  "currency": "PLN",
+  "description": "Epicka opowieść fantasy o podróży Froda Bagginsa w poszukiwaniu Jedynego Pierścienia."
+}
+{
+  "name": "Aparat DSLR Canon EOS 800D",
+  "category": "Fotografia",
+  "price": 899.00,
+  "currency": "EUR",
+  "description": "Profesjonalny aparat DSLR z dużym ekranem dotykowym i 24.2 MP."
+}
+{
+  "name": "Głośnik Bluetooth JBL Charge 4",
+  "category": "Elektronika",
+  "price": 149.95,
+  "currency": "USD",
+  "description": "Wodoodporny głośnik z długą żywotnością baterii, doskonały na imprezy na świeżym powietrzu."
+}
+
+GET http://localhost:8080/products
