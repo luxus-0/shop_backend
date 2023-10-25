@@ -1,23 +1,31 @@
 package com.github.Shop.product;
 
+import com.github.Shop.currency.Currency;
 import jakarta.persistence.*;
-import lombok.Builder;
-import lombok.Data;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotEmpty;
+import lombok.*;
 
 import java.math.BigDecimal;
-import java.util.UUID;
 
 @Entity
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
 @Builder
-@Data
 @Table(name = "PRODUCTS")
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private final UUID uuid;
-    private final String name;
-    private final String category;
-    private final BigDecimal price;
-    private final String currency;
-    private final String description;
+    private Long id;
+    @NotEmpty
+    private String name;
+    @NotEmpty
+    private String category;
+    @Min(0)
+    private BigDecimal price;
+    @NotEmpty
+    private Currency currency;
+    @NotEmpty
+    private String description;
 }
