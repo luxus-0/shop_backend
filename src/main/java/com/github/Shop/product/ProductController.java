@@ -2,9 +2,7 @@ package com.github.Shop.product;
 
 import com.github.Shop.product.dto.ProductDto;
 import com.github.Shop.product.dto.ProductListDto;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.v3.oas.annotations.Operation;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -32,13 +30,13 @@ class ProductController {
     }
 
     @PostMapping
-    public ResponseEntity<ProductDto> generateProduct(@RequestBody Product product) {
+    public ResponseEntity<ProductDto> generateProduct(@RequestBody @Valid Product product) {
         ProductDto productSavedDto = productManager.makeProduct(product);
         return new ResponseEntity<>(productSavedDto, HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ProductDto> modifyProduct(@RequestBody Product product, @PathVariable Long id) {
+    public ResponseEntity<ProductDto> modifyProduct(@RequestBody @Valid Product product, @PathVariable Long id) {
         ProductDto productSavedDto = productManager.modificationProduct(product, id);
         return new ResponseEntity<>(productSavedDto, HttpStatus.OK);
     }
