@@ -2,6 +2,7 @@ package com.github.Shop.admin;
 
 import com.github.Shop.admin.dto.AdminProductDto;
 import com.github.Shop.product.dto.ProductDto;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -26,7 +27,7 @@ class AdminProductController {
     }
 
     @GetMapping("/pagination")
-    public ResponseEntity<Page<AdminProduct>> readProducts(@RequestBody Pageable pageable){
+    public ResponseEntity<Page<AdminProduct>> readProducts(@RequestBody @Valid Pageable pageable){
         Page<AdminProduct> pageAdminProducts = adminProductManager.findProducts(pageable);
         return ResponseEntity.ok().body(pageAdminProducts);
     }
@@ -38,13 +39,13 @@ class AdminProductController {
     }
 
     @PostMapping
-    public ResponseEntity<AdminProductDto> insertProduct(@RequestBody AdminProduct adminProduct) {
+    public ResponseEntity<AdminProductDto> insertProduct(@RequestBody @Valid AdminProduct adminProduct) {
         AdminProductDto adminProductSavedDto = adminProductManager.createProduct(adminProduct);
         return new ResponseEntity<>(adminProductSavedDto, HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<AdminProductDto> modifyProduct(@RequestBody AdminProduct adminProduct, @PathVariable Long id) {
+    public ResponseEntity<AdminProductDto> modifyProduct(@RequestBody @Valid AdminProduct adminProduct, @PathVariable Long id) {
         AdminProductDto updateAdminProduct = adminProductManager.modificationProduct(adminProduct, id);
         return new ResponseEntity<>(updateAdminProduct, HttpStatus.OK);
     }
