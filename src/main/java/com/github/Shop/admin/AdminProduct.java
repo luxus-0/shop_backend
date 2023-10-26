@@ -1,9 +1,10 @@
 package com.github.Shop.admin;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotEmpty;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 
@@ -17,14 +18,9 @@ class AdminProduct {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @NotEmpty
     private String name;
-    @NotEmpty
     private String category;
-    @Min(0)
     private BigDecimal price;
-    @NotEmpty
     private String currency;
-    @NotEmpty
     private String description;
 }
