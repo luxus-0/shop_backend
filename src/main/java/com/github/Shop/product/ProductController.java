@@ -3,11 +3,15 @@ package com.github.Shop.product;
 import com.github.Shop.product.dto.ProductDto;
 import com.github.Shop.product.dto.ProductListDto;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Pattern;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.validator.constraints.Length;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import static com.github.Shop.constant.Constants.REGEX_SLUG;
 
 @RestController
 @RequiredArgsConstructor
@@ -30,7 +34,9 @@ class ProductController {
     }
 
     @GetMapping("/{slug}")
-    public ResponseEntity<ProductDto> uploadProductBySlug(@PathVariable String slug) {
+    public ResponseEntity<ProductDto> uploadProductBySlug(@PathVariable
+                                                          @Pattern(regexp = REGEX_SLUG)
+                                                          @Length(max = 255) String slug) {
         ProductDto findProductBySlug = productManager.readProductBySlug(slug);
         return new ResponseEntity<>(findProductBySlug, HttpStatus.OK);
     }
