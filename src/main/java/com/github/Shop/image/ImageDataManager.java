@@ -3,69 +3,44 @@ package com.github.Shop.image;
 import com.github.Shop.image.dto.ResponseUploadImage;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.FileSystemResourceLoader;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Objects;
 
 @Service
 @AllArgsConstructor
 @Log4j2
 public class ImageDataManager {
-
-    private final ImageDataRepository imageDataRepository;
+    @Value("${image.path}")
+    private String imagePath;
 
     public ResponseUploadImage uploadImage(MultipartFile file) {
-        try {
-        Resource resource = file.getResource();
-        File resourceFile = resource.getFile();
+        String fileName = file.getOriginalFilename();
+        String changedName = UploadedFilesNameUtils.slugifyFileName(fileName);
 
-        if(!resourceFile.exists()){
-            throw new FileNotFoundException();
-        }
-            ResponseUploadImage image = ResponseUploadImage.builder()
-                    .path(resourceFile.getAbsolutePath())
-                    .name(file.getOriginalFilename())
-                    .type(file.getContentType())
-                    .size(file.getSize())
-                    .lastModified(resourceFile.lastModified())
-                    .build();
+        Path filePath = Paths.get(imagePath).resolve(changedName);
 
-            ResponseUploadImage uploadImageSaved = imageDataRepository.save(image);
-
-            String imageInfo = generateImageInfoMessage(uploadImageSaved);
-            log.info(imageInfo);
-
-            return getResponseUploadImage(uploadImageSaved);
-
+        try (InputStream inputStream = file.getInputStream()) {
+            OutputStream outputStream = Files.newOutputStream(filePath);
+            inputStream.transferTo(outputStream);
         } catch (IOException e) {
-            throw new RuntimeException("Upload image not found");
+            throw new RuntimeException("The file cannot be saved", e);
         }
+        return new ResponseUploadImage(fileName);
     }
 
-    private ResponseUploadImage getResponseUploadImage(ResponseUploadImage uploadImageSaved) {
-        return ResponseUploadImage.builder()
-                .name(uploadImageSaved.name())
-                .path(uploadImageSaved.path())
-                .type(uploadImageSaved.type())
-                .size(uploadImageSaved.size())
-                .lastModified(uploadImageSaved.lastModified())
-                .build();
+    Resource serveFiles(String fileName){
+        FileSystemResourceLoader fileSystemResourceLoader = new FileSystemResourceLoader();
+       return fileSystemResourceLoader.getResource(imagePath + fileName);
     }
-
-    private String generateImageInfoMessage(ResponseUploadImage uploadImageSaved) {
-        return String.format("Image uploaded successfully: " +
-                        "Name: %s " +
-                        "Type: %s " +
-                        "Size: %s" +
-                        "last modified: %s",
-                uploadImageSaved.name(),
-                uploadImageSaved.type(),
-                uploadImageSaved.size(),
-                uploadImageSaved.lastModified());
-    }
-
 }
