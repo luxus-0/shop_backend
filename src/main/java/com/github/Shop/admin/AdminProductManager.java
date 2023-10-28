@@ -30,12 +30,12 @@ class AdminProductManager {
                 .orElseThrow(AdminProductNotFoundException::new);
     }
 
-    AdminProductDto createProduct(AdminProduct adminProduct){
+    AdminProductDto createProduct(AdminProduct adminProduct) throws ImageNotFoundException {
         AdminProduct adminProductSaved = adminProductRepository.save(adminProduct);
         return mapToAdminProductDto(adminProductSaved);
     }
 
-    public AdminProductDto modificationProduct(AdminProduct adminProduct, Long id) {
+    public AdminProductDto modificationProduct(AdminProduct adminProduct, Long id) throws ImageNotFoundException {
         AdminProduct createdAdminProduct = mapToAdminProduct(adminProduct, id);
         AdminProduct productSaved = adminProductRepository.save(createdAdminProduct);
         return mapToAdminProductDto(productSaved);

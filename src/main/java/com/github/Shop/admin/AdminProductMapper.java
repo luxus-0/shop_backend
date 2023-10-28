@@ -1,6 +1,8 @@
 package com.github.Shop.admin;
 
 import com.github.Shop.admin.dto.AdminProductDto;
+import com.github.Shop.image.ImageMapper;
+import com.github.Shop.image.dto.ImageDto;
 import com.github.slugify.Slugify;
 
 class AdminProductMapper {
@@ -19,15 +21,25 @@ class AdminProductMapper {
     }
 
     public static AdminProductDto mapToAdminProductDto(AdminProduct adminProduct) {
-        return AdminProductDto.builder()
-                .name(adminProduct.getName())
-                .category(adminProduct.getCategory())
-                .price(adminProduct.getPrice())
-                .currency(adminProduct.getCurrency())
-                .image(adminProduct.getImage())
-                .slug(slugify(adminProduct.getSlug()))
-                .description(adminProduct.getDescription())
-                .build();
+        try {
+            return AdminProductDto.builder()
+                    .name(adminProduct.getName())
+                    .category(adminProduct.getCategory())
+                    .price(adminProduct.getPrice())
+                    .currency(adminProduct.getCurrency())
+                    .image(readImage(adminProduct))
+                    .slug(slugify(adminProduct.getSlug()))
+                    .description(adminProduct.getDescription())
+                    .build();
+        } catch (ImageNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+    }
+        public static ImageDto readImage(AdminProduct adminProduct) throws ImageNotFoundException {
+            return adminProduct.getImage().stream()
+                    .map(ImageMapper::mapToImageDto)
+                    .findAny()
+                    .orElseThrow(ImageNotFoundException::new);
     }
 
     private static String slugify(String slug) {

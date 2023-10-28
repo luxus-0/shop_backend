@@ -39,13 +39,13 @@ class AdminProductController {
     }
 
     @PostMapping
-    public ResponseEntity<AdminProductDto> insertProduct(@RequestBody @Valid AdminProduct adminProduct) {
+    public ResponseEntity<AdminProductDto> insertProduct(@RequestBody @Valid AdminProduct adminProduct) throws ImageNotFoundException {
         AdminProductDto adminProductSavedDto = adminProductManager.createProduct(adminProduct);
         return new ResponseEntity<>(adminProductSavedDto, HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<AdminProductDto> modifyProduct(@RequestBody @Valid AdminProduct adminProduct, @PathVariable Long id) {
+    public ResponseEntity<AdminProductDto> modifyProduct(@RequestBody @Valid AdminProduct adminProduct, @PathVariable Long id) throws ImageNotFoundException {
         AdminProductDto updateAdminProduct = adminProductManager.modificationProduct(adminProduct, id);
         return new ResponseEntity<>(updateAdminProduct, HttpStatus.OK);
     }
