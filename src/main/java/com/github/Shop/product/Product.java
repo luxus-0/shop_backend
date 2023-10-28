@@ -26,7 +26,7 @@ public class Product {
     @Enumerated(value = EnumType.STRING)
     private Currency currency;
     private String description;
+    private String slug;
     @OneToMany(mappedBy = "product")
     private List<Image> image;
-    private String slug;
 }
