@@ -16,6 +16,7 @@ public class UploadedFilesNameUtils {
                 .customReplacement("s", "ś")
                 .customReplacement("z","ź")
                 .customReplacement("z", "ż")
+                .customReplacement("_","-")
                 .build();
         String changedName = slug.slugify(name);
         return changedName + "." + FilenameUtils.getExtension(fileName);
