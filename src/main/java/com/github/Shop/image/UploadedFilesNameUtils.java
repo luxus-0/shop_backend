@@ -3,7 +3,7 @@ package com.github.Shop.image;
 import com.github.slugify.Slugify;
 import org.apache.commons.io.FilenameUtils;
 
-public class UploadedFilesNameUtils {
+class UploadedFilesNameUtils {
     public static String slugifyFileName(String fileName) {
         String name = FilenameUtils.getBaseName(fileName);
 
