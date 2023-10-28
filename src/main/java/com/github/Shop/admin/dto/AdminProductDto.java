@@ -11,5 +11,6 @@ public record AdminProductDto(String name,
                               BigDecimal price,
                               Currency currency,
                               String image,
+                              String slug,
                               String description) {
 }
