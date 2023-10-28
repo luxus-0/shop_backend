@@ -23,7 +23,6 @@ public class ImageController {
     @PostMapping("/upload-image")
     public ResponseEntity<ResponseUploadImage> uploadImage(@RequestParam("image") MultipartFile file) {
         ResponseUploadImage responseImage = imageDataManager.uploadImage(file);
-
         return ResponseEntity.status(HttpStatus.OK)
                 .body(responseImage);
     }
@@ -31,7 +30,8 @@ public class ImageController {
     @GetMapping("/serve-images/{filename}")
     ResponseEntity<Resource> fetchImages(@PathVariable String filename) throws IOException {
         Resource resource = imageDataManager.serveFiles(filename);
-        return ResponseEntity.ok().header(HttpHeaders.CONTENT_TYPE, Files.probeContentType(Path.of(filename)))
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_TYPE, Files.probeContentType(Path.of(filename)))
                 .body(resource);
     }
 }
