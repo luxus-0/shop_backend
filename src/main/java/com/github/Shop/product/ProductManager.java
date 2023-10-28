@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+import static com.github.Shop.product.ProductMapper.mapToProductDto;
+
 @Service
 class ProductManager {
     private final ProductRepository productRepository;
@@ -32,23 +34,32 @@ class ProductManager {
 
     ProductDto makeProduct(Product product){
         Product productSaved = productRepository.save(product);
-        return new ProductDto(productSaved.getName(), productSaved.getCategory(), productSaved.getPrice(), productSaved.getCurrency(), productSaved.getDescription());
+        return mapToProductDto(productSaved);
     }
 
     public ProductDto modificationProduct(Product product, Long id) {
-       Product createProduct = Product.builder()
+       Product createProduct = updateProduct(product, id);
+        Product productSaved = productRepository.save(createProduct);
+        return mapToProductDto(productSaved);
+    }
+
+    private Product updateProduct(Product product, Long id) {
+        return Product.builder()
                 .id(id)
                 .name(product.getName())
                 .price(product.getPrice())
                 .category(product.getCategory())
                 .currency(product.getCurrency())
+                .image(product.getImage())
                 .description(product.getDescription())
                 .build();
-        Product productSaved = productRepository.save(createProduct);
-        return new ProductDto(productSaved.getName(), productSaved.getCategory(), productSaved.getPrice(), productSaved.getCurrency(), productSaved.getDescription());
     }
 
     public void removeProduct(Long id) {
         productRepository.deleteById(id);
+    }
+
+    public ProductDto readProductBySlug(String slug) {
+        return productRepository.findProductBySlug(slug);
     }
 }

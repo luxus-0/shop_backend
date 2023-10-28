@@ -25,10 +25,15 @@ class ProductController {
     @GetMapping("/pagination")
     public ResponseEntity<Page<Product>> uploadProducts(@RequestParam(value = "page") int page,
                                                         @RequestParam(value = "size") int size){
-        Page<Product> findProductByPage = productManager.retrieveProduct(page, size);
+        var findProductByPage = productManager.retrieveProduct(page, size);
         return new ResponseEntity<>(findProductByPage, HttpStatus.OK);
     }
 
+    @GetMapping("/{slug}")
+    public ResponseEntity<ProductDto> uploadProductBySlug(@PathVariable String slug) {
+        ProductDto findProductBySlug = productManager.readProductBySlug(slug);
+        return new ResponseEntity<>(findProductBySlug, HttpStatus.OK);
+    }
     @PostMapping
     public ResponseEntity<ProductDto> generateProduct(@RequestBody @Valid Product product) {
         ProductDto productSavedDto = productManager.makeProduct(product);

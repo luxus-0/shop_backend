@@ -25,4 +25,6 @@ public class Product {
     @Enumerated(value = EnumType.STRING)
     private Currency currency;
     private String description;
+    private String image;
+    private String slug;
 }
