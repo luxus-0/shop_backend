@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("api/images")
@@ -18,7 +20,7 @@ public class ImageController {
     private final ImageDataManager imageDataManager;
 
     @PostMapping("/upload-image")
-    public ResponseEntity<ResponseUploadImage> uploadImage(@RequestParam("image") MultipartFile file) {
+    public ResponseEntity<ResponseUploadImage> uploadImage(@RequestParam("image") MultipartFile file) throws IOException {
         ResponseUploadImage responseImage = imageDataManager.uploadImage(file);
 
         return ResponseEntity.status(HttpStatus.OK)
