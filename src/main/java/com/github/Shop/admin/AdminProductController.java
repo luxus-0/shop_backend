@@ -1,7 +1,7 @@
 package com.github.Shop.admin;
 
 import com.github.Shop.admin.dto.AdminProductDto;
-import com.github.Shop.product.dto.ProductDto;
+import com.github.Shop.image.ImageDataManager;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -55,6 +55,4 @@ class AdminProductController {
         adminProductManager.removeAdminProduct(id);
         return ResponseEntity.noContent().build();
     }
-
-
 }
