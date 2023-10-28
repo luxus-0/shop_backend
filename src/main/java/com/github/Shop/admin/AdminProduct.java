@@ -1,5 +1,6 @@
 package com.github.Shop.admin;
 
+import com.github.Shop.currency.Currency;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -21,6 +22,8 @@ class AdminProduct {
     private String name;
     private String category;
     private BigDecimal price;
-    private String currency;
+    @Enumerated(value = EnumType.STRING)
+    private Currency currency;
+    private String image;
     private String description;
 }

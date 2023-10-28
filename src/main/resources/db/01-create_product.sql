@@ -1,3 +1,6 @@
+--liquibase formatted sql
+--changeset lnowogorski:1
+
 CREATE TABLE PRODUCTS (
     id SERIAL PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
