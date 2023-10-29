@@ -1,7 +1,6 @@
 package com.github.Shop.image;
 
 import com.github.Shop.image.dto.ResponseUploadImage;
-import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.FileSystemResourceLoader;
@@ -17,9 +16,16 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 @Service
+@Log4j2
 public class ImageDataManager {
     @Value("${image.path}")
     private String imagePath;
+
+    private final ImageDataRepository imageRepository;
+
+    public ImageDataManager(ImageDataRepository imageRepository) {
+        this.imageRepository = imageRepository;
+    }
 
     public ResponseUploadImage uploadImage(MultipartFile file) {
         String fileName = file.getOriginalFilename();
@@ -31,9 +37,24 @@ public class ImageDataManager {
         try (InputStream inputStream = file.getInputStream()) {
             OutputStream outputStream = Files.newOutputStream(filePath);
             inputStream.transferTo(outputStream);
+
         } catch (IOException e) {
-            throw new RuntimeException("The file cannot be saved", e);
+            throw new RuntimeException("Image cannot be saved", e);
         }
+
+        Image image = Image.builder()
+                .name(changedFileName)
+                .type(file.getContentType())
+                .path(imagePath)
+                .build();
+
+        Image imageSaved = imageRepository.save(image);
+        log.info("Image saved in database: \n" +
+                "\nName: " + imageSaved.getName() +
+                "\nPath: " + imageSaved.getPath() +
+                "\nType: " + imageSaved.getType() +
+                "\nSize: " + file.getSize() + "KB");
+
         return new ResponseUploadImage(fileName);
     }
 

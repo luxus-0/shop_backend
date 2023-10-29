@@ -12,6 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 
 @RestController
 @RequiredArgsConstructor
@@ -27,8 +28,8 @@ public class ImageController {
                 .body(responseImage);
     }
 
-    @GetMapping("/serve-images/{filename}")
-    ResponseEntity<Resource> fetchImages(@PathVariable String filename) throws IOException {
+    @GetMapping("/download-image/{filename}")
+    ResponseEntity<Resource> downloadImage(@PathVariable String filename) throws IOException {
         Resource resource = imageDataManager.serveFiles(filename);
         return ResponseEntity.ok()
                 .header(HttpHeaders.CONTENT_TYPE, Files.probeContentType(Path.of(filename)))
