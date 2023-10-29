@@ -8,12 +8,14 @@ import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Optional;
 
 @Service
 @Log4j2
@@ -58,8 +60,13 @@ public class ImageDataManager {
         return new ResponseUploadImage(fileName);
     }
 
-    Resource serveFiles(String filename){
+    Resource serveFiles(String filename) throws IOException {
         FileSystemResourceLoader fileSystemResourceLoader = new FileSystemResourceLoader();
-       return fileSystemResourceLoader.getResource(imagePath + filename);
+        Resource resource = fileSystemResourceLoader.getResource(imagePath + filename);
+        if (resource.getFile().exists()) {
+            System.out.println("File downloaded successfully");
+            return resource;
+        }
+        throw new FileNotFoundException("File not found");
     }
 }
