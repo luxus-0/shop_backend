@@ -1,45 +1,32 @@
 package com.github.Shop.admin;
 
 import com.github.Shop.admin.dto.AdminProductDto;
-import com.github.Shop.image.ImageMapper;
-import com.github.Shop.image.dto.ImageDto;
+import com.github.Shop.image.Image;
 import com.github.slugify.Slugify;
+
+import java.util.List;
 
 class AdminProductMapper {
 
-    public static AdminProduct mapToAdminProduct(AdminProduct adminProduct, Long id) {
+    public static AdminProduct mapToAdminProduct(AdminProductDto adminProduct, Long id) {
         return AdminProduct.builder()
                 .id(id)
-                .name(adminProduct.getName())
-                .price(adminProduct.getPrice())
-                .category(adminProduct.getCategory())
-                .currency(adminProduct.getCurrency())
-                .image(adminProduct.getImage())
-                .slug(slugify(adminProduct.getSlug()))
-                .description(adminProduct.getDescription())
+                .name(adminProduct.name())
+                .price(adminProduct.price())
+                .category(adminProduct.category())
+                .currency(adminProduct.currency())
+                .images(getImages(adminProduct, id))
+                .slug(slugify(adminProduct.slug()))
+                .description(adminProduct.description())
+                .fullDescription(adminProduct.fullDescription())
                 .build();
     }
 
-    public static AdminProductDto mapToAdminProductDto(AdminProduct adminProduct) {
-        try {
-            return AdminProductDto.builder()
-                    .name(adminProduct.getName())
-                    .category(adminProduct.getCategory())
-                    .price(adminProduct.getPrice())
-                    .currency(adminProduct.getCurrency())
-                    .image(readImage(adminProduct))
-                    .slug(slugify(adminProduct.getSlug()))
-                    .description(adminProduct.getDescription())
-                    .build();
-        } catch (ImageNotFoundException e) {
-            throw new RuntimeException(e);
-        }
-    }
-        public static ImageDto readImage(AdminProduct adminProduct) throws ImageNotFoundException {
-            return adminProduct.getImage().stream()
-                    .map(ImageMapper::mapToImageDto)
-                    .findAny()
-                    .orElseThrow(ImageNotFoundException::new);
+    private static List<Image> getImages(AdminProductDto adminProduct, Long id) {
+        return List.of(new Image(id,
+                adminProduct.image().name(),
+                adminProduct.image().type(),
+                adminProduct.image().path()));
     }
 
     private static String slugify(String slug) {

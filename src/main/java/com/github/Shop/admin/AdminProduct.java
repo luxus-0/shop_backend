@@ -2,14 +2,15 @@ package com.github.Shop.admin;
 
 import com.github.Shop.currency.Currency;
 import com.github.Shop.image.Image;
+import com.github.Shop.image.dto.ImageDto;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.data.relational.core.mapping.Table;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -27,7 +28,9 @@ public class AdminProduct {
     @Enumerated(value = EnumType.STRING)
     private Currency currency;
     private String description;
-    @OneToMany(mappedBy = "adminProduct")
-    private List<Image> image;
+    private String fullDescription;
+    @OneToMany
+    @JoinColumn(name = "admin_product_id")
+    private List<Image> images;
     private String slug;
 }

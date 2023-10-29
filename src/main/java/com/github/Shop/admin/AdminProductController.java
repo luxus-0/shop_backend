@@ -33,25 +33,25 @@ class AdminProductController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<AdminProductDto> readProducts(@PathVariable Long id) throws AdminProductNotFoundException {
-        AdminProductDto adminProduct = adminProductManager.findProducts(id);
+    public ResponseEntity<AdminProduct> readProducts(@PathVariable Long id) throws AdminProductNotFoundException {
+        AdminProduct adminProduct = adminProductManager.findProducts(id);
         return ResponseEntity.ok().body(adminProduct);
     }
 
     @PostMapping
-    public ResponseEntity<AdminProductDto> insertProduct(@RequestBody @Valid AdminProduct adminProduct) throws ImageNotFoundException {
-        AdminProductDto adminProductSavedDto = adminProductManager.createProduct(adminProduct);
-        return new ResponseEntity<>(adminProductSavedDto, HttpStatus.CREATED);
+    public ResponseEntity<AdminProduct> insertProduct(@RequestBody @Valid AdminProduct adminProduct) {
+        AdminProduct adminProductSaved = adminProductManager.createProduct(adminProduct);
+        return new ResponseEntity<>(adminProductSaved, HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<AdminProductDto> modifyProduct(@RequestBody @Valid AdminProduct adminProduct, @PathVariable Long id) throws ImageNotFoundException {
-        AdminProductDto updateAdminProduct = adminProductManager.modificationProduct(adminProduct, id);
+    public ResponseEntity<AdminProduct> modifyProduct(@RequestBody @Valid AdminProductDto adminProduct, @PathVariable Long id) {
+        AdminProduct updateAdminProduct = adminProductManager.modificationProduct(adminProduct, id);
         return new ResponseEntity<>(updateAdminProduct, HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<AdminProductDto> deleteProduct(@PathVariable Long id) {
+    public ResponseEntity<AdminProduct> deleteProduct(@PathVariable Long id) {
         adminProductManager.removeAdminProduct(id);
         return ResponseEntity.noContent().build();
     }

@@ -13,5 +13,6 @@ public record AdminProductDto(String name,
                               Currency currency,
                               ImageDto image,
                               String slug,
-                              String description) {
+                              String description,
+                              String fullDescription) {
 }
