@@ -1,15 +1,11 @@
 package com.github.Shop.product;
 
-import com.github.Shop.product.dto.ProductDto;
-import com.github.Shop.product.dto.ProductListDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-
-import static com.github.Shop.product.ProductMapper.mapToProductDto;
 
 @Service
 class ProductManager {
@@ -19,12 +15,12 @@ class ProductManager {
         this.productRepository = productRepository;
     }
 
-    ProductListDto retrieveProduct() throws ProductNotFoundException {
+    List<Product> retrieveProduct() throws ProductNotFoundException {
         List<Product> products = productRepository.findAll();
         if(products.isEmpty()){
             throw new ProductNotFoundException();
         }
-        return new ProductListDto(products);
+        return products;
     }
 
     Page<Product> retrieveProduct(int page, int size){
@@ -32,15 +28,13 @@ class ProductManager {
        return productRepository.findAll(pageable);
     }
 
-    ProductDto makeProduct(Product product){
-        Product productSaved = productRepository.save(product);
-        return mapToProductDto(productSaved);
+    Product makeProduct(Product product){
+        return productRepository.save(product);
     }
 
-    public ProductDto modificationProduct(Product product, Long id) {
+    public Product modificationProduct(Product product, Long id) {
        Product createProduct = updateProduct(product, id);
-        Product productSaved = productRepository.save(createProduct);
-        return mapToProductDto(productSaved);
+        return productRepository.save(createProduct);
     }
 
     private Product updateProduct(Product product, Long id) {
@@ -59,7 +53,8 @@ class ProductManager {
         productRepository.deleteById(id);
     }
 
-    public ProductDto readProductBySlug(String slug) {
-        return productRepository.findProductBySlug(slug);
+    public Product readProductBySlug(String slug) {
+        return productRepository.findBySlug(slug)
+                .orElseThrow();
     }
 }

@@ -11,6 +11,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 import static com.github.Shop.constant.Constants.REGEX_SLUG;
 
 @RestController
@@ -21,9 +23,9 @@ class ProductController {
     private final ProductManager productManager;
 
     @GetMapping
-    public ResponseEntity<ProductListDto> uploadProducts() throws ProductNotFoundException {
-        ProductListDto findProductsDto = productManager.retrieveProduct();
-        return new ResponseEntity<>(findProductsDto, HttpStatus.OK);
+    public ResponseEntity<List<Product>> uploadProducts() throws ProductNotFoundException {
+        List<Product> findProducts = productManager.retrieveProduct();
+        return new ResponseEntity<>(findProducts, HttpStatus.OK);
     }
 
     @GetMapping("/pagination")
@@ -34,26 +36,26 @@ class ProductController {
     }
 
     @GetMapping("/{slug}")
-    public ResponseEntity<ProductDto> uploadProductBySlug(@PathVariable
+    public ResponseEntity<Product> uploadProductBySlug(@PathVariable
                                                           @Pattern(regexp = REGEX_SLUG)
                                                           @Length(max = 255) String slug) {
-        ProductDto findProductBySlug = productManager.readProductBySlug(slug);
+        Product findProductBySlug = productManager.readProductBySlug(slug);
         return new ResponseEntity<>(findProductBySlug, HttpStatus.OK);
     }
     @PostMapping
-    public ResponseEntity<ProductDto> generateProduct(@RequestBody @Valid Product product) {
-        ProductDto productSavedDto = productManager.makeProduct(product);
-        return new ResponseEntity<>(productSavedDto, HttpStatus.CREATED);
+    public ResponseEntity<Product> generateProduct(@RequestBody @Valid Product product) {
+        Product productSaved = productManager.makeProduct(product);
+        return new ResponseEntity<>(productSaved, HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ProductDto> modifyProduct(@RequestBody @Valid Product product, @PathVariable Long id) {
-        ProductDto productSavedDto = productManager.modificationProduct(product, id);
-        return new ResponseEntity<>(productSavedDto, HttpStatus.OK);
+    public ResponseEntity<Product> modifyProduct(@RequestBody @Valid Product product, @PathVariable Long id) {
+        Product productSaved = productManager.modificationProduct(product, id);
+        return new ResponseEntity<>(productSaved, HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<ProductDto> deleteProduct(@PathVariable Long id) {
+    public ResponseEntity<Product> deleteProduct(@PathVariable Long id) {
         productManager.removeProduct(id);
         return ResponseEntity.noContent().build();
     }

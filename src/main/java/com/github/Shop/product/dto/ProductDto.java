@@ -7,5 +7,5 @@ import lombok.Builder;
 import java.math.BigDecimal;
 
 @Builder
-public record ProductDto(String name, String category, BigDecimal price, Currency currency , ImageDto image, String slug, String description) {
+public record ProductDto(String name, String category, BigDecimal price, Currency currency , ImageDto image, String slug, String description, String fullDescription) {
 }

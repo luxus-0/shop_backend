@@ -2,6 +2,7 @@ package com.github.Shop.product;
 
 import com.github.Shop.currency.Currency;
 import com.github.Shop.image.Image;
+import com.github.Shop.review.Review;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -26,7 +27,12 @@ public class Product {
     @Enumerated(value = EnumType.STRING)
     private Currency currency;
     private String description;
+    private String fullDescription;
     private String slug;
-    @OneToMany(mappedBy = "product")
+    @OneToMany(fetch = FetchType.LAZY)
+    @JoinColumn(name = "product_id")
     private List<Image> image;
+    @OneToMany
+    @JoinColumn(name = "product_id")
+    private List<Review> reviews;
 }
