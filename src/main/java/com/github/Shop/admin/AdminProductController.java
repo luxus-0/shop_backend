@@ -15,7 +15,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @CrossOrigin(origins = "*")
-@RequestMapping("api/admin/products")
+@RequestMapping("api/v1/admin/products")
 class AdminProductController {
 
     private final AdminProductManager adminProductManager;
