@@ -29,7 +29,7 @@ public class ImageController {
 
     @PostMapping("/download-image-from-url/{filename}")
     public ResponseEntity<ResponseUploadImage> downloadImageFromUrl(@PathVariable String filename) throws IOException, InterruptedException {
-        ResponseUploadImage responseImage = imageDataManager.serveFilesFromUrl(filename);
+        ResponseUploadImage responseImage = imageDataManager.serveImageFromUrl(filename);
         return ResponseEntity.status(HttpStatus.OK)
                 .body(responseImage);
     }
