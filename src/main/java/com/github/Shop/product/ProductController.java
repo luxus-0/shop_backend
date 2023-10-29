@@ -18,7 +18,7 @@ import static com.github.Shop.constant.Constants.REGEX_SLUG;
 @RestController
 @RequiredArgsConstructor
 @CrossOrigin(origins = "*")
-@RequestMapping("api/products")
+@RequestMapping("api/v1/products")
 class ProductController {
     private final ProductManager productManager;
 

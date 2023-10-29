@@ -12,11 +12,10 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("api/images")
+@RequestMapping("api/v1/images")
 public class ImageController {
 
     private final ImageDataManager imageDataManager;
@@ -24,6 +23,13 @@ public class ImageController {
     @PostMapping("/upload-image")
     public ResponseEntity<ResponseUploadImage> uploadImage(@RequestParam("image") MultipartFile file) {
         ResponseUploadImage responseImage = imageDataManager.uploadImage(file);
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(responseImage);
+    }
+
+    @PostMapping("/download-image-from-url/{filename}")
+    public ResponseEntity<ResponseUploadImage> downloadImageFromUrl(@PathVariable String filename) throws IOException, InterruptedException {
+        ResponseUploadImage responseImage = imageDataManager.serveFilesFromUrl(filename);
         return ResponseEntity.status(HttpStatus.OK)
                 .body(responseImage);
     }
