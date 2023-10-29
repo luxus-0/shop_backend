@@ -12,16 +12,21 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Optional;
 
 @Service
 @Log4j2
 public class ImageDataManager {
     @Value("${image.path}")
     private String imagePath;
+    @Value("${image.url}")
+    private String imageUrl;
 
     private final ImageDataRepository imageRepository;
 
@@ -68,5 +73,30 @@ public class ImageDataManager {
             return resource;
         }
         throw new FileNotFoundException("File not found");
+    }
+
+    public ResponseUploadImage serveImageFromUrl(String fileName) throws IOException, InterruptedException {
+        HttpClient client = HttpClient.newHttpClient();
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(imageUrl))
+                .build();
+
+        String changedFileName = UploadedFilesNameUtils.slugifyFileName(fileName);
+        Path path = Path.of(imagePath, changedFileName);
+
+        HttpResponse<InputStream> response = client.send(request, HttpResponse.BodyHandlers.ofInputStream());
+        if (response.statusCode() == 200) {
+            log.info("File downloaded successfully");
+            InputStream in = response.body();
+            OutputStream out = Files.newOutputStream(path);
+
+            int bytesRead;
+            while ((bytesRead = in.read()) != -1) {
+                out.write(bytesRead);
+            }
+        }else {
+            throw new FileNotFoundException();
+        }
+        return new ResponseUploadImage(null);
     }
 }
