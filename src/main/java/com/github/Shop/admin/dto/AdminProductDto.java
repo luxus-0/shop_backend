@@ -8,7 +8,7 @@ import java.math.BigDecimal;
 
 @Builder
 public record AdminProductDto(String name,
-                              String category,
+                              Long categoryId,
                               BigDecimal price,
                               Currency currency,
                               ImageDto image,

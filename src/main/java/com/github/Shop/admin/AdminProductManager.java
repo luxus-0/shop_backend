@@ -31,7 +31,6 @@ class AdminProductManager {
     AdminProduct createProduct(AdminProduct adminProduct) {
         AdminProduct createAdminProduct = AdminProduct.builder()
                 .name(adminProduct.getName())
-                .category(adminProduct.getCategory())
                 .currency(adminProduct.getCurrency())
                 .price(adminProduct.getPrice())
                 .slug(adminProduct.getSlug())
