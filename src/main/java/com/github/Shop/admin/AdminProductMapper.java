@@ -15,18 +15,19 @@ class AdminProductMapper {
                 .price(adminProduct.price())
                 .category(adminProduct.category())
                 .currency(adminProduct.currency())
-                .images(getImages(adminProduct, id))
+                .images(getImages(adminProduct))
                 .slug(slugify(adminProduct.slug()))
                 .description(adminProduct.description())
                 .fullDescription(adminProduct.fullDescription())
                 .build();
     }
 
-    private static List<Image> getImages(AdminProductDto adminProduct, Long id) {
-        return List.of(new Image(id,
-                adminProduct.image().name(),
-                adminProduct.image().type(),
-                adminProduct.image().path()));
+    private static List<Image> getImages(AdminProductDto adminProduct) {
+        return List.of(Image.builder()
+                        .name(adminProduct.image().name())
+                        .type(adminProduct.image().type())
+                        .path(adminProduct.image().path())
+                .build());
     }
 
     private static String slugify(String slug) {

@@ -1,16 +1,12 @@
 package com.github.Shop.admin;
 
 import com.github.Shop.admin.dto.AdminProductDto;
-import com.github.Shop.image.Image;
-import com.github.Shop.image.dto.ImageDto;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Stream;
 
 import static com.github.Shop.admin.AdminProductMapper.mapToAdminProduct;
 

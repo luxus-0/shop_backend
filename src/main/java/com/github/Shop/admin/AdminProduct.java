@@ -2,7 +2,6 @@ package com.github.Shop.admin;
 
 import com.github.Shop.currency.Currency;
 import com.github.Shop.image.Image;
-import com.github.Shop.image.dto.ImageDto;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -10,7 +9,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity
