@@ -23,7 +23,7 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
-    private String category;
+    private Long categoryId;
     private BigDecimal price;
     @Enumerated(value = EnumType.STRING)
     private Currency currency;
