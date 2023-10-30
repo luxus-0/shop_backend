@@ -22,6 +22,21 @@ class AdminProductMapper {
                 .build();
     }
 
+    public static AdminProduct mapToAdminProduct(AdminProductDto adminProduct) {
+        return AdminProduct.builder()
+                .name(adminProduct.name())
+                .categoryId(adminProduct.categoryId())
+                .price(adminProduct.price())
+                .currency(adminProduct.currency())
+                .images(getImages(adminProduct))
+                .slug(slugify(adminProduct.slug()))
+                .description(adminProduct.description())
+                .fullDescription(adminProduct.fullDescription())
+                .build();
+    }
+
+
+
     private static List<Image> getImages(AdminProductDto adminProduct) {
         return List.of(Image.builder()
                         .name(adminProduct.image().name())

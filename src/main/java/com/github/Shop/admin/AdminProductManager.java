@@ -28,22 +28,13 @@ class AdminProductManager {
                 .orElseThrow(AdminProductNotFoundException::new);
     }
 
-    AdminProduct createProduct(AdminProduct adminProduct) {
-        AdminProduct createAdminProduct = AdminProduct.builder()
-                .name(adminProduct.getName())
-                .currency(adminProduct.getCurrency())
-                .price(adminProduct.getPrice())
-                .slug(adminProduct.getSlug())
-                .images(adminProduct.getImages())
-                .description(adminProduct.getDescription())
-                .fullDescription(adminProduct.getFullDescription())
-                .build();
-        return adminProductRepository.save(createAdminProduct);
+    AdminProduct createProduct(AdminProductDto adminProductDto) {
+        return adminProductRepository.save(mapToAdminProduct(adminProductDto));
     }
 
 
-    public AdminProduct modificationProduct(AdminProductDto adminProduct, Long id) {
-        AdminProduct createdAdminProduct = mapToAdminProduct(adminProduct, id);
+    public AdminProduct modificationProduct(AdminProductDto adminProductDto, Long id) {
+        AdminProduct createdAdminProduct = mapToAdminProduct(adminProductDto, id);
         return adminProductRepository.save(createdAdminProduct);
     }
 

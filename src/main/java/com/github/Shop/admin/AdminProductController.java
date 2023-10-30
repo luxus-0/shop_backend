@@ -39,8 +39,8 @@ class AdminProductController {
     }
 
     @PostMapping
-    public ResponseEntity<AdminProduct> insertProduct(@RequestBody @Valid AdminProduct adminProduct) {
-        AdminProduct adminProductSaved = adminProductManager.createProduct(adminProduct);
+    public ResponseEntity<AdminProduct> insertProduct(@RequestBody @Valid AdminProductDto adminProductDto) {
+        AdminProduct adminProductSaved = adminProductManager.createProduct(adminProductDto);
         return new ResponseEntity<>(adminProductSaved, HttpStatus.CREATED);
     }
 
