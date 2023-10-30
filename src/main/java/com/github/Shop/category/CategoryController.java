@@ -1,11 +1,13 @@
 package com.github.Shop.category;
 
 import com.github.Shop.category.dto.CategoryDto;
+import com.github.Shop.category.dto.CategoryProductsDto;
 import jakarta.validation.constraints.Pattern;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.web.bind.annotation.*;
 
+import java.awt.print.Pageable;
 import java.util.List;
 
 @RestController
@@ -21,10 +23,11 @@ class CategoryController {
     }
 
     @GetMapping("/{slug}/products")
-    public Category getCategoriesWithProducts(@PathVariable
+    public CategoryProductsDto getCategoriesWithProducts(@PathVariable
                                               @Pattern(regexp = "[a-z0-9\\-]+")
-                                              @Length(max = 255) String slug){
-        return categoryService.readCategoriesWithProducts(slug);
+                                              @Length(max = 255) String slug,
+                                                         Pageable pageable){
+        return categoryService.readCategoriesWithProducts(slug, pageable);
     }
     @GetMapping("/{id}")
     public Category getCategory(@PathVariable Long id){

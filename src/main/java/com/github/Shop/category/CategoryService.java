@@ -1,10 +1,15 @@
 package com.github.Shop.category;
 
 import com.github.Shop.category.dto.CategoryDto;
+import com.github.Shop.category.dto.CategoryProductsDto;
+import com.github.Shop.product.Product;
+import com.github.Shop.product.ProductRepository;
 import com.github.slugify.Slugify;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
+import java.awt.print.Pageable;
 import java.util.List;
 
 @Service
@@ -12,12 +17,15 @@ import java.util.List;
 class CategoryService {
 
     private final CategoryRepository categoryRepository;
+    private final ProductRepository productRepository;
     public List<Category> readCategories() {
         return categoryRepository.findAll();
     }
 
-    public Category readCategoriesWithProducts(String slug) {
-        return categoryRepository.findBySlug(slug);
+    public CategoryProductsDto readCategoriesWithProducts(String slug, Pageable pageable) {
+        Category category = categoryRepository.findBySlug(slug);
+        Page<Product> product = productRepository.findByCategoryId(category.getId(), pageable);
+        return new CategoryProductsDto(category, product);
     }
     public Category readCategory(Long id) {
         return categoryRepository.findById(id).orElseThrow();
