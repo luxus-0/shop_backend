@@ -1,11 +1,14 @@
 package com.github.Shop.product;
 
+import com.github.Shop.product.dto.ProductDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+
+import static com.github.Shop.product.ProductMapper.mapToProduct;
 
 @Service
 class ProductManager {
@@ -28,25 +31,17 @@ class ProductManager {
        return productRepository.findAll(pageable);
     }
 
-    Product makeProduct(Product product){
-        return productRepository.save(product);
+    Product makeProduct(ProductDto productDto){
+        return productRepository.save(mapToProduct(productDto));
     }
 
-    public Product modificationProduct(Product product, Long id) {
-       Product createProduct = updateProduct(product, id);
+    public Product modificationProduct(ProductDto productDto, Long id) {
+       Product createProduct = updateProduct(productDto, id);
         return productRepository.save(createProduct);
     }
 
-    private Product updateProduct(Product product, Long id) {
-        return Product.builder()
-                .id(id)
-                .name(product.getName())
-                .price(product.getPrice())
-                .category(product.getCategory())
-                .currency(product.getCurrency())
-                .image(product.getImage())
-                .description(product.getDescription())
-                .build();
+    private Product updateProduct(ProductDto productDto, Long id) {
+        return mapToProduct(productDto, id);
     }
 
     public void removeProduct(Long id) {

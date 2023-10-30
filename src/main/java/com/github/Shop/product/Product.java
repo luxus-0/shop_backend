@@ -32,7 +32,7 @@ public class Product {
     private String slug;
     @OneToMany(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id")
-    private List<Image> image;
+    private List<Image> images;
     @OneToMany
     @JoinColumn(name = "product_id")
     private List<Review> reviews;

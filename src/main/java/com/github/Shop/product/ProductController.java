@@ -43,14 +43,14 @@ class ProductController {
         return new ResponseEntity<>(findProductBySlug, HttpStatus.OK);
     }
     @PostMapping
-    public ResponseEntity<Product> generateProduct(@RequestBody @Valid Product product) {
-        Product productSaved = productManager.makeProduct(product);
+    public ResponseEntity<Product> generateProduct(@RequestBody @Valid ProductDto productDto) {
+        Product productSaved = productManager.makeProduct(productDto);
         return new ResponseEntity<>(productSaved, HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Product> modifyProduct(@RequestBody @Valid Product product, @PathVariable Long id) {
-        Product productSaved = productManager.modificationProduct(product, id);
+    public ResponseEntity<Product> modifyProduct(@RequestBody @Valid ProductDto productDto, @PathVariable Long id) {
+        Product productSaved = productManager.modificationProduct(productDto, id);
         return new ResponseEntity<>(productSaved, HttpStatus.OK);
     }
 
