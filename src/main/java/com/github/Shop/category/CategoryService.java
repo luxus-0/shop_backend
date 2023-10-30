@@ -8,6 +8,7 @@ import com.github.slugify.Slugify;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.awt.print.Pageable;
 import java.util.List;
@@ -22,6 +23,7 @@ class CategoryService {
         return categoryRepository.findAll();
     }
 
+    @Transactional(readOnly = true)
     public CategoryProductsDto readCategoriesWithProducts(String slug, Pageable pageable) {
         Category category = categoryRepository.findBySlug(slug);
         Page<Product> product = productRepository.findByCategoryId(category.getId(), pageable);
