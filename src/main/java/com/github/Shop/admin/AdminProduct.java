@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.data.relational.core.mapping.Table;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -16,6 +17,7 @@ import java.util.List;
 @NoArgsConstructor
 @Getter
 @Builder
+@Table(name = "admin_product")
 public class AdminProduct {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

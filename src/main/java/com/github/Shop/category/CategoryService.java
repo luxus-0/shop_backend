@@ -5,16 +5,15 @@ import com.github.Shop.category.dto.CategoryProductsDto;
 import com.github.Shop.product.Product;
 import com.github.Shop.product.ProductRepository;
 import com.github.slugify.Slugify;
-import lombok.RequiredArgsConstructor;
+import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.awt.print.Pageable;
 import java.util.List;
 
 @Service
-@RequiredArgsConstructor
+@AllArgsConstructor
 class CategoryService {
 
     private final CategoryRepository categoryRepository;

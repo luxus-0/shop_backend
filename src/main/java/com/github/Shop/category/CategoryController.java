@@ -5,14 +5,14 @@ import com.github.Shop.category.dto.CategoryProductsDto;
 import jakarta.validation.constraints.Pattern;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.validator.constraints.Length;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
-import java.awt.print.Pageable;
 import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/admin/categories")
+@RequestMapping("api/v1/admin/categories")
 class CategoryController {
 
     private final CategoryService categoryService;
@@ -25,8 +25,7 @@ class CategoryController {
     @GetMapping("/{slug}/products")
     public CategoryProductsDto getCategoriesWithProducts(@PathVariable
                                               @Pattern(regexp = "[a-z0-9\\-]+")
-                                              @Length(max = 255) String slug,
-                                                         Pageable pageable){
+                                              @Length(max = 255) String slug, Pageable pageable){
         return categoryService.readCategoriesWithProducts(slug, pageable);
     }
     @GetMapping("/{id}")
