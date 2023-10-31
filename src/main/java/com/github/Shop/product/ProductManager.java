@@ -1,22 +1,25 @@
 package com.github.Shop.product;
 
 import com.github.Shop.product.dto.ProductDto;
+import com.github.Shop.review.Review;
+import com.github.Shop.review.ReviewRepository;
+import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 import static com.github.Shop.product.ProductMapper.mapToProduct;
+import static com.github.Shop.product.ProductMapper.mapToProductDto;
 
 @Service
+@AllArgsConstructor
 class ProductManager {
     private final ProductRepository productRepository;
-
-    public ProductManager(ProductRepository productRepository) {
-        this.productRepository = productRepository;
-    }
+    private final ReviewRepository reviewRepository;
 
     List<Product> retrieveProduct() throws ProductNotFoundException {
         List<Product> products = productRepository.findAll();
@@ -48,8 +51,11 @@ class ProductManager {
         productRepository.deleteById(id);
     }
 
-    public Product readProductBySlug(String slug) {
-        return productRepository.findBySlug(slug)
-                .orElseThrow();
+    @Transactional(readOnly = true)
+    public ProductDto readProductBySlug(String slug) {
+        Product product = productRepository.findBySlug(slug).orElseThrow();
+        List<Review> reviews = reviewRepository.findAllByProductIdAndModerated(product.getId(),
+                        true);
+        return mapToProductDto(product, reviews);
     }
 }

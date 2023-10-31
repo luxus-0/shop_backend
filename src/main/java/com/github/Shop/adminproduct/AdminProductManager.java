@@ -1,6 +1,6 @@
-package com.github.Shop.admin;
+package com.github.Shop.adminproduct;
 
-import com.github.Shop.admin.dto.AdminProductDto;
+import com.github.Shop.adminproduct.dto.AdminProductDto;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-import static com.github.Shop.admin.AdminProductMapper.mapToAdminProduct;
+import static com.github.Shop.adminproduct.AdminProductMapper.mapToAdminProduct;
 
 @Service
 @AllArgsConstructor

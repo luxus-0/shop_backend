@@ -36,10 +36,10 @@ class ProductController {
     }
 
     @GetMapping("/{slug}")
-    public ResponseEntity<Product> uploadProductBySlug(@PathVariable
+    public ResponseEntity<ProductDto> uploadProductBySlug(@PathVariable
                                                           @Pattern(regexp = REGEX_SLUG)
                                                           @Length(max = 255) String slug) {
-        Product findProductBySlug = productManager.readProductBySlug(slug);
+        ProductDto findProductBySlug = productManager.readProductBySlug(slug);
         return new ResponseEntity<>(findProductBySlug, HttpStatus.OK);
     }
     @PostMapping

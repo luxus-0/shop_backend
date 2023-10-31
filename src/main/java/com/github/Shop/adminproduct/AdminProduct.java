@@ -1,4 +1,4 @@
-package com.github.Shop.admin;
+package com.github.Shop.adminproduct;
 
 import com.github.Shop.currency.Currency;
 import com.github.Shop.image.Image;

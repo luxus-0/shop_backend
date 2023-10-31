@@ -1,6 +1,6 @@
-package com.github.Shop.admin;
+package com.github.Shop.adminproduct;
 
-import com.github.Shop.admin.dto.AdminProductDto;
+import com.github.Shop.adminproduct.dto.AdminProductDto;
 import com.github.Shop.image.Image;
 import com.github.slugify.Slugify;
 

@@ -1,4 +1,4 @@
-package com.github.Shop.admin;
+package com.github.Shop.adminproduct;
 
 import lombok.extern.log4j.Log4j2;
 

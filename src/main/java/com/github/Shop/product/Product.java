@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.data.relational.core.mapping.Table;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -31,9 +32,9 @@ public class Product {
     private String fullDescription;
     private String slug;
     @OneToMany(fetch = FetchType.LAZY)
-    @JoinColumn(name = "product_id")
+    @JoinColumn(name = "productId")
     private List<Image> images;
     @OneToMany
-    @JoinColumn(name = "product_id")
+    @JoinColumn(name = "productId")
     private List<Review> reviews;
 }

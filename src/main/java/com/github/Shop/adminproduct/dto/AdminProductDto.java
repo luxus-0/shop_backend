@@ -1,4 +1,4 @@
-package com.github.Shop.admin.dto;
+package com.github.Shop.adminproduct.dto;
 
 import com.github.Shop.currency.Currency;
 import com.github.Shop.image.dto.ImageDto;
