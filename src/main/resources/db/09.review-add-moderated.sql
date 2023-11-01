@@ -1,3 +1,3 @@
 --liquibase formatted sql
 --changeset lnowogorski:9
-alter table review add moderated set default false;
+alter table review alter column moderated set default false;
