@@ -37,7 +37,7 @@ public class CartMapper {
         return items.stream()
                 .map(CartMapper::calculateValue)
                 .reduce(BigDecimal::add)
-                .orElseThrow();
+                .orElse(BigDecimal.ZERO);
     }
 
     private static CartSummaryItemDto mapToCartItem(CartItem cartItem) {

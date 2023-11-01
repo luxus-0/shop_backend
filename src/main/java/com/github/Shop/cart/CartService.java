@@ -8,6 +8,8 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 import static java.time.LocalDateTime.now;
 
 @Service
@@ -26,7 +28,7 @@ public class CartService {
         Cart cart = getInitializedCart(id);
         if(cart != null) {
             cart.addProduct(CartItem.builder()
-                    .product(getProduct(cartProductDto.ProductId()))
+                    .product(getProduct(cartProductDto.productId()))
                     .quantity(cartProductDto.quantity())
                     .cartId(cart.getId())
                     .build());
@@ -46,5 +48,17 @@ public class CartService {
                     .build());
         }
         return cartRepository.findById(id).orElseThrow();
+    }
+
+    @Transactional
+    public Cart updateCart(Long id, List<CartProductDto> cartProductDtos) {
+        Cart cart = cartRepository.findById(id).orElseThrow();
+        cart.getItems().forEach(cartItem -> {
+            cartProductDtos.stream()
+                    .filter(cartProductDto -> cartItem.getProduct().getId().equals(cartProductDto.productId()))
+                    .findFirst()
+                    .ifPresent(cartProductDto -> cartItem.setQuantity(cartProductDto.quantity()));
+        });
+        return cart;
     }
 }
