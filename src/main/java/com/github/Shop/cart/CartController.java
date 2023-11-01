@@ -1,5 +1,7 @@
 package com.github.Shop.cart;
 
+import com.github.Shop.cart.dto.CartProductDto;
+import com.github.Shop.cart.dto.CartSummaryDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -9,13 +11,14 @@ import org.springframework.web.bind.annotation.*;
 public class CartController {
 
     private final CartService cartService;
+
     @GetMapping("/{id}")
-    public Cart gerCart(@PathVariable Long id){
-        return cartService.findCart(id);
+    public CartSummaryDto gerCart(@PathVariable Long id) {
+        return CartMapper.mapToCartSummary(cartService.findCart(id));
     }
 
     @PutMapping("/{id}")
-    public Cart createProductToCart(@PathVariable Long id, @RequestBody CartProductDto cartProductDto){
-        return cartService.addProductToCart(id, cartProductDto);
+    public CartSummaryDto createProductToCart(@PathVariable Long id, @RequestBody CartProductDto cartProductDto) {
+        return CartMapper.mapToCartSummary(cartService.addProductToCart(id, cartProductDto));
     }
 }
