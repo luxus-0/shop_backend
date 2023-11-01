@@ -1,7 +1,6 @@
 package com.github.Shop.product;
 
 import com.github.Shop.product.dto.ProductDto;
-import com.github.Shop.product.dto.ProductListDto;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Pattern;
 import lombok.RequiredArgsConstructor;

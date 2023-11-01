@@ -1,5 +1,6 @@
 package com.github.Shop.product;
 
+import com.github.Shop.image.Image;
 import com.github.Shop.product.dto.ProductDto;
 import com.github.Shop.review.Review;
 import com.github.Shop.review.dto.ReviewDto;
@@ -16,7 +17,7 @@ class ProductMapper {
                 .description(productDto.description())
                 .slug(slugify(productDto.slug()))
                 .price(productDto.price())
-                .images(productDto.images())
+                .images(List.of(productDto.image()))
                 .fullDescription(productDto.fullDescription())
                 .build();
     }
@@ -30,7 +31,7 @@ class ProductMapper {
                 .description(productDto.description())
                 .slug(slugify(productDto.slug()))
                 .price(productDto.price())
-                .images(productDto.images())
+                .images(List.of(productDto.image()))
                 .fullDescription(productDto.fullDescription())
                 .build();
     }
@@ -45,7 +46,7 @@ class ProductMapper {
                 .fullDescription(product.getFullDescription())
                 .price(product.getPrice())
                 .currency(product.getCurrency())
-                .images(product.getImages())
+                .image(getImage(product))
                 .slug(product.getSlug())
                 .reviews(reviews.stream().map(review -> ReviewDto.builder()
                                 .id(review.getId())
@@ -56,6 +57,10 @@ class ProductMapper {
                                 .build())
                         .toList())
                 .build();
+    }
+
+    private static Image getImage(Product product) {
+        return product.getImages().stream().findAny().orElseThrow();
     }
 
     private static String slugify(String slug) {
