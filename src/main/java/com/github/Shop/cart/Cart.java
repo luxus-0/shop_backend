@@ -23,7 +23,7 @@ public class Cart {
     private Long id;
     @FutureOrPresent
     private LocalDateTime created;
-    @OneToMany(cascade = CascadeType.PERSIST)
+    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     @JoinColumn(name = "cartId")
     private List<CartItem> items;
 

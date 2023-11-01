@@ -8,16 +8,16 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/v1/cartItems")
 public class CartItemController {
 
-    private final CartItemService cartItemService;
+    private final CartItemManager cartItemManager;
 
     @DeleteMapping("/{id}")
     public void remove(@PathVariable Long id) {
-        cartItemService.delete(id);
+        cartItemManager.delete(id);
     }
 
     @GetMapping("/count/{cartId}")
     public Long countItemInCart(@PathVariable Long cartId) {
-        return cartItemService.countItemInCart(cartId);
+        return cartItemManager.countItemInCart(cartId);
     }
 
 }

@@ -2,11 +2,10 @@ package com.github.Shop.cartitem;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.GetMapping;
 
 @Service
 @RequiredArgsConstructor
-public class CartItemService {
+public class CartItemManager {
     private final CartItemRepository cartItemRepository;
 
     public void delete(Long id){
