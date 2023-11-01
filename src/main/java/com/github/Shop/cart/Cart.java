@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Getter
@@ -27,10 +28,14 @@ public class Cart {
     @JoinColumn(name = "cartId")
     private List<CartItem> items;
 
-    void addProduct(CartItem cartItems) {
+    void addProduct(CartItem cartItem) {
         if (items == null) {
             items = new ArrayList<>();
         }
-        items.add(cartItems);
+        new ArrayList<>(items).stream()
+                .filter(item -> Objects.equals(cartItem.getProduct().getId(), item.getProduct().getId()))
+                .findFirst()
+                .ifPresentOrElse(item -> item.setQuantity(item.getQuantity() + 1),
+                        () -> items.add(cartItem));
     }
 }
