@@ -2,6 +2,7 @@ package com.github.Shop.cart;
 
 import com.github.Shop.cartitem.CartItem;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.FutureOrPresent;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -20,6 +21,7 @@ public class Cart {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @FutureOrPresent
     private LocalDateTime created;
     @OneToMany(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "cartId")
