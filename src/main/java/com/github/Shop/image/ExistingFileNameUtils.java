@@ -23,7 +23,7 @@ class ExistingFileNameUtils {
 
     private static String renameFileName(String fileName) {
         String name = FilenameUtils.getBaseName(fileName);
-        String[] split = name.split("-(?=[0-9]+$)");
+        String[] split = name.split("-(?=[\\d+]+$)");
         int counter =  split.length > 1 ? Integer.parseInt(split[1]) + 1 : 1;
         return split[0] + "-" + counter + "." + FilenameUtils.getExtension(fileName);
     }
