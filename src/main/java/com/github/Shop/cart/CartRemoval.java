@@ -12,18 +12,21 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 @Log4j2
-public class CartMaintenance {
+public class CartRemoval {
 
     private final CartRepository cartRepository;
     private final CartItemRepository cartItemRepository;
 
     @Scheduled(cron = "${basket.cleanup.expression}")
-    public void removeInactiveBasket(){
+    public void removeInactiveBasket() {
         List<Cart> carts = cartRepository.findByCreatedLessThan(LocalDateTime.now().minusDays(3));
-        log.info("Old baskets: " +carts.size());
-        carts.forEach(cart -> {
-            cartItemRepository.deleteByCartId(cart.getId());
-            cartRepository.deleteCartById(cart.getId());
-        });
+        List<Long> ids = carts.stream()
+                .map(Cart::getId)
+                .toList();
+        log.info("Old baskets: " + carts.size());
+        if (!ids.isEmpty()) {
+            cartItemRepository.deleteAllByCartIdIn(ids);
+            cartRepository.deleteAllByIdIn(ids);
+        }
     }
 }

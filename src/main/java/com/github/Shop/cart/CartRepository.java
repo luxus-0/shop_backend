@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface CartRepository extends JpaRepository<Cart, Long> {
     List<Cart> findByCreatedLessThan(LocalDateTime LocalDateTime);
-    @Query("delete from Cart c where c.id = :id")
-    @Modifying
-    void deleteCartById(Long id);
+
+    @Query("delete from Cart c where c.id in (:id)")
+    void deleteAllByIdIn(List<Long> ids);
 }
