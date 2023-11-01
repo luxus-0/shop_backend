@@ -26,7 +26,6 @@ public class CartService {
     @Transactional
     public Cart addProductToCart(Long id, CartProductDto cartProductDto) {
         Cart cart = getInitializedCart(id);
-        if(cart != null) {
             cart.addProduct(CartItem.builder()
                     .product(getProduct(cartProductDto.productId()))
                     .quantity(cartProductDto.quantity())
@@ -34,8 +33,6 @@ public class CartService {
                     .build());
             return cart;
         }
-        return Cart.builder().build();
-    }
 
     private Product getProduct(Long productId) {
         return productRepository.findById(productId).orElseThrow();
