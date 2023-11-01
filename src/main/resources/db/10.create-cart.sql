@@ -1,12 +1,12 @@
 --liquibase formatted sql
 --changeset lnowogorski:9
 create table cart(
-    id bigint auto_increment PRIMARY KEY not null,
-    created datetime not null
+    id bigint GENERATED ALWAYS AS IDENTITY PRIMARY KEY not null,
+    created timestamp not null
 );
 
 create table cartItem(
-    id bigint not null auto_increment PRIMARY KEY,
+    id bigint GENERATED ALWAYS AS IDENTITY PRIMARY KEY not null,
     product_id bigint not null,
     quantity int,
     cart_id bigint not null,
