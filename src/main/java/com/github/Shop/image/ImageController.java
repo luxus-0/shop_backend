@@ -21,7 +21,7 @@ public class ImageController {
     private final ImageDataManager imageDataManager;
 
     @PostMapping("/upload-image")
-    public ResponseEntity<ResponseUploadImage> uploadImage(@RequestParam("image") MultipartFile file) {
+    public ResponseEntity<ResponseUploadImage> uploadImage(@RequestParam("image") MultipartFile file) throws ImageNotSavedException {
         ResponseUploadImage responseImage = imageDataManager.uploadImage(file);
         return ResponseEntity.status(HttpStatus.OK)
                 .body(responseImage);

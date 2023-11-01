@@ -34,7 +34,7 @@ public class ImageDataManager {
         this.imageRepository = imageRepository;
     }
 
-    public ResponseUploadImage uploadImage(MultipartFile file) {
+    public ResponseUploadImage uploadImage(MultipartFile file) throws ImageNotSavedException {
         String fileName = file.getOriginalFilename();
         String changedFileName = UploadedFilesNameUtils.slugifyFileName(fileName);
         changedFileName = ExistingFileNameUtils.renameIfExists(Path.of(imagePath), changedFileName);
@@ -46,7 +46,7 @@ public class ImageDataManager {
             inputStream.transferTo(outputStream);
 
         } catch (IOException e) {
-            throw new RuntimeException("Image cannot be saved", e);
+            throw new ImageNotSavedException("Image cannot be saved");
         }
 
         Image image = Image.builder()
@@ -69,7 +69,7 @@ public class ImageDataManager {
         FileSystemResourceLoader fileSystemResourceLoader = new FileSystemResourceLoader();
         Resource resource = fileSystemResourceLoader.getResource(imagePath + filename);
         if (resource.getFile().exists()) {
-            System.out.println("File downloaded successfully");
+            log.info("File downloaded successfully");
             return resource;
         }
         throw new FileNotFoundException("File not found");
