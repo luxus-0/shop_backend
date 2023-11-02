@@ -1,3 +1,5 @@
+--liquibase formatted sql
+--changeset lnowogorski:10
 CREATE TYPE Currency AS ENUM('PLN', 'EUR', 'USD');
 create table AdminProduct
 (

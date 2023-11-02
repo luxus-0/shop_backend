@@ -50,12 +50,10 @@ public class CartService {
     @Transactional
     public Cart updateCart(Long id, List<CartProductDto> cartProductDtos) {
         Cart cart = cartRepository.findById(id).orElseThrow();
-        cart.getItems().forEach(cartItem -> {
-            cartProductDtos.stream()
-                    .filter(cartProductDto -> cartItem.getProduct().getId().equals(cartProductDto.productId()))
-                    .findFirst()
-                    .ifPresent(cartProductDto -> cartItem.setQuantity(cartProductDto.quantity()));
-        });
+        cart.getItems().forEach(cartItem -> cartProductDtos.stream()
+                .filter(cartProductDto -> cartItem.getProduct().getId().equals(cartProductDto.productId()))
+                .findFirst()
+                .ifPresent(cartProductDto -> cartItem.setQuantity(cartProductDto.quantity())));
         return cart;
     }
 }
