@@ -1,5 +1,5 @@
---liquibase formatted sql
---changeset lnowogorski:1
+ --liquibase formatted sql
+ --changeset lnowogorski:1
 CREATE TABLE product (
     id bigint PRIMARY KEY auto_increment not null ,
     name VARCHAR(255) NOT NULL,
