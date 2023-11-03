@@ -1,6 +1,7 @@
 -- liquibase formatted sql
--- changeset lnowogorski:15
+-- changeset lnowogorski:14
 create table contact(
+    id serial primary key not null,
     email varchar(255) not null,
     phone varchar(255) not null,
     customer_id bigint not null,
