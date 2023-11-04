@@ -22,6 +22,9 @@ import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 import java.util.List;
 
+import static com.github.Shop.address.AddressService.getAddresses;
+import static com.github.Shop.contact.ContactService.getContacts;
+
 @Service
 @RequiredArgsConstructor
 @Log4j2
@@ -116,21 +119,6 @@ class OrderManager {
                 .pesel(orderDto.customer().pesel())
                 .addresses(getAddresses(orderDto))
                 .contacts(getContacts(orderDto))
-                .build());
-    }
-
-    private static List<Contact> getContacts(OrderDto orderDto) {
-        return List.of(Contact.builder()
-                .email(orderDto.contact().email())
-                .phone(orderDto.contact().phone())
-                .build());
-    }
-
-    private static List<Address> getAddresses(OrderDto orderDto) {
-        return List.of(Address.builder()
-                .street(orderDto.address().street())
-                .city(orderDto.address().city())
-                .zipCode(orderDto.address().zipCode())
                 .build());
     }
 }
