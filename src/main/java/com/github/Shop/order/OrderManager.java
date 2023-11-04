@@ -1,16 +1,17 @@
 package com.github.Shop.order;
 
-import com.github.Shop.address.Address;
 import com.github.Shop.cart.Cart;
 import com.github.Shop.cart.CartRepository;
 import com.github.Shop.cartitem.CartItem;
 import com.github.Shop.cartitem.CartItemRepository;
-import com.github.Shop.contact.Contact;
 import com.github.Shop.customer.Customer;
 import com.github.Shop.order.dto.OrderDto;
 import com.github.Shop.order.dto.OrderSummary;
 import com.github.Shop.orderrow.OrderRow;
 import com.github.Shop.orderrow.OrderRowRepository;
+import com.github.Shop.payment.Payment;
+import com.github.Shop.payment.PaymentNotFoundException;
+import com.github.Shop.payment.PaymentRepository;
 import com.github.Shop.shipment.Shipment;
 import com.github.Shop.shipment.ShipmentNotFoundException;
 import com.github.Shop.shipment.ShipmentRepository;
@@ -35,13 +36,15 @@ class OrderManager {
     private final CartRepository cartRepository;
     private final CartItemRepository cartItemRepository;
     private final ShipmentRepository shipmentRepository;
+    private final PaymentRepository paymentRepository;
 
     @Transactional
-    public OrderSummary getOrder(OrderDto orderDto) throws ShipmentNotFoundException {
+    public OrderSummary getOrder(OrderDto orderDto) throws ShipmentNotFoundException, PaymentNotFoundException {
         Cart cart = cartRepository.findById(orderDto.cartId()).orElseThrow();
         Shipment shipment = shipmentRepository.findById(orderDto.shipmentId()).orElseThrow(ShipmentNotFoundException::new);
+        Payment payment = paymentRepository.findById(orderDto.paymentId()).orElseThrow(PaymentNotFoundException::new);
 
-        Order order = createOrder(orderDto, cart, shipment);
+        Order order = createOrder(orderDto, cart, shipment, payment);
         Order newOrder = orderRepository.save(order);
 
         saveOrderRows(cart, newOrder.getId(), shipment);
@@ -62,15 +65,17 @@ class OrderManager {
                 .placeDate(newOrder.getPlaceDate())
                 .status(newOrder.getOrderStatus())
                 .grossValue(newOrder.getGrossValue())
+                .payment(newOrder.getPayment())
                 .build();
     }
 
-    private Order createOrder(OrderDto orderDto, Cart cart, Shipment shipment) {
+    private Order createOrder(OrderDto orderDto, Cart cart, Shipment shipment, Payment payment) {
         return Order.builder()
                 .customers(createCustomers(orderDto))
                 .orderStatus(OrderStatus.NEW)
                 .grossValue(calculateGrossValue(cart.getItems(), shipment))
                 .placeDate(orderDto.placeDate())
+                .payment(payment)
                 .build();
     }
 
@@ -101,10 +106,10 @@ class OrderManager {
 
     private void saveShipmentRow(Cart cart, Long orderId, Shipment shipment) {
         orderRowRepository.save(OrderRow.builder()
-                        .quantity(getQuantity(cart))
-                        .price(shipment.getPrice())
-                        .shipmentId(shipment.getId())
-                        .orderId(orderId)
+                .quantity(getQuantity(cart))
+                .price(shipment.getPrice())
+                .shipmentId(shipment.getId())
+                .orderId(orderId)
                 .build());
     }
 

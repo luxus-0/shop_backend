@@ -2,6 +2,7 @@ package com.github.Shop.order;
 
 import com.github.Shop.customer.Customer;
 import com.github.Shop.orderrow.OrderRow;
+import com.github.Shop.payment.Payment;
 import com.github.Shop.product.Product;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -11,6 +12,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
@@ -50,4 +52,6 @@ public class Order {
     @OneToMany
     @JoinColumn(name = "orderId")
     private List<Customer> customers;
+    @OneToOne
+    private Payment payment;
 }

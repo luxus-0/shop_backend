@@ -10,9 +10,10 @@ import org.springframework.format.annotation.DateTimeFormat;
 import java.time.LocalDateTime;
 
 public record OrderDto(@NotNull Long cartId,
+                       @NotNull Long shipmentId,
+                       @NotNull Long paymentId,
                        @DateTimeFormat(pattern = "yyyy-MM-dd")
                        LocalDateTime placeDate,
-                       @NotNull Long shipmentId,
                        @NotBlank CustomerDto customer,
                        @NotBlank ContactDto contact,
                        @NotBlank AddressDto address) {
