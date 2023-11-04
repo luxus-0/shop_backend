@@ -1,4 +1,6 @@
-CREATE TABLE recipient (
+-- liquibase formatted sql
+-- changeset lnowogorski:18
+REATE TABLE recipient (
                         id SERIAL PRIMARY KEY,
                         name VARCHAR(255) NOT NULL,
                         surname VARCHAR(255) NOT NULL,

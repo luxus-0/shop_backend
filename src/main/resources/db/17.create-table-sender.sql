@@ -1,3 +1,5 @@
+-- liquibase formatted sql
+-- changeset lnowogorski:17
 CREATE TABLE sender (
                         id SERIAL PRIMARY KEY,
                         name VARCHAR(255) NOT NULL,
