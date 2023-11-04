@@ -8,6 +8,8 @@ import com.github.Shop.shipment.dto.ShipmentDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class ShipmentService {
@@ -57,5 +59,9 @@ public class ShipmentService {
                         .phone(recipient.contact().phone())
                         .build())
                 .build();
+    }
+
+    public List<Shipment> getShipments(){
+        return shipmentRepository.findAll();
     }
 }
