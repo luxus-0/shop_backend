@@ -12,10 +12,13 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -31,7 +34,9 @@ public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDateTime placeDate;
+    @NotBlank
     @Enumerated(EnumType.STRING)
     private OrderStatus orderStatus;
     @OneToMany
@@ -40,6 +45,7 @@ public class Order {
     @OneToMany
     @JoinColumn(name = "orderId")
     private List<Product> products;
+    @Min(0)
     private BigDecimal grossValue;
     @OneToMany
     @JoinColumn(name = "orderId")
