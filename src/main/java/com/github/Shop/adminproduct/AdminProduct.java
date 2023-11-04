@@ -3,6 +3,7 @@ package com.github.Shop.adminproduct;
 import com.github.Shop.currency.Currency;
 import com.github.Shop.image.Image;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -22,15 +23,22 @@ public class AdminProduct {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @NotBlank
     private String name;
+    @NotBlank
     private Long categoryId;
+    @NotBlank
     private BigDecimal price;
+    @NotBlank
     @Enumerated(value = EnumType.STRING)
     private Currency currency;
+    @NotBlank
     private String description;
+    @NotBlank
     private String fullDescription;
     @OneToMany
     @JoinColumn(name = "admin_product_id")
     private List<Image> images;
+    @NotBlank
     private String slug;
 }
