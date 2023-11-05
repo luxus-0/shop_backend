@@ -1,0 +1,1 @@
+POST http://localhost:8080/api/emails/send?to=luxus0@gmail.com?subject=TEMAT?body=<html><body><h1>Przykładowy tytuł</h1><p>To jest treść wiadomości w formie HTML.</p></body></html>
