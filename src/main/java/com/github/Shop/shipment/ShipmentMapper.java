@@ -1,9 +1,8 @@
 package com.github.Shop.shipment;
 
 import com.github.Shop.cart.Cart;
+import com.github.Shop.cartitem.CartItem;
 import com.github.Shop.orderrow.OrderRow;
-
-import static com.github.Shop.order.OrderManager.getQuantity;
 
 public class ShipmentMapper {
     public static OrderRow mapToShipmentRow(Cart cart, Long orderId, Shipment shipment) {
@@ -13,5 +12,12 @@ public class ShipmentMapper {
                 .shipmentId(shipment.getId())
                 .orderId(orderId)
                 .build();
+    }
+
+    private static Integer getQuantity(Cart cart) {
+        return cart.getItems().stream()
+                .map(CartItem::getQuantity)
+                .findAny()
+                .orElseThrow();
     }
 }
