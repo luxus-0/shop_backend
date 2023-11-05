@@ -1,5 +1,6 @@
 package com.github.Shop.cart;
 
+import com.github.Shop.cart.dto.CartProductDto;
 import com.github.Shop.product.Product;
 import com.github.Shop.product.ProductRepository;
 import org.junit.jupiter.api.Test;
