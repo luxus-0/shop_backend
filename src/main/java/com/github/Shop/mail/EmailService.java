@@ -13,33 +13,13 @@ import org.springframework.stereotype.Service;
 
 import java.time.format.DateTimeFormatter;
 
+import static com.github.Shop.customer.CustomerService.getCustomerEmail;
+
 @RequiredArgsConstructor
 @Log4j2
 @Service
 public class EmailService implements EmailSender {
     private final JavaMailSender javaMailSender;
-
-    private static String toEmail(String to) {
-        return to.replaceAll("'", " ");
-    }
-
-    public static String createEmailMessage(Order order) {
-        return "<html><body><h2>Order Details</h2>"
-                + "<ul>"
-                + "<li><strong>Order ID:</strong> " + order.getId() + "</li>"
-                + "<li><strong>Date Ordered:</strong> " + order.getPlaceDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")) + "</li>"
-                + "<li><strong>Order Status:</strong> " + order.getOrderStatus() + "</li>"
-                + "<li><strong>Price:</strong> " + order.getGrossValue() + " " + Currency.PLN + "</li>"
-                + "<li><strong>Payment Method:</strong> " + order.getPayment().getName() + "</li>"
-                + "<li><strong>Description:</strong> " + order.getPayment().getDescription() + "</li>"
-                + "</ul>"
-                + "</body>"
-                + "</html>";
-    }
-
-    public static String createEmailSubject(Order order) {
-        return "Order ID: " + order.getId();
-    }
 
     @Async
     @Override
@@ -57,5 +37,39 @@ public class EmailService implements EmailSender {
         } catch (MessagingException e) {
             log.error("Error sending email: " + e.fillInStackTrace());
         }
+    }
+    public void sendEmail(Order order) {
+        send(getEmail(order), createEmailSubject(order), createEmailMessage(order));
+    }
+
+    public String createEmailMessage(Order order) {
+        return "<html><body><h2>Order Details</h2>"
+                + "<ul>"
+                + "<li><strong>Order ID:</strong> " + order.getId() + "</li>"
+                + "<li><strong>Date Ordered:</strong> " + order.getPlaceDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")) + "</li>"
+                + "<li><strong>Order Status:</strong> " + order.getOrderStatus() + "</li>"
+                + "<li><strong>Price:</strong> " + order.getGrossValue() + " " + Currency.PLN + "</li>"
+                + "<li><strong>Payment Method:</strong> " + order.getPayment().getName() + "</li>"
+                + "<li><strong>Description:</strong> " + order.getPayment().getDescription() + "</li>"
+                + "</ul>"
+                + "</body>"
+                + "</html>";
+    }
+
+    public String createEmailSubject(Order order) {
+        return "Order ID: " + order.getId();
+    }
+
+    private String getEmail(Order order) {
+        try {
+            return getCustomerEmail(order);
+        } catch (EmailNotFoundException e) {
+            log.error(e.getMessage());
+        }
+        return "";
+    }
+
+    private String toEmail(String to) {
+        return to.replaceAll("'", " ");
     }
 }

@@ -1,5 +1,6 @@
 package com.github.Shop.mail;
 
+import com.github.Shop.order.Order;
 import jakarta.mail.MessagingException;
 
 public interface EmailSender {
