@@ -5,6 +5,7 @@ import com.github.Shop.cartitem.CartItem;
 import com.github.Shop.product.Product;
 import com.github.Shop.product.ProductRepository;
 import lombok.AllArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,6 +15,7 @@ import static java.time.LocalDateTime.now;
 
 @Service
 @AllArgsConstructor
+@Log4j2
 public class CartService {
 
     private final CartRepository cartRepository;
@@ -44,7 +46,7 @@ public class CartService {
                     .created(now())
                     .build());
         }
-        return cartRepository.findById(id).orElseThrow();
+        return cartRepository.findById(id).orElseGet(() -> Cart.builder().build());
     }
 
     @Transactional
