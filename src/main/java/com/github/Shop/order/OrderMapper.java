@@ -3,6 +3,7 @@ package com.github.Shop.order;
 import com.github.Shop.cart.Cart;
 import com.github.Shop.cartitem.CartItem;
 import com.github.Shop.order.dto.OrderDto;
+import com.github.Shop.order.dto.OrderSummary;
 import com.github.Shop.payment.Payment;
 import com.github.Shop.shipment.Shipment;
 
@@ -28,5 +29,15 @@ public class OrderMapper {
                 .reduce(BigDecimal::add)
                 .orElse(BigDecimal.ZERO)
                 .add(shipment.getPrice());
+    }
+
+    public static OrderSummary createOrderSummary(Order newOrder) {
+        return OrderSummary.builder()
+                .id(newOrder.getId())
+                .placeDate(newOrder.getPlaceDate())
+                .status(newOrder.getOrderStatus())
+                .grossValue(newOrder.getGrossValue())
+                .payment(newOrder.getPayment())
+                .build();
     }
 }

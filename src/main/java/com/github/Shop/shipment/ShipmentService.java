@@ -20,15 +20,23 @@ public class ShipmentService {
                 .name(sender.name())
                 .surname(sender.surname())
                 .pesel(sender.pesel())
-                .address(Address.builder()
-                        .city(sender.address().city())
-                        .street(sender.address().street())
-                        .zipCode(sender.address().zipCode())
-                        .build())
-                .contact(Contact.builder()
-                        .email(sender.contact().email())
-                        .phone(sender.contact().phone())
-                        .build())
+                .address(getAddress(sender))
+                .contact(getContact(sender))
+                .build();
+    }
+
+    private static Contact getContact(SenderDto sender) {
+        return Contact.builder()
+                .email(sender.contact().email())
+                .phone(sender.contact().phone())
+                .build();
+    }
+
+    private static Address getAddress(SenderDto sender) {
+        return Address.builder()
+                .city(sender.address().city())
+                .street(sender.address().street())
+                .zipCode(sender.address().zipCode())
                 .build();
     }
 
@@ -37,15 +45,23 @@ public class ShipmentService {
                 .name(recipient.name())
                 .surname(recipient.surname())
                 .pesel(recipient.pesel())
-                .address(Address.builder()
-                        .city(recipient.address().city())
-                        .street(recipient.address().street())
-                        .zipCode(recipient.address().zipCode())
-                        .build())
-                .contact(Contact.builder()
-                        .email(recipient.contact().email())
-                        .phone(recipient.contact().phone())
-                        .build())
+                .address(getAddress(recipient))
+                .contact(getContact(recipient))
+                .build();
+    }
+
+    private static Contact getContact(RecipientDto recipient) {
+        return Contact.builder()
+                .email(recipient.contact().email())
+                .phone(recipient.contact().phone())
+                .build();
+    }
+
+    private static Address getAddress(RecipientDto recipient) {
+        return Address.builder()
+                .city(recipient.address().city())
+                .street(recipient.address().street())
+                .zipCode(recipient.address().zipCode())
                 .build();
     }
 

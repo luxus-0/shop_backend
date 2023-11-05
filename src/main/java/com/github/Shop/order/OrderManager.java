@@ -22,6 +22,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import static com.github.Shop.order.OrderMapper.createOrder;
+import static com.github.Shop.order.OrderMapper.createOrderSummary;
 import static com.github.Shop.orderrow.OderRowMapper.mapToOrderRow;
 import static com.github.Shop.shipment.ShipmentMapper.mapToShipmentRow;
 
@@ -48,15 +49,6 @@ public class OrderManager {
         deleteCartAndCartItem(orderDto);
         emailService.sendEmail(savedOrder);
         return createOrderSummary(savedOrder);
-    }
-    private static OrderSummary createOrderSummary(Order newOrder) {
-        return OrderSummary.builder()
-                .id(newOrder.getId())
-                .placeDate(newOrder.getPlaceDate())
-                .status(newOrder.getOrderStatus())
-                .grossValue(newOrder.getGrossValue())
-                .payment(newOrder.getPayment())
-                .build();
     }
 
     private Payment findPayment(OrderDto orderDto) throws PaymentNotFoundException {
