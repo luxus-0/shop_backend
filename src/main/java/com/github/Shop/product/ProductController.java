@@ -8,7 +8,16 @@ import org.hibernate.validator.constraints.Length;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
@@ -29,7 +38,7 @@ class ProductController {
 
     @GetMapping("/pagination")
     public ResponseEntity<Page<Product>> uploadProducts(@RequestParam(value = "page") int page,
-                                                        @RequestParam(value = "size") int size){
+                                                        @RequestParam(value = "size") int size) {
         var findProductByPage = productManager.retrieveProduct(page, size);
         return new ResponseEntity<>(findProductByPage, HttpStatus.OK);
     }
@@ -41,6 +50,7 @@ class ProductController {
         ProductDto findProductBySlug = productManager.readProductBySlug(slug);
         return new ResponseEntity<>(findProductBySlug, HttpStatus.OK);
     }
+
     @PostMapping
     public ResponseEntity<Product> generateProduct(@RequestBody @Valid ProductDto productDto) {
         Product productSaved = productManager.makeProduct(productDto);

@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 public class CartItemManager {
     private final CartItemRepository cartItemRepository;
 
-    public void delete(Long id){
+    public void delete(Long id) {
         cartItemRepository.deleteById(id);
     }
 

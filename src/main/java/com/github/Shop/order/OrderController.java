@@ -21,6 +21,7 @@ import static org.springframework.http.HttpStatus.CREATED;
 public class OrderController {
 
     private final OrderManager orderManager;
+
     @PostMapping
     public ResponseEntity<OrderSummary> placeOrder(@RequestBody OrderDto orderDto) throws ShipmentNotFoundException, PaymentNotFoundException, MessagingException, CartNotFoundException {
         return ResponseEntity.status(CREATED)

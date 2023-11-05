@@ -10,13 +10,16 @@ import java.util.List;
 @RequiredArgsConstructor
 public class AdminReviewService {
     private final AdminReviewRepository reviewRepository;
+
     public List<AdminReview> getReviews() {
         return reviewRepository.findAll();
     }
+
     @Transactional
     public void moderate(Long id) {
         reviewRepository.moderate(id);
     }
+
     public void delete(Long id) {
         reviewRepository.deleteById(id);
     }

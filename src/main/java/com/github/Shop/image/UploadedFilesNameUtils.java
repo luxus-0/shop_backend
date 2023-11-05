@@ -8,15 +8,15 @@ class UploadedFilesNameUtils {
         String name = FilenameUtils.getBaseName(fileName);
 
         Slugify slug = Slugify.builder()
-                .customReplacement("a","ą")
+                .customReplacement("a", "ą")
                 .customReplacement("c", "ć")
                 .customReplacement("e", "ę")
-                .customReplacement("l","ł")
-                .customReplacement("o","ó")
+                .customReplacement("l", "ł")
+                .customReplacement("o", "ó")
                 .customReplacement("s", "ś")
-                .customReplacement("z","ź")
+                .customReplacement("z", "ź")
                 .customReplacement("z", "ż")
-                .customReplacement("_","-")
+                .customReplacement("_", "-")
                 .build();
         String changedName = slug.slugify(name);
         return changedName + "." + FilenameUtils.getExtension(fileName);

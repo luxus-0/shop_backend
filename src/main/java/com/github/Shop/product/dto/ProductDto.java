@@ -9,5 +9,6 @@ import java.math.BigDecimal;
 import java.util.List;
 
 @Builder
-public record ProductDto(Long id, String name, Long categoryId, BigDecimal price, Currency currency , Image image, String slug, String description, String fullDescription, List<ReviewDto> reviews) {
+public record ProductDto(Long id, String name, Long categoryId, BigDecimal price, Currency currency, Image image,
+                         String slug, String description, String fullDescription, List<ReviewDto> reviews) {
 }

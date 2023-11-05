@@ -10,6 +10,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import java.util.List;
 
 @Service
@@ -18,6 +19,7 @@ class CategoryService {
 
     private final CategoryRepository categoryRepository;
     private final ProductRepository productRepository;
+
     public List<Category> readCategories() {
         return categoryRepository.findAll();
     }
@@ -28,15 +30,16 @@ class CategoryService {
         Page<Product> product = productRepository.findByCategoryId(category.getId(), pageable);
         return new CategoryProductsDto(category, product);
     }
+
     public Category readCategory(Long id) {
         return categoryRepository.findById(id).orElseThrow();
     }
 
     public Category saveCategory(CategoryDto categoryDto) {
         return categoryRepository.save(Category.builder()
-                        .name(categoryDto.getName())
-                        .description(categoryDto.getDescription())
-                        .slug(slugifyCategoryName(categoryDto.getSlug()))
+                .name(categoryDto.getName())
+                .description(categoryDto.getDescription())
+                .slug(slugifyCategoryName(categoryDto.getSlug()))
                 .build());
     }
 
@@ -51,7 +54,7 @@ class CategoryService {
 
     private String slugifyCategoryName(String slug) {
         return Slugify.builder()
-                .customReplacement("_","-")
+                .customReplacement("_", "-")
                 .build()
                 .slugify(slug);
     }

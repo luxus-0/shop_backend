@@ -15,18 +15,6 @@ import java.util.List;
 public class ShipmentService {
     private final ShipmentRepository shipmentRepository;
 
-    Shipment createShipment(ShipmentDto shipment) {
-        Shipment createShipment = Shipment.builder()
-                .trackingNumber(shipment.trackingNumber())
-                .status(shipment.status())
-                .shippingType(shipment.shippingType())
-                .deliveryDate(shipment.deliveryDate())
-                .sender(getSender(shipment.sender()))
-                .recipient(getRecipient(shipment.recipient()))
-                .build();
-        return shipmentRepository.save(createShipment);
-    }
-
     private static Sender getSender(SenderDto sender) {
         return Sender.builder()
                 .name(sender.name())
@@ -61,7 +49,19 @@ public class ShipmentService {
                 .build();
     }
 
-    public List<Shipment> getShipments(){
+    Shipment createShipment(ShipmentDto shipment) {
+        Shipment createShipment = Shipment.builder()
+                .trackingNumber(shipment.trackingNumber())
+                .status(shipment.status())
+                .shippingType(shipment.shippingType())
+                .deliveryDate(shipment.deliveryDate())
+                .sender(getSender(shipment.sender()))
+                .recipient(getRecipient(shipment.recipient()))
+                .build();
+        return shipmentRepository.save(createShipment);
+    }
+
+    public List<Shipment> getShipments() {
         return shipmentRepository.findAll();
     }
 }

@@ -11,5 +11,6 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Builder
-public record OrderSummary(@NotBlank Long id, @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDateTime placeDate, @NotBlank OrderStatus status, @Min(0) BigDecimal grossValue, Payment payment) {
+public record OrderSummary(@NotBlank Long id, @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDateTime placeDate,
+                           @NotBlank OrderStatus status, @Min(0) BigDecimal grossValue, Payment payment) {
 }

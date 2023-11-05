@@ -26,13 +26,13 @@ public class CartService {
     @Transactional
     public Cart addProductToCart(Long id, CartProductDto cartProductDto) {
         Cart cart = getInitializedCart(id);
-            cart.addProduct(CartItem.builder()
-                    .product(getProduct(cartProductDto.productId()))
-                    .quantity(cartProductDto.quantity())
-                    .cartId(cart.getId())
-                    .build());
-            return cart;
-        }
+        cart.addProduct(CartItem.builder()
+                .product(getProduct(cartProductDto.productId()))
+                .quantity(cartProductDto.quantity())
+                .cartId(cart.getId())
+                .build());
+        return cart;
+    }
 
     private Product getProduct(Long productId) {
         return productRepository.findById(productId).orElseThrow();

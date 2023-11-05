@@ -15,6 +15,7 @@ import static com.github.Shop.adminproduct.AdminProductMapper.mapToAdminProduct;
 class AdminProductManager {
 
     private final AdminProductRepository adminProductRepository;
+
     public Page<AdminProduct> findProducts(Pageable pageable) {
         return adminProductRepository.findAll(pageable);
     }

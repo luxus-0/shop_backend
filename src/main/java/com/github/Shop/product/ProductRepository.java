@@ -8,5 +8,6 @@ import java.util.Optional;
 
 public interface ProductRepository extends JpaRepository<Product, Long> {
     Optional<Product> findBySlug(String slug);
+
     Page<Product> findByCategoryId(Long categoryId, Pageable pageable);
 }

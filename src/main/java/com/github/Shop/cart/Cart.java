@@ -1,7 +1,13 @@
 package com.github.Shop.cart;
 
 import com.github.Shop.cartitem.CartItem;
-import jakarta.persistence.*;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.FutureOrPresent;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

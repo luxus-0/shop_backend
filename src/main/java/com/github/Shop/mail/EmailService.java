@@ -19,24 +19,6 @@ import java.time.format.DateTimeFormatter;
 public class EmailService implements EmailSender {
     private final JavaMailSender javaMailSender;
 
-    @Async
-    @Override
-    public void send(String to, String subject, String htmlBody) {
-        MimeMessage message = javaMailSender.createMimeMessage();
-        try {
-            MimeMessageHelper mimeMessage = new MimeMessageHelper(message);
-            mimeMessage.setTo(toEmail(to));
-            mimeMessage.setReplyTo(toEmail(to));
-            mimeMessage.setSubject(subject);
-            mimeMessage.setText(htmlBody, true);
-
-            javaMailSender.send(message);
-            log.info("Email send successfully");
-        } catch (MessagingException e) {
-            log.error("Error sending email: " + e.fillInStackTrace());
-        }
-    }
-
     private static String toEmail(String to) {
         return to.replaceAll("'", " ");
     }
@@ -57,5 +39,23 @@ public class EmailService implements EmailSender {
 
     public static String createEmailSubject(Order order) {
         return "Order ID: " + order.getId();
+    }
+
+    @Async
+    @Override
+    public void send(String to, String subject, String htmlBody) {
+        MimeMessage message = javaMailSender.createMimeMessage();
+        try {
+            MimeMessageHelper mimeMessage = new MimeMessageHelper(message);
+            mimeMessage.setTo(toEmail(to));
+            mimeMessage.setReplyTo(toEmail(to));
+            mimeMessage.setSubject(subject);
+            mimeMessage.setText(htmlBody, true);
+
+            javaMailSender.send(message);
+            log.info("Email send successfully");
+        } catch (MessagingException e) {
+            log.error("Error sending email: " + e.fillInStackTrace());
+        }
     }
 }

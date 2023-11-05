@@ -10,8 +10,8 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @EnableAsync(proxyTargetClass = true)
 public class ShopApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(ShopApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(ShopApplication.class, args);
+    }
 
 }

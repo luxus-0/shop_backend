@@ -12,10 +12,11 @@ public class PaymentService {
 
     private final PaymentRepository paymentRepository;
 
-    List<Payment> getPayment(){
+    List<Payment> getPayment() {
         return paymentRepository.findAll();
     }
-    Payment createPayment(PaymentDto payment){
+
+    Payment createPayment(PaymentDto payment) {
         Payment createPayment = Payment.builder()
                 .name(payment.name())
                 .type(payment.type())

@@ -23,12 +23,13 @@ public class ShipmentController {
     private final ShipmentService shipmentService;
 
     @GetMapping
-    public ResponseEntity<List<Shipment>> readShipments(){
+    public ResponseEntity<List<Shipment>> readShipments() {
         return ResponseEntity.status(OK)
                 .body(shipmentService.getShipments());
     }
+
     @PostMapping
-    public ResponseEntity<Shipment> buildShipment(@RequestBody @Valid ShipmentDto shipment){
+    public ResponseEntity<Shipment> buildShipment(@RequestBody @Valid ShipmentDto shipment) {
         return ResponseEntity.status(CREATED)
                 .body(shipmentService.createShipment(shipment));
     }

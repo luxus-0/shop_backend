@@ -2,7 +2,6 @@ package com.github.Shop.shipment;
 
 import com.github.Shop.address.Address;
 import com.github.Shop.contact.Contact;
-import com.github.Shop.customer.Customer;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;

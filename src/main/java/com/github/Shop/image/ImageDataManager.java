@@ -23,12 +23,11 @@ import java.nio.file.Paths;
 @Service
 @Log4j2
 public class ImageDataManager {
+    private final ImageDataRepository imageRepository;
     @Value("${image.path}")
     private String imagePath;
     @Value("${image.url}")
     private String imageUrl;
-
-    private final ImageDataRepository imageRepository;
 
     public ImageDataManager(ImageDataRepository imageRepository) {
         this.imageRepository = imageRepository;
@@ -94,7 +93,7 @@ public class ImageDataManager {
             while ((bytesRead = in.read()) != -1) {
                 out.write(bytesRead);
             }
-        }else {
+        } else {
             throw new FileNotFoundException();
         }
         return new ResponseUploadImage(null);

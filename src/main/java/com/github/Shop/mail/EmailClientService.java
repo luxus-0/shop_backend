@@ -10,12 +10,12 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class EmailClientService {
 
+    private final Map<String, EmailSender> emailSenderMap;
     @Value("${email.sender}")
     private String emailProperties;
-    private final Map<String, EmailSender> emailSenderMap;
 
-    public EmailSender getInstance(){
-        if(emailProperties.equals("emailService")) {
+    public EmailSender getInstance() {
+        if (emailProperties.equals("emailService")) {
             return emailSenderMap.get("emailService");
         }
         return emailSenderMap.get("fakeEmailService");

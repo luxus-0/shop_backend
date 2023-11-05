@@ -23,23 +23,23 @@ class ProductManager {
 
     List<Product> retrieveProduct() throws ProductNotFoundException {
         List<Product> products = productRepository.findAll();
-        if(products.isEmpty()){
+        if (products.isEmpty()) {
             throw new ProductNotFoundException();
         }
         return products;
     }
 
-    Page<Product> retrieveProduct(int page, int size){
+    Page<Product> retrieveProduct(int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
-       return productRepository.findAll(pageable);
+        return productRepository.findAll(pageable);
     }
 
-    Product makeProduct(ProductDto productDto){
+    Product makeProduct(ProductDto productDto) {
         return productRepository.save(mapToProduct(productDto));
     }
 
     public Product modificationProduct(ProductDto productDto, Long id) {
-       Product createProduct = updateProduct(productDto, id);
+        Product createProduct = updateProduct(productDto, id);
         return productRepository.save(createProduct);
     }
 
@@ -55,7 +55,7 @@ class ProductManager {
     public ProductDto readProductBySlug(String slug) {
         Product product = productRepository.findBySlug(slug).orElseThrow();
         List<Review> reviews = reviewRepository.findAllByProductIdAndModerated(product.getId(),
-                        true);
+                true);
         return mapToProductDto(product, reviews);
     }
 }

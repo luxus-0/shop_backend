@@ -36,18 +36,17 @@ class AdminProductMapper {
     }
 
 
-
     private static List<Image> getImages(AdminProductDto adminProduct) {
         return List.of(Image.builder()
-                        .name(adminProduct.image().name())
-                        .type(adminProduct.image().type())
-                        .path(adminProduct.image().path())
+                .name(adminProduct.image().name())
+                .type(adminProduct.image().type())
+                .path(adminProduct.image().path())
                 .build());
     }
 
     private static String slugify(String slug) {
         return Slugify.builder()
-                .customReplacement("_","-")
+                .customReplacement("_", "-")
                 .build()
                 .slugify(slug);
     }

@@ -8,7 +8,6 @@ import com.github.Shop.cartitem.CartItemRepository;
 import com.github.Shop.contact.Contact;
 import com.github.Shop.customer.Customer;
 import com.github.Shop.mail.EmailClientService;
-import com.github.Shop.mail.EmailService;
 import com.github.Shop.mail.EmailNotFoundException;
 import com.github.Shop.order.dto.OrderDto;
 import com.github.Shop.order.dto.OrderSummary;
@@ -46,6 +45,23 @@ class OrderManager {
     private final ShipmentRepository shipmentRepository;
     private final PaymentRepository paymentRepository;
     private final EmailClientService emailClientService;
+
+    private static OrderSummary createOrderSummary(Order newOrder) {
+        return OrderSummary.builder()
+                .id(newOrder.getId())
+                .placeDate(newOrder.getPlaceDate())
+                .status(newOrder.getOrderStatus())
+                .grossValue(newOrder.getGrossValue())
+                .payment(newOrder.getPayment())
+                .build();
+    }
+
+    private static Integer getQuantity(Cart cart) {
+        return cart.getItems().stream()
+                .map(CartItem::getQuantity)
+                .findAny()
+                .orElseThrow();
+    }
 
     @Transactional
     public OrderSummary getOrder(OrderDto orderDto) throws ShipmentNotFoundException, PaymentNotFoundException, MessagingException, CartNotFoundException {
@@ -94,16 +110,6 @@ class OrderManager {
         cartRepository.deleteCartById(orderDto.cartId());
     }
 
-    private static OrderSummary createOrderSummary(Order newOrder) {
-        return OrderSummary.builder()
-                .id(newOrder.getId())
-                .placeDate(newOrder.getPlaceDate())
-                .status(newOrder.getOrderStatus())
-                .grossValue(newOrder.getGrossValue())
-                .payment(newOrder.getPayment())
-                .build();
-    }
-
     private Order createOrder(OrderDto orderDto, Cart cart, Shipment shipment, Payment payment) {
         return Order.builder()
                 .customers(createCustomers(orderDto))
@@ -146,13 +152,6 @@ class OrderManager {
                 .shipmentId(shipment.getId())
                 .orderId(orderId)
                 .build());
-    }
-
-    private static Integer getQuantity(Cart cart) {
-        return cart.getItems().stream()
-                .map(CartItem::getQuantity)
-                .findAny()
-                .orElseThrow();
     }
 
     private List<Customer> createCustomers(OrderDto orderDto) {

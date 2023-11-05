@@ -65,7 +65,7 @@ class ProductMapper {
 
     private static String slugify(String slug) {
         return Slugify.builder()
-                .customReplacement("_","-")
+                .customReplacement("_", "-")
                 .build()
                 .slugify(slug);
     }
