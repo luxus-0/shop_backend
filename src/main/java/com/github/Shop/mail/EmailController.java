@@ -6,12 +6,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * SEND EMAIL TO CLIENT WITH BODY HTML
+ */
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/emails")
 public class EmailController {
 
     private final EmailService emailService;
+
 
     @PostMapping("/send")
     public void sendEmail(@RequestParam("email") String to, @RequestParam("subject") String subject, @RequestParam("body") String body) {

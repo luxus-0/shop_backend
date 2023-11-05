@@ -25,16 +25,20 @@ public class EmailService implements EmailSender {
         MimeMessage message = javaMailSender.createMimeMessage();
         try {
             MimeMessageHelper mimeMessage = new MimeMessageHelper(message);
-            mimeMessage.setTo(to);
-            mimeMessage.setReplyTo(to);
+            mimeMessage.setTo(toEmail(to));
+            mimeMessage.setReplyTo(toEmail(to));
             mimeMessage.setSubject(subject);
             mimeMessage.setText(htmlBody, true);
 
             javaMailSender.send(message);
             log.info("Email send successfully");
         } catch (MessagingException e) {
-            log.error("Error sending email: " + e.getMessage() + e.getLocalizedMessage() + e.getCause() + e.fillInStackTrace());
+            log.error("Error sending email: " + e.fillInStackTrace());
         }
+    }
+
+    private static String toEmail(String to) {
+        return to.replaceAll("'", " ");
     }
 
     public static String createEmailMessage(Order order) {
