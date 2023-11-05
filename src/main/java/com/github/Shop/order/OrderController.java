@@ -1,9 +1,11 @@
 package com.github.Shop.order;
 
+import com.github.Shop.cart.CartNotFoundException;
 import com.github.Shop.order.dto.OrderDto;
 import com.github.Shop.order.dto.OrderSummary;
 import com.github.Shop.payment.PaymentNotFoundException;
 import com.github.Shop.shipment.ShipmentNotFoundException;
+import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,7 +22,7 @@ public class OrderController {
 
     private final OrderManager orderManager;
     @PostMapping
-    public ResponseEntity<OrderSummary> placeOrder(@RequestBody OrderDto orderDto) throws ShipmentNotFoundException, PaymentNotFoundException {
+    public ResponseEntity<OrderSummary> placeOrder(@RequestBody OrderDto orderDto) throws ShipmentNotFoundException, PaymentNotFoundException, MessagingException, CartNotFoundException {
         return ResponseEntity.status(CREATED)
                 .body(orderManager.getOrder(orderDto));
     }

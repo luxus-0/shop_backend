@@ -1,10 +1,15 @@
 package com.github.Shop.order;
 
 import com.github.Shop.cart.Cart;
+import com.github.Shop.cart.CartNotFoundException;
 import com.github.Shop.cart.CartRepository;
 import com.github.Shop.cartitem.CartItem;
 import com.github.Shop.cartitem.CartItemRepository;
+import com.github.Shop.contact.Contact;
 import com.github.Shop.customer.Customer;
+import com.github.Shop.mail.EmailClientService;
+import com.github.Shop.mail.EmailService;
+import com.github.Shop.mail.EmailNotFoundException;
 import com.github.Shop.order.dto.OrderDto;
 import com.github.Shop.order.dto.OrderSummary;
 import com.github.Shop.orderrow.OrderRow;
@@ -15,6 +20,7 @@ import com.github.Shop.payment.PaymentRepository;
 import com.github.Shop.shipment.Shipment;
 import com.github.Shop.shipment.ShipmentNotFoundException;
 import com.github.Shop.shipment.ShipmentRepository;
+import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
@@ -25,6 +31,8 @@ import java.util.List;
 
 import static com.github.Shop.address.AddressService.getAddresses;
 import static com.github.Shop.contact.ContactService.getContacts;
+import static com.github.Shop.mail.EmailService.createEmailMessage;
+import static com.github.Shop.mail.EmailService.createEmailSubject;
 
 @Service
 @RequiredArgsConstructor
@@ -37,21 +45,53 @@ class OrderManager {
     private final CartItemRepository cartItemRepository;
     private final ShipmentRepository shipmentRepository;
     private final PaymentRepository paymentRepository;
+    private final EmailService emailService;
+    private final EmailClientService emailClientService;
 
     @Transactional
-    public OrderSummary getOrder(OrderDto orderDto) throws ShipmentNotFoundException, PaymentNotFoundException {
-        Cart cart = cartRepository.findById(orderDto.cartId()).orElseThrow();
-        Shipment shipment = shipmentRepository.findById(orderDto.shipmentId()).orElseThrow(ShipmentNotFoundException::new);
-        Payment payment = paymentRepository.findById(orderDto.paymentId()).orElseThrow(PaymentNotFoundException::new);
+    public OrderSummary getOrder(OrderDto orderDto) throws ShipmentNotFoundException, PaymentNotFoundException, MessagingException, CartNotFoundException {
+        Cart cart = findCart(orderDto);
+        Shipment shipment = findShipment(orderDto);
+        Payment payment = findPayment(orderDto);
 
         Order order = createOrder(orderDto, cart, shipment, payment);
-        Order newOrder = orderRepository.save(order);
+        Order savedOrder = orderRepository.save(order);
 
-        saveOrderRows(cart, newOrder.getId(), shipment);
+        saveOrderRows(cart, savedOrder.getId(), shipment);
 
         deleteCartAndCartItem(orderDto);
 
-        return getOrderSummary(newOrder);
+        sendEmail(order);
+        return getOrderSummary(savedOrder);
+    }
+
+    private Payment findPayment(OrderDto orderDto) throws PaymentNotFoundException {
+        return paymentRepository.findById(orderDto.paymentId()).orElseThrow(PaymentNotFoundException::new);
+    }
+
+    private Shipment findShipment(OrderDto orderDto) throws ShipmentNotFoundException {
+        return shipmentRepository.findById(orderDto.shipmentId()).orElseThrow(ShipmentNotFoundException::new);
+    }
+
+    private Cart findCart(OrderDto orderDto) throws CartNotFoundException {
+        return cartRepository.findById(orderDto.cartId()).orElseThrow(CartNotFoundException::new);
+    }
+
+    private void sendEmail(Order order) throws MessagingException {
+        emailClientService.getInstance().send(getEmail(order), createEmailSubject(order), createEmailMessage(order));
+    }
+
+    private String getEmail(Order order) {
+        try {
+            return order.getCustomers().stream()
+                    .flatMap(customer -> customer.getContacts().stream())
+                    .map(Contact::getEmail)
+                    .findAny()
+                    .orElseThrow(EmailNotFoundException::new);
+        } catch (EmailNotFoundException e) {
+            log.error(e.getMessage());
+        }
+        return "";
     }
 
     private void deleteCartAndCartItem(OrderDto orderDto) {
@@ -114,7 +154,10 @@ class OrderManager {
     }
 
     private static Integer getQuantity(Cart cart) {
-        return cart.getItems().stream().map(CartItem::getQuantity).findAny().orElseThrow();
+        return cart.getItems().stream()
+                .map(CartItem::getQuantity)
+                .findAny()
+                .orElseThrow();
     }
 
     private List<Customer> createCustomers(OrderDto orderDto) {
