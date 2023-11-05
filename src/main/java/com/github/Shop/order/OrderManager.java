@@ -45,7 +45,6 @@ class OrderManager {
     private final CartItemRepository cartItemRepository;
     private final ShipmentRepository shipmentRepository;
     private final PaymentRepository paymentRepository;
-    private final EmailService emailService;
     private final EmailClientService emailClientService;
 
     @Transactional
@@ -53,16 +52,11 @@ class OrderManager {
         Cart cart = findCart(orderDto);
         Shipment shipment = findShipment(orderDto);
         Payment payment = findPayment(orderDto);
-
-        Order order = createOrder(orderDto, cart, shipment, payment);
-        Order savedOrder = orderRepository.save(order);
-
+        Order savedOrder = orderRepository.save(createOrder(orderDto, cart, shipment, payment));
         saveOrderRows(cart, savedOrder.getId(), shipment);
-
         deleteCartAndCartItem(orderDto);
-
-        sendEmail(order);
-        return getOrderSummary(savedOrder);
+        sendEmail(savedOrder);
+        return createOrderSummary(savedOrder);
     }
 
     private Payment findPayment(OrderDto orderDto) throws PaymentNotFoundException {
@@ -78,7 +72,8 @@ class OrderManager {
     }
 
     private void sendEmail(Order order) throws MessagingException {
-        emailClientService.getInstance().send(getEmail(order), createEmailSubject(order), createEmailMessage(order));
+        emailClientService.getInstance()
+                .send(getEmail(order), createEmailSubject(order), createEmailMessage(order));
     }
 
     private String getEmail(Order order) {
@@ -99,7 +94,7 @@ class OrderManager {
         cartRepository.deleteCartById(orderDto.cartId());
     }
 
-    private static OrderSummary getOrderSummary(Order newOrder) {
+    private static OrderSummary createOrderSummary(Order newOrder) {
         return OrderSummary.builder()
                 .id(newOrder.getId())
                 .placeDate(newOrder.getPlaceDate())
