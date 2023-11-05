@@ -3,7 +3,6 @@ package com.github.Shop.order;
 import com.github.Shop.cart.Cart;
 import com.github.Shop.cart.CartNotFoundException;
 import com.github.Shop.cart.CartRepository;
-import com.github.Shop.cartitem.CartItem;
 import com.github.Shop.cartitem.CartItemRepository;
 import com.github.Shop.mail.EmailService;
 import com.github.Shop.order.dto.OrderDto;
@@ -41,32 +40,17 @@ public class OrderManager {
 
     @Transactional
     public OrderSummary getOrder(OrderDto orderDto) throws ShipmentNotFoundException, PaymentNotFoundException, MessagingException, CartNotFoundException {
-        Cart cart = findCart(orderDto);
-        Shipment shipment = findShipment(orderDto);
-        Payment payment = findPayment(orderDto);
+        Cart cart = cartRepository.findById(orderDto.cartId()).orElseThrow(CartNotFoundException::new);
+        Shipment shipment = shipmentRepository.findById(orderDto.shipmentId()).orElseThrow(ShipmentNotFoundException::new);
+        Payment payment = paymentRepository.findById(orderDto.paymentId()).orElseThrow(PaymentNotFoundException::new);
         Order savedOrder = orderRepository.save(createOrder(orderDto, cart, shipment, payment));
         saveOrderRows(cart, savedOrder.getId(), shipment);
-        deleteCartAndCartItem(orderDto);
+        removeOrderCart(orderDto);
         emailService.sendEmail(savedOrder);
         return createOrderSummary(savedOrder);
     }
 
-    private Payment findPayment(OrderDto orderDto) throws PaymentNotFoundException {
-        return paymentRepository.findById(orderDto.paymentId())
-                .orElseThrow(PaymentNotFoundException::new);
-    }
-
-    private Shipment findShipment(OrderDto orderDto) throws ShipmentNotFoundException {
-        return shipmentRepository.findById(orderDto.shipmentId())
-                .orElseThrow(ShipmentNotFoundException::new);
-    }
-
-    private Cart findCart(OrderDto orderDto) throws CartNotFoundException {
-        return cartRepository.findById(orderDto.cartId())
-                .orElseThrow(CartNotFoundException::new);
-    }
-
-    private void deleteCartAndCartItem(OrderDto orderDto) {
+    private void removeOrderCart(OrderDto orderDto) {
         cartItemRepository.deleteAllByCartId(orderDto.cartId());
         cartRepository.deleteCartById(orderDto.cartId());
     }
