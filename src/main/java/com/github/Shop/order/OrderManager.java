@@ -38,23 +38,6 @@ public class OrderManager {
     private final PaymentRepository paymentRepository;
     private final EmailService emailService;
 
-    private static OrderSummary createOrderSummary(Order newOrder) {
-        return OrderSummary.builder()
-                .id(newOrder.getId())
-                .placeDate(newOrder.getPlaceDate())
-                .status(newOrder.getOrderStatus())
-                .grossValue(newOrder.getGrossValue())
-                .payment(newOrder.getPayment())
-                .build();
-    }
-
-    public static Integer getQuantity(Cart cart) {
-        return cart.getItems().stream()
-                .map(CartItem::getQuantity)
-                .findAny()
-                .orElseThrow();
-    }
-
     @Transactional
     public OrderSummary getOrder(OrderDto orderDto) throws ShipmentNotFoundException, PaymentNotFoundException, MessagingException, CartNotFoundException {
         Cart cart = findCart(orderDto);
@@ -65,6 +48,15 @@ public class OrderManager {
         deleteCartAndCartItem(orderDto);
         emailService.sendEmail(savedOrder);
         return createOrderSummary(savedOrder);
+    }
+    private static OrderSummary createOrderSummary(Order newOrder) {
+        return OrderSummary.builder()
+                .id(newOrder.getId())
+                .placeDate(newOrder.getPlaceDate())
+                .status(newOrder.getOrderStatus())
+                .grossValue(newOrder.getGrossValue())
+                .payment(newOrder.getPayment())
+                .build();
     }
 
     private Payment findPayment(OrderDto orderDto) throws PaymentNotFoundException {
