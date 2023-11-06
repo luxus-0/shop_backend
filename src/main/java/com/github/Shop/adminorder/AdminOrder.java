@@ -1,9 +1,9 @@
-package com.github.Shop.order;
+package com.github.Shop.adminorder;
 
 import com.github.Shop.customer.Customer;
+import com.github.Shop.order.OrderStatus;
 import com.github.Shop.orderrow.OrderRow;
 import com.github.Shop.payment.Payment;
-import com.github.Shop.product.Product;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -31,8 +31,8 @@ import java.util.List;
 @NoArgsConstructor
 @Builder
 @Getter
-@Table(name = "'order'")
-public class Order {
+@Table(name = "'admin_order'")
+public class AdminOrder {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
