@@ -12,7 +12,8 @@ public enum OrderStatus {
     DELIVERED("delivered"),
     CANCELLED("cancelled"),
     RETURNED("returned"),
-    COMPLETED("completed");
+    COMPLETED("completed"),
+    REFUND("refund");
 
     private final String value;
 }
