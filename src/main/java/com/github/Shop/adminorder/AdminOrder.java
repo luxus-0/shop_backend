@@ -31,7 +31,7 @@ import java.util.List;
 @NoArgsConstructor
 @Builder
 @Getter
-@Table(name = "'admin_order'")
+@Table(name = "'order'")
 public class AdminOrder {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -51,4 +51,7 @@ public class AdminOrder {
     private List<Customer> customers;
     @OneToOne
     private Payment payment;
+    @OneToMany
+    @JoinColumn(name = "orderId")
+    private List<AdminOrderLog> orderLogs;
 }

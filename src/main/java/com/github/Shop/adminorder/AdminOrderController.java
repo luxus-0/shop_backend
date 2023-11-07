@@ -35,7 +35,7 @@ public class AdminOrderController {
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<Void> actualizeOrder(@PathVariable Long id, @RequestBody Map<String, String> values) {
+    public ResponseEntity<Void> actualizeOrder(@PathVariable Long id, @RequestBody Map<String, String> values) throws UndefinedOrderStatus {
         adminOrderService.patchOrder(id, values);
         return ResponseEntity.ok().build();
     }
