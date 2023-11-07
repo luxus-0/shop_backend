@@ -2,7 +2,6 @@ package com.github.Shop.mail;
 
 import com.github.Shop.adminorder.AdminOrder;
 import com.github.Shop.adminorder.UndefinedOrderStatus;
-import com.github.Shop.contact.Contact;
 import com.github.Shop.order.OrderStatus;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;

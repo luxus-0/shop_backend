@@ -1,7 +1,6 @@
 package com.github.Shop.adminorder;
 
 import com.github.Shop.mail.EmailNotificationForOrderStatusChange;
-import com.github.Shop.mail.EmailPayload;
 import com.github.Shop.order.OrderStatus;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
