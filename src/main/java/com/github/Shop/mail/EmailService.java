@@ -1,5 +1,7 @@
 package com.github.Shop.mail;
 
+import com.github.Shop.adminorder.AdminOrder;
+import com.github.Shop.contact.Contact;
 import com.github.Shop.currency.Currency;
 import com.github.Shop.order.Order;
 import jakarta.mail.MessagingException;
@@ -68,6 +70,20 @@ public class EmailService implements EmailSender {
         }
         return "";
     }
+
+    public String getEmail(AdminOrder adminOrder) {
+        try {
+            return adminOrder.getCustomers().stream()
+                    .flatMap(customer -> customer.getContacts().stream())
+                    .map(Contact::getEmail)
+                    .findAny()
+                    .orElseThrow(EmailNotFoundException::new);
+        } catch (EmailNotFoundException e) {
+            log.error(e.getMessage());
+        }
+        return "";
+    }
+
 
     private String toEmail(String to) {
         return to.replaceAll("'", " ");
