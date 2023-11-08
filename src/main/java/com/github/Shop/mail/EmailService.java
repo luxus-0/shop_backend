@@ -40,6 +40,7 @@ public class EmailService implements EmailSender {
             log.error("Error sending email: " + e.fillInStackTrace());
         }
     }
+
     public void sendEmail(Order order) {
         send(getEmail(order), createEmailSubject(order), createEmailMessage(order));
     }

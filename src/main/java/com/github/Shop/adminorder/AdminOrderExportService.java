@@ -29,21 +29,6 @@ public class AdminOrderExportService {
             .build();
     private final AdminOrderRepository adminOrderRepository;
 
-    public List<AdminOrder> exportOrders(LocalDateTime from, LocalDateTime to, OrderStatus orderStatus) {
-        return adminOrderRepository.findAllByPlaceDateBetweenAndOrderStatus(from, to, orderStatus);
-    }
-
-    public ByteArrayInputStream exportOrdersToCSV(List<AdminOrder> adminOrders) {
-        try (ByteArrayOutputStream stream = new ByteArrayOutputStream();
-             CSVPrinter printer = new CSVPrinter(new PrintWriter(stream), CSV_FORMAT)) {
-            printOrder(adminOrders, printer);
-            printer.flush();
-            return new ByteArrayInputStream(stream.toByteArray());
-        } catch (IOException e) {
-            throw new RuntimeException("An error occurred while exporting orders to CSV" + e.getMessage());
-        }
-    }
-
     private static void printOrder(List<AdminOrder> adminOrders, CSVPrinter printer) throws IOException {
         for (AdminOrder adminOrder : adminOrders) {
             printer.printRecord(
@@ -74,5 +59,20 @@ public class AdminOrderExportService {
 
     private static Customer getCustomer(AdminOrder adminOrder) {
         return adminOrder.getCustomers().stream().findAny().orElseThrow();
+    }
+
+    public List<AdminOrder> exportOrders(LocalDateTime from, LocalDateTime to, OrderStatus orderStatus) {
+        return adminOrderRepository.findAllByPlaceDateBetweenAndOrderStatus(from, to, orderStatus);
+    }
+
+    public ByteArrayInputStream exportOrdersToCSV(List<AdminOrder> adminOrders) {
+        try (ByteArrayOutputStream stream = new ByteArrayOutputStream();
+             CSVPrinter printer = new CSVPrinter(new PrintWriter(stream), CSV_FORMAT)) {
+            printOrder(adminOrders, printer);
+            printer.flush();
+            return new ByteArrayInputStream(stream.toByteArray());
+        } catch (IOException e) {
+            throw new RuntimeException("An error occurred while exporting orders to CSV" + e.getMessage());
+        }
     }
 }

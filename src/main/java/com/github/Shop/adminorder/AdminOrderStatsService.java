@@ -17,30 +17,6 @@ public class AdminOrderStatsService {
 
     private final AdminOrderRepository adminOrderRepository;
 
-    public AdminOrderStats getStatistics() {
-        List<AdminOrder> adminOrders = getAdminOrdersForAllMonth();
-        long daysOfMonth = getDaysOfMonth(adminOrders);
-        TreeMap<Long, AdminOrderStatsValue> results = new TreeMap<>();
-        results.put(daysOfMonth, aggregateValues(adminOrders));
-
-        List<Long> labelDays = results.keySet().stream().toList();
-        return AdminOrderStats.builder()
-                .days(labelDays)
-                .sales(getSales(results))
-                .orders(getOrders(results))
-                .build();
-    }
-
-    private List<AdminOrder> getAdminOrdersForAllMonth() {
-        LocalDateTime from = LocalDateTime.now().withDayOfMonth(1).withHour(0).withMinute(0).withSecond(0);
-        LocalDateTime to = LocalDateTime.now();
-        return adminOrderRepository.findAllByPlaceDateBetweenAndOrderStatus(
-                from,
-                to,
-                OrderStatus.COMPLETED);
-
-    }
-
     private static List<BigDecimal> getSales(TreeMap<Long, AdminOrderStatsValue> results) {
         return results.values().stream()
                 .map(order -> order.statistics().sales()
@@ -66,16 +42,6 @@ public class AdminOrderStatsService {
                 .orElseThrow();
     }
 
-    private AdminOrderStatsValue aggregateValues(List<AdminOrder> adminOrders) {
-        long daysOfMonth = getDaysOfMonth(adminOrders);
-        BigDecimal totalValue = getTotalValue(adminOrders, daysOfMonth);
-        long orderCount = getOrderCount(adminOrders, daysOfMonth);
-        return AdminOrderStatsValue.builder()
-                .orderCount(orderCount)
-                .totalValue(totalValue)
-                .build();
-    }
-
     private static long getOrderCount(List<AdminOrder> adminOrders, long daysOfMonth) {
         return adminOrders.stream()
                 .filter(order -> daysOfMonth == order.getPlaceDate().getDayOfMonth())
@@ -87,5 +53,39 @@ public class AdminOrderStatsService {
                 .filter(order -> daysOfMonth == order.getPlaceDate().getDayOfMonth())
                 .map(AdminOrder::getGrossValue)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
+
+    public AdminOrderStats getStatistics() {
+        List<AdminOrder> adminOrders = getAdminOrdersForAllMonth();
+        long daysOfMonth = getDaysOfMonth(adminOrders);
+        TreeMap<Long, AdminOrderStatsValue> results = new TreeMap<>();
+        results.put(daysOfMonth, aggregateValues(adminOrders));
+
+        List<Long> labelDays = results.keySet().stream().toList();
+        return AdminOrderStats.builder()
+                .days(labelDays)
+                .sales(getSales(results))
+                .orders(getOrders(results))
+                .build();
+    }
+
+    private List<AdminOrder> getAdminOrdersForAllMonth() {
+        LocalDateTime from = LocalDateTime.now().withDayOfMonth(1).withHour(0).withMinute(0).withSecond(0);
+        LocalDateTime to = LocalDateTime.now();
+        return adminOrderRepository.findAllByPlaceDateBetweenAndOrderStatus(
+                from,
+                to,
+                OrderStatus.COMPLETED);
+
+    }
+
+    private AdminOrderStatsValue aggregateValues(List<AdminOrder> adminOrders) {
+        long daysOfMonth = getDaysOfMonth(adminOrders);
+        BigDecimal totalValue = getTotalValue(adminOrders, daysOfMonth);
+        long orderCount = getOrderCount(adminOrders, daysOfMonth);
+        return AdminOrderStatsValue.builder()
+                .orderCount(orderCount)
+                .totalValue(totalValue)
+                .build();
     }
 }

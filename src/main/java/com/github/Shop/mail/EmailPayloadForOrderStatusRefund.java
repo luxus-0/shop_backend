@@ -8,6 +8,7 @@ public class EmailPayloadForOrderStatusRefund implements EmailPayload {
     public String getSubjectEmail(AdminOrder adminOrder, OrderStatus newOderStatus) {
         return "Order" + adminOrder.getId() + "refund money to account";
     }
+
     @Override
     public String getBodyEmail(AdminOrder adminOrder, OrderStatus newOrderStatus) {
         {

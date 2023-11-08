@@ -25,6 +25,14 @@ public class AdminOrderService {
     private final AdminOrderLoggerRepository adminOrderLoggerRepository;
     private final EmailNotificationForOrderStatusChange email;
 
+    public static Map<String, String> createAdminOrderStatusesMap() {
+        Map<String, String> statuses = new HashMap<>();
+        for (OrderStatus value : OrderStatus.values()) {
+            statuses.put(value.name(), value.getValue());
+        }
+        return statuses;
+    }
+
     public Page<AdminOrder> getOrders(Pageable pageable) {
         return adminOrderRepository.findAll(
                 PageRequest.of(
@@ -58,14 +66,6 @@ public class AdminOrderService {
                 .build();
         logStatusChanged(adminOrder.getId(), oldAdminStatus, newAdminOrderStatus.getOrderStatus());
         email.sendEmailNotification(newAdminOrderStatus.getOrderStatus(), adminOrder);
-    }
-
-    public static Map<String, String> createAdminOrderStatusesMap() {
-        Map<String, String> statuses = new HashMap<>();
-        for (OrderStatus value : OrderStatus.values()) {
-            statuses.put(value.name(), value.getValue());
-        }
-        return statuses;
     }
 
     public void logStatusChanged(Long orderId, OrderStatus orderStatus, OrderStatus newOrderStatus) {

@@ -3,7 +3,6 @@ package com.github.Shop.order;
 import com.github.Shop.customer.Customer;
 import com.github.Shop.orderrow.OrderRow;
 import com.github.Shop.payment.Payment;
-import com.github.Shop.product.Product;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
