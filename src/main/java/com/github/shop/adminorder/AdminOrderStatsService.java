@@ -17,16 +17,34 @@ public class AdminOrderStatsService {
 
     private final AdminOrderRepository adminOrderRepository;
 
-    private static List<BigDecimal> getSales(TreeMap<Long, AdminOrderStatsValue> results) {
+    public AdminOrderStats getStatistics() throws StatisticsSalesNotFoundException {
+        List<AdminOrder> adminOrders = fetchOrdersForAllMonth();
+        long daysOfMonth = calculateDaysOfMonth(adminOrders);
+        TreeMap<Long, AdminOrderStatsValue> results = new TreeMap<>();
+        results.put(daysOfMonth, aggregateValues(adminOrders));
+        List<Long> labelDays = extractDays(results);
+
+        return AdminOrderStats.builder()
+                .days(labelDays)
+                .sales(extractSales(results))
+                .orders(extractOrders(results))
+                .build();
+    }
+
+    private List<Long> extractDays(TreeMap<Long, AdminOrderStatsValue> results) {
+        return results.keySet().stream().toList();
+    }
+
+    private List<BigDecimal> extractSales(TreeMap<Long, AdminOrderStatsValue> results) throws StatisticsSalesNotFoundException {
         return results.values().stream()
-                .map(order -> order.statistics().sales()
-                        .stream()
+                .map(order -> order.statistics().sales())
                         .findAny()
-                        .orElseThrow())
+                .orElseThrow(StatisticsSalesNotFoundException::new)
+                .stream()
                 .toList();
     }
 
-    private static List<Long> getOrders(TreeMap<Long, AdminOrderStatsValue> results) {
+    private List<Long> extractOrders(TreeMap<Long, AdminOrderStatsValue> results) {
         return results.values().stream()
                 .map(order -> order.statistics().orders()
                         .stream()
@@ -35,41 +53,27 @@ public class AdminOrderStatsService {
                 .toList();
     }
 
-    private static long getDaysOfMonth(List<AdminOrder> adminOrders) {
+    private long calculateDaysOfMonth(List<AdminOrder> adminOrders) {
         return adminOrders.stream()
                 .map(order -> order.getPlaceDate().getDayOfMonth())
                 .findAny()
                 .orElseThrow();
     }
 
-    private static long getOrderCount(List<AdminOrder> adminOrders, long daysOfMonth) {
+    private long calculateOrderCount(List<AdminOrder> adminOrders, long daysOfMonth) {
         return adminOrders.stream()
                 .filter(order -> daysOfMonth == order.getPlaceDate().getDayOfMonth())
                 .count();
     }
 
-    private static BigDecimal getTotalValue(List<AdminOrder> adminOrders, long daysOfMonth) {
+    private BigDecimal calculateTotalValue(List<AdminOrder> adminOrders, long daysOfMonth) {
         return adminOrders.stream()
                 .filter(order -> daysOfMonth == order.getPlaceDate().getDayOfMonth())
                 .map(AdminOrder::getGrossValue)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
-    public AdminOrderStats getStatistics() {
-        List<AdminOrder> adminOrders = getAdminOrdersForAllMonth();
-        long daysOfMonth = getDaysOfMonth(adminOrders);
-        TreeMap<Long, AdminOrderStatsValue> results = new TreeMap<>();
-        results.put(daysOfMonth, aggregateValues(adminOrders));
-
-        List<Long> labelDays = results.keySet().stream().toList();
-        return AdminOrderStats.builder()
-                .days(labelDays)
-                .sales(getSales(results))
-                .orders(getOrders(results))
-                .build();
-    }
-
-    private List<AdminOrder> getAdminOrdersForAllMonth() {
+    private List<AdminOrder> fetchOrdersForAllMonth() {
         LocalDateTime from = LocalDateTime.now().withDayOfMonth(1).withHour(0).withMinute(0).withSecond(0);
         LocalDateTime to = LocalDateTime.now();
         return adminOrderRepository.findAllByPlaceDateBetweenAndOrderStatus(
@@ -80,9 +84,9 @@ public class AdminOrderStatsService {
     }
 
     private AdminOrderStatsValue aggregateValues(List<AdminOrder> adminOrders) {
-        long daysOfMonth = getDaysOfMonth(adminOrders);
-        BigDecimal totalValue = getTotalValue(adminOrders, daysOfMonth);
-        long orderCount = getOrderCount(adminOrders, daysOfMonth);
+        long daysOfMonth = calculateDaysOfMonth(adminOrders);
+        BigDecimal totalValue = calculateTotalValue(adminOrders, daysOfMonth);
+        long orderCount = calculateOrderCount(adminOrders, daysOfMonth);
         return AdminOrderStatsValue.builder()
                 .orderCount(orderCount)
                 .totalValue(totalValue)
