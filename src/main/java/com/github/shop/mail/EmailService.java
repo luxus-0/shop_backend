@@ -1,10 +1,8 @@
 package com.github.shop.mail;
 
 import com.github.shop.adminorder.AdminOrder;
-import com.github.shop.contact.Contact;
 import com.github.shop.currency.Currency;
 import com.github.shop.mail.dto.EmailDto;
-import com.github.shop.order.Order;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
@@ -15,9 +13,8 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.time.format.DateTimeFormatter;
-import java.util.Optional;
 
-import static com.github.shop.customer.CustomerService.getCustomerEmail;
+import static com.github.shop.customer.CustomerService.readEmail;
 
 @RequiredArgsConstructor
 @Log4j2
@@ -42,11 +39,11 @@ public class EmailService implements EmailSender {
         }
     }
 
-    public void sendEmail(Order order) {
+    public void sendEmail(AdminOrder order) {
         send(new EmailDto(getEmail(order), getSubject(order), getBody(order)));
     }
 
-    public String getBody(Order order) {
+    public String getBody(AdminOrder order) {
         return "<html><body><h2>Order Details</h2>"
                 + "<ul>"
                 + "<li><strong>Order ID:</strong> " + order.getId() + "</li>"
@@ -60,13 +57,13 @@ public class EmailService implements EmailSender {
                 + "</html>";
     }
 
-    public String getSubject(Order order) {
+    public String getSubject(AdminOrder order) {
         return "Order ID: " + order.getId();
     }
 
-    private String getEmail(Order order) {
+    String getEmail(AdminOrder order) {
         try {
-            return getCustomerEmail(order);
+            return readEmail(order);
         } catch (EmailNotFoundException e) {
             log.error(e.getMessage());
         }
