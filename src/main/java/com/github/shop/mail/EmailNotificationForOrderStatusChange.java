@@ -2,6 +2,7 @@ package com.github.shop.mail;
 
 import com.github.shop.adminorder.AdminOrder;
 import com.github.shop.adminorder.UndefinedOrderStatus;
+import com.github.shop.mail.dto.EmailDto;
 import com.github.shop.order.OrderStatus;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -14,7 +15,7 @@ public class EmailNotificationForOrderStatusChange {
 
     private final EmailService emailService;
 
-    public EmailPayload readEmailPayloadForOrderStatus(OrderStatus newOrderStatus) throws UndefinedOrderStatus {
+    public EmailPayload readEmailForOrderStatus(OrderStatus newOrderStatus) throws UndefinedOrderStatus {
         switch (newOrderStatus) {
             case PROCESSING -> {
                 return new EmailPayloadForOrderStatusProcessing();
@@ -30,7 +31,8 @@ public class EmailNotificationForOrderStatusChange {
     }
 
     public void sendEmailNotification(OrderStatus newOrderStatus, AdminOrder adminOrder) throws UndefinedOrderStatus {
-        EmailPayload emailPayload = readEmailPayloadForOrderStatus(newOrderStatus);
-        emailService.send(emailService.getEmail(adminOrder), emailPayload.getBodyEmail(adminOrder, newOrderStatus), emailPayload.getSubjectEmail(adminOrder, newOrderStatus));
+        EmailPayload email = readEmailForOrderStatus(newOrderStatus);
+        EmailDto emailDto = new EmailDto(emailService.getEmail(adminOrder), email.getSubject(adminOrder, newOrderStatus), email.getBody(adminOrder, newOrderStatus));
+        emailService.send(emailDto);
     }
 }
