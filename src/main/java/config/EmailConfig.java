@@ -1,7 +1,7 @@
 package config;
 
-import com.github.Shop.mail.EmailSender;
-import com.github.Shop.mail.EmailService;
+import com.github.shop.mail.EmailSender;
+import com.github.shop.mail.EmailService;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.mail.javamail.JavaMailSender;

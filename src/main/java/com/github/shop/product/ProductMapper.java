@@ -1,0 +1,72 @@
+package com.github.shop.product;
+
+import com.github.shop.image.Image;
+import com.github.shop.product.dto.ProductDto;
+import com.github.shop.review.Review;
+import com.github.shop.review.dto.ReviewDto;
+import com.github.slugify.Slugify;
+
+import java.util.List;
+
+class ProductMapper {
+    public static Product mapToProduct(ProductDto productDto) {
+        return Product.builder()
+                .name(productDto.name())
+                .categoryId(productDto.categoryId())
+                .currency(productDto.currency())
+                .description(productDto.description())
+                .slug(slugify(productDto.slug()))
+                .price(productDto.price())
+                .images(List.of(productDto.image()))
+                .fullDescription(productDto.fullDescription())
+                .build();
+    }
+
+    public static Product mapToProduct(ProductDto productDto, Long id) {
+        return Product.builder()
+                .id(id)
+                .name(productDto.name())
+                .categoryId(productDto.categoryId())
+                .currency(productDto.currency())
+                .description(productDto.description())
+                .slug(slugify(productDto.slug()))
+                .price(productDto.price())
+                .images(List.of(productDto.image()))
+                .fullDescription(productDto.fullDescription())
+                .build();
+    }
+
+    public static ProductDto mapToProductDto(Product product, List<Review>
+            reviews) {
+        return ProductDto.builder()
+                .id(product.getId())
+                .name(product.getName())
+                .categoryId(product.getCategoryId())
+                .description(product.getDescription())
+                .fullDescription(product.getFullDescription())
+                .price(product.getPrice())
+                .currency(product.getCurrency())
+                .image(getImage(product))
+                .slug(product.getSlug())
+                .reviews(reviews.stream().map(review -> ReviewDto.builder()
+                                .id(review.getId())
+                                .productId(review.getProductId())
+                                .authorName(review.getAuthorName())
+                                .content(review.getContent())
+                                .moderate(review.isModerated())
+                                .build())
+                        .toList())
+                .build();
+    }
+
+    private static Image getImage(Product product) {
+        return product.getImages().stream().findAny().orElseThrow();
+    }
+
+    private static String slugify(String slug) {
+        return Slugify.builder()
+                .customReplacement("_", "-")
+                .build()
+                .slugify(slug);
+    }
+}
