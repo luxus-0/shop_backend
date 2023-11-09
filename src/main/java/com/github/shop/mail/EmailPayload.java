@@ -4,7 +4,7 @@ import com.github.shop.adminorder.AdminOrder;
 import com.github.shop.order.OrderStatus;
 
 public interface EmailPayload {
-    String getSubjectEmail(AdminOrder adminOrder, OrderStatus newOderStatus);
+    String getSubject(AdminOrder adminOrder, OrderStatus newOderStatus);
 
-    String getBodyEmail(AdminOrder adminOrder, OrderStatus newOrderStatus);
+    String getBody(AdminOrder adminOrder, OrderStatus newOrderStatus);
 }
