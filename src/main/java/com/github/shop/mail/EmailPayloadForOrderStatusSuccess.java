@@ -7,12 +7,12 @@ import org.springframework.stereotype.Service;
 @Service
 public class EmailPayloadForOrderStatusSuccess implements EmailPayload {
     @Override
-    public String getSubjectEmail(AdminOrder adminOrder, OrderStatus orderStatus) {
+    public String getSubject(AdminOrder adminOrder, OrderStatus orderStatus) {
         return "Order" + adminOrder.getId() + "successfully ordered";
     }
 
     @Override
-    public String getBodyEmail(AdminOrder adminOrder, OrderStatus newOrderStatus) {
+    public String getBody(AdminOrder adminOrder, OrderStatus newOrderStatus) {
         return String.format("""
                 Your order id: %s +
                 status %s
