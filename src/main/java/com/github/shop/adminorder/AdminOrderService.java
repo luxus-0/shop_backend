@@ -64,6 +64,9 @@ public class AdminOrderService {
                 .id(adminOrder.getId())
                 .orderStatus(OrderStatus.valueOf(values.get("orderStatus")))
                 .build();
+        if(oldAdminStatus == newAdminOrderStatus.getOrderStatus()){
+            return;
+        }
         logStatusChanged(adminOrder.getId(), oldAdminStatus, newAdminOrderStatus.getOrderStatus());
         email.sendEmailNotification(newAdminOrderStatus.getOrderStatus(), adminOrder);
     }
