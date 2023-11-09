@@ -3,6 +3,7 @@ package com.github.shop.mail;
 import com.github.shop.adminorder.AdminOrder;
 import com.github.shop.contact.Contact;
 import com.github.shop.currency.Currency;
+import com.github.shop.mail.dto.EmailDto;
 import com.github.shop.order.Order;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
@@ -14,6 +15,7 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.time.format.DateTimeFormatter;
+import java.util.Optional;
 
 import static com.github.shop.customer.CustomerService.getCustomerEmail;
 
@@ -25,14 +27,13 @@ public class EmailService implements EmailSender {
 
     @Async
     @Override
-    public void send(String to, String subject, String htmlBody) {
+    public void send(EmailDto email) {
         MimeMessage message = javaMailSender.createMimeMessage();
         try {
             MimeMessageHelper mimeMessage = new MimeMessageHelper(message);
-            mimeMessage.setTo(toEmail(to));
-            mimeMessage.setReplyTo(toEmail(to));
-            mimeMessage.setSubject(subject);
-            mimeMessage.setText(htmlBody, true);
+            mimeMessage.setTo(email.email());
+            mimeMessage.setSubject(email.subject());
+            mimeMessage.setText(email.body());
 
             javaMailSender.send(message);
             log.info("Email send successfully");
@@ -42,10 +43,10 @@ public class EmailService implements EmailSender {
     }
 
     public void sendEmail(Order order) {
-        send(getEmail(order), createEmailSubject(order), createEmailMessage(order));
+        send(new EmailDto(getEmail(order), getSubject(order), getBody(order)));
     }
 
-    public String createEmailMessage(Order order) {
+    public String getBody(Order order) {
         return "<html><body><h2>Order Details</h2>"
                 + "<ul>"
                 + "<li><strong>Order ID:</strong> " + order.getId() + "</li>"
@@ -59,7 +60,7 @@ public class EmailService implements EmailSender {
                 + "</html>";
     }
 
-    public String createEmailSubject(Order order) {
+    public String getSubject(Order order) {
         return "Order ID: " + order.getId();
     }
 
@@ -70,23 +71,5 @@ public class EmailService implements EmailSender {
             log.error(e.getMessage());
         }
         return "";
-    }
-
-    public String getEmail(AdminOrder adminOrder) {
-        try {
-            return adminOrder.getCustomers().stream()
-                    .flatMap(customer -> customer.getContacts().stream())
-                    .map(Contact::getEmail)
-                    .findAny()
-                    .orElseThrow(EmailNotFoundException::new);
-        } catch (EmailNotFoundException e) {
-            log.error(e.getMessage());
-        }
-        return "";
-    }
-
-
-    private String toEmail(String to) {
-        return to.replaceAll("'", " ");
     }
 }
