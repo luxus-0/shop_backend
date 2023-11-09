@@ -17,7 +17,7 @@ public class AdminOrderStatsService {
 
     private final AdminOrderRepository adminOrderRepository;
 
-    public AdminOrderStats getStatistics() throws StatisticsSalesNotFoundException {
+    public AdminOrderStats getStatisticsOrder() throws StatisticsSalesNotFoundException, StatisticsOrdersNotFoundException {
         List<AdminOrder> adminOrders = fetchOrdersForAllMonth();
         long daysOfMonth = calculateDaysOfMonth(adminOrders);
         TreeMap<Long, AdminOrderStatsValue> results = new TreeMap<>();
@@ -38,18 +38,18 @@ public class AdminOrderStatsService {
     private List<BigDecimal> extractSales(TreeMap<Long, AdminOrderStatsValue> results) throws StatisticsSalesNotFoundException {
         return results.values().stream()
                 .map(order -> order.statistics().sales())
-                        .findAny()
+                .findAny()
                 .orElseThrow(StatisticsSalesNotFoundException::new)
                 .stream()
                 .toList();
     }
 
-    private List<Long> extractOrders(TreeMap<Long, AdminOrderStatsValue> results) {
+    private List<Long> extractOrders(TreeMap<Long, AdminOrderStatsValue> results) throws StatisticsOrdersNotFoundException {
         return results.values().stream()
-                .map(order -> order.statistics().orders()
-                        .stream()
-                        .findAny()
-                        .orElseThrow())
+                .map(order -> order.statistics().orders())
+                .findAny()
+                .orElseThrow(StatisticsOrdersNotFoundException::new)
+                .stream()
                 .toList();
     }
 
