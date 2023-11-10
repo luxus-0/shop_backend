@@ -31,20 +31,20 @@ class ProductController {
     private final ProductManager productManager;
 
     @GetMapping
-    public ResponseEntity<List<Product>> uploadProducts() throws ProductNotFoundException {
+    public ResponseEntity<List<Product>> getProducts() throws ProductNotFoundException {
         List<Product> findProducts = productManager.retrieveProduct();
         return new ResponseEntity<>(findProducts, HttpStatus.OK);
     }
 
     @GetMapping("/pagination")
-    public ResponseEntity<Page<Product>> uploadProducts(@RequestParam(value = "page") int page,
-                                                        @RequestParam(value = "size") int size) {
+    public ResponseEntity<Page<Product>> getProducts(@RequestParam(value = "page") int page,
+                                                     @RequestParam(value = "size") int size) {
         var findProductByPage = productManager.retrieveProduct(page, size);
         return new ResponseEntity<>(findProductByPage, HttpStatus.OK);
     }
 
     @GetMapping("/{slug}")
-    public ResponseEntity<ProductDto> uploadProductBySlug(@PathVariable
+    public ResponseEntity<ProductDto> getProductBySlug(@PathVariable
                                                           @Pattern(regexp = REGEX_SLUG)
                                                           @Length(max = 255) String slug) {
         ProductDto findProductBySlug = productManager.readProductBySlug(slug);
