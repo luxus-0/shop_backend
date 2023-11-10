@@ -37,9 +37,31 @@ public class ImageDataManager {
         String fileName = file.getOriginalFilename();
         String changedFileName = UploadedFilesNameUtils.slugifyFileName(fileName);
         changedFileName = ExistingFileNameUtils.renameIfExists(Path.of(imagePath), changedFileName);
-
         Path filePath = Paths.get(imagePath).resolve(changedFileName);
+        saveImageToFile(file, filePath);
+        Image image = createImage(file, changedFileName);
+        logImageDetails(file, image);
+        return new ResponseUploadImage(fileName);
+    }
 
+    private void logImageDetails(MultipartFile file, Image image) {
+        Image imageSaved = imageRepository.save(image);
+        log.info("Image saved in database: \n" +
+                "\nName: " + imageSaved.getName() +
+                "\nPath: " + imageSaved.getPath() +
+                "\nType: " + imageSaved.getType() +
+                "\nSize: " + file.getSize() + "KB");
+    }
+
+    private Image createImage(MultipartFile file, String changedFileName) {
+        return Image.builder()
+                .name(changedFileName)
+                .type(file.getContentType())
+                .path(imagePath)
+                .build();
+    }
+
+    private static void saveImageToFile(MultipartFile file, Path filePath) throws ImageNotSavedException {
         try (InputStream inputStream = file.getInputStream()) {
             OutputStream outputStream = Files.newOutputStream(filePath);
             inputStream.transferTo(outputStream);
@@ -47,21 +69,6 @@ public class ImageDataManager {
         } catch (IOException e) {
             throw new ImageNotSavedException("Image cannot be saved");
         }
-
-        Image image = Image.builder()
-                .name(changedFileName)
-                .type(file.getContentType())
-                .path(imagePath)
-                .build();
-
-        Image imageSaved = imageRepository.save(image);
-        log.info("Image saved in database: \n" +
-                "\nName: " + imageSaved.getName() +
-                "\nPath: " + imageSaved.getPath() +
-                "\nType: " + imageSaved.getType() +
-                "\nSize: " + file.getSize() + "KB");
-
-        return new ResponseUploadImage(fileName);
     }
 
     Resource serveFiles(String filename) throws IOException {
@@ -84,6 +91,11 @@ public class ImageDataManager {
         Path path = Path.of(imagePath, changedFileName);
 
         HttpResponse<InputStream> response = client.send(request, HttpResponse.BodyHandlers.ofInputStream());
+        isOkStatusCodeForDownloadedFile(response, path);
+        return new ResponseUploadImage(fileName);
+    }
+
+    private static void isOkStatusCodeForDownloadedFile(HttpResponse<InputStream> response, Path path) throws IOException {
         if (response.statusCode() == 200) {
             log.info("File downloaded successfully");
             InputStream in = response.body();
@@ -96,6 +108,5 @@ public class ImageDataManager {
         } else {
             throw new FileNotFoundException();
         }
-        return new ResponseUploadImage(null);
     }
 }
