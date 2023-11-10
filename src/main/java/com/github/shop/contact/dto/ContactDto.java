@@ -1,7 +1,10 @@
 package com.github.shop.contact.dto;
 
 import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 
-public record ContactDto(@NotBlank String phone, @NotBlank @Email String email) {
+import static com.github.shop.constant.Constants.PHONE_REGEX;
+
+public record ContactDto(@NotNull @Pattern(regexp = PHONE_REGEX) String phone, @NotNull @Email String email) {
 }
