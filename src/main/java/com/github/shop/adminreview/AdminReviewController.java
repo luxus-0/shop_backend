@@ -21,13 +21,13 @@ public class AdminReviewController {
         return reviewService.getReviews();
     }
 
-    @PutMapping("/{id}/moderate")
-    public void moderate(@PathVariable Long id) {
+    @PutMapping("/{id}")
+    public void actualizeReview(@PathVariable Long id) {
         reviewService.moderate(id);
     }
 
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable Long id) {
+    public void deleteReview(@PathVariable Long id) {
         reviewService.delete(id);
     }
 }
