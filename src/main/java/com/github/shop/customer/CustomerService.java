@@ -1,8 +1,9 @@
 package com.github.shop.customer;
 
-import com.github.shop.adminorder.AdminOrder;
+import com.github.shop.admin.order.AdminOrder;
 import com.github.shop.contact.Contact;
 import com.github.shop.mail.EmailNotFoundException;
+import com.github.shop.order.Order;
 import com.github.shop.order.dto.OrderDto;
 
 import java.util.List;
@@ -21,8 +22,16 @@ public class CustomerService {
                 .build());
     }
 
-    public static String readEmail(AdminOrder order) throws EmailNotFoundException {
+    public static String readEmail(Order order) throws EmailNotFoundException {
         return order.getCustomers().stream()
+                .flatMap(customer -> customer.getContacts().stream())
+                .map(Contact::getEmail)
+                .findAny()
+                .orElseThrow(EmailNotFoundException::new);
+    }
+
+    public static String readEmail(AdminOrder adminOrder) throws EmailNotFoundException {
+        return adminOrder.getCustomers().stream()
                 .flatMap(customer -> customer.getContacts().stream())
                 .map(Contact::getEmail)
                 .findAny()
