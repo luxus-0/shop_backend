@@ -1,4 +1,4 @@
-package com.github.shop.adminreview;
+package com.github.shop.admin.review;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

@@ -1,4 +1,4 @@
-package com.github.shop.adminreview;
+package com.github.shop.admin.review;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
