@@ -48,7 +48,7 @@ public class EmailService implements EmailSender {
         send(emailDto);
     }
 
-    private String getBody(Order order) {
+    String getBody(Order order) {
         return "<html><body><h2>Order Details</h2>"
                 + "<ul>"
                 + "<li><strong>Order ID:</strong> " + order.getId() + "</li>"
@@ -62,11 +62,11 @@ public class EmailService implements EmailSender {
                 + "</html>";
     }
 
-    private String getSubject(Order order) {
+    String getSubject(Order order) {
         return "Order ID: " + order.getId();
     }
 
-    private String getEmail(Order order) {
+    String getEmail(Order order) {
         try {
             return readEmail(order);
         } catch (EmailNotFoundException e) {
