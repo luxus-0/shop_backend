@@ -1,6 +1,6 @@
-package com.github.shop.adminproduct;
+package com.github.shop.admin.product;
 
-import com.github.shop.adminproduct.dto.AdminProductDto;
+import com.github.shop.admin.product.dto.AdminProductDto;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;

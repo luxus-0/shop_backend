@@ -1,6 +1,6 @@
-package com.github.shop.adminproduct;
+package com.github.shop.admin.product;
 
-import com.github.shop.adminproduct.dto.AdminProductDto;
+import com.github.shop.admin.product.dto.AdminProductDto;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-import static com.github.shop.adminproduct.AdminProductMapper.mapToAdminProduct;
+import static com.github.shop.admin.product.AdminProductMapper.mapToAdminProduct;
 
 @Service
 @AllArgsConstructor
@@ -30,12 +30,12 @@ class AdminProductManager {
     }
 
     AdminProduct createProduct(AdminProductDto adminProductDto) {
-        return adminProductRepository.save(mapToAdminProduct(adminProductDto));
+        return adminProductRepository.save(AdminProductMapper.mapToAdminProduct(adminProductDto));
     }
 
 
     public AdminProduct modificationProduct(AdminProductDto adminProductDto, Long id) {
-        AdminProduct createdAdminProduct = mapToAdminProduct(adminProductDto, id);
+        AdminProduct createdAdminProduct = AdminProductMapper.mapToAdminProduct(adminProductDto, id);
         return adminProductRepository.save(createdAdminProduct);
     }
 

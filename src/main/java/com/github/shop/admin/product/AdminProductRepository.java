@@ -1,4 +1,4 @@
-package com.github.shop.adminproduct;
+package com.github.shop.admin.product;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
