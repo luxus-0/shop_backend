@@ -1,4 +1,4 @@
-package com.github.shop.adminorder;
+package com.github.shop.admin.order;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

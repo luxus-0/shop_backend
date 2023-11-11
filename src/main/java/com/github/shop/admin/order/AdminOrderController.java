@@ -1,7 +1,7 @@
-package com.github.shop.adminorder;
+package com.github.shop.admin.order;
 
-import com.github.shop.adminorder.dto.AdminOrderDto;
-import com.github.shop.adminorder.dto.AdminOrderStatusesDto;
+import com.github.shop.admin.order.dto.AdminOrderDto;
+import com.github.shop.admin.order.dto.AdminOrderStatusesDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Map;
 
-import static com.github.shop.adminorder.AdminOrderService.createAdminOrderStatusesMap;
+import static com.github.shop.admin.order.AdminOrderService.createAdminOrderStatusesMap;
 
 @RestController
 @RequiredArgsConstructor
@@ -35,7 +35,7 @@ public class AdminOrderController {
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<Void> actualizeOrder(@PathVariable Long id, @RequestBody Map<String, String> values) throws UndefinedOrderStatus {
+    public ResponseEntity<Void> actualizeOrder(@PathVariable Long id, @RequestBody Map<String, String> values) throws AdminOrderStatusNotFound {
         adminOrderService.patchOrder(id, values);
         return ResponseEntity.ok().build();
     }

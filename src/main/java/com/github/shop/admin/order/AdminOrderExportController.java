@@ -1,4 +1,4 @@
-package com.github.shop.adminorder;
+package com.github.shop.admin.order;
 
 import com.github.shop.order.OrderStatus;
 import lombok.RequiredArgsConstructor;

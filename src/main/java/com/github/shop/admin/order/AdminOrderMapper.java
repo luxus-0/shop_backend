@@ -1,6 +1,6 @@
-package com.github.shop.adminorder;
+package com.github.shop.admin.order;
 
-import com.github.shop.adminorder.dto.AdminOrderDto;
+import com.github.shop.admin.order.dto.AdminOrderDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 

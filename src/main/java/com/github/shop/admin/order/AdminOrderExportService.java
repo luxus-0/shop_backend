@@ -1,4 +1,4 @@
-package com.github.shop.adminorder;
+package com.github.shop.admin.order;
 
 import com.github.shop.address.Address;
 import com.github.shop.contact.Contact;

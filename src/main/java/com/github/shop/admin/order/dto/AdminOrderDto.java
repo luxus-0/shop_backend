@@ -1,4 +1,4 @@
-package com.github.shop.adminorder.dto;
+package com.github.shop.admin.order.dto;
 
 import com.github.shop.order.OrderStatus;
 import lombok.Builder;

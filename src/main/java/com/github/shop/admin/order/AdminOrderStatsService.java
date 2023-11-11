@@ -1,7 +1,7 @@
-package com.github.shop.adminorder;
+package com.github.shop.admin.order;
 
-import com.github.shop.adminorder.dto.AdminOrderStats;
-import com.github.shop.adminorder.dto.AdminOrderStatsValue;
+import com.github.shop.admin.order.dto.AdminOrderStats;
+import com.github.shop.admin.order.dto.AdminOrderStatsValue;
 import com.github.shop.order.OrderStatus;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -18,7 +18,7 @@ public class AdminOrderStatsService {
 
     private final AdminOrderRepository adminOrderRepository;
 
-    public AdminOrderStats getStatisticsOrder() throws StatisticsSalesNotFoundException, StatisticsOrdersNotFoundException {
+    public AdminOrderStats getStatisticsOrder() throws AdminSalesStatisticsNotFoundException, AdminOrdersStatisticsNotFoundException {
         List<AdminOrder> adminOrders = getOrdersForAllMonth();
         long daysOfMonth = getDaysOfMonth(adminOrders);
         TreeMap<Long, AdminOrderStatsValue> results = new TreeMap<>();
@@ -36,14 +36,14 @@ public class AdminOrderStatsService {
         return results.keySet().stream().toList();
     }
 
-    private List<BigDecimal> getSales(TreeMap<Long, AdminOrderStatsValue> results) throws StatisticsSalesNotFoundException {
+    private List<BigDecimal> getSales(TreeMap<Long, AdminOrderStatsValue> results) throws AdminSalesStatisticsNotFoundException {
         return results.values().stream()
                 .map(order -> order.statistics().sales())
                 .flatMap(Collection::stream)
                 .toList();
     }
 
-    private List<Long> getOrders(TreeMap<Long, AdminOrderStatsValue> results) throws StatisticsOrdersNotFoundException {
+    private List<Long> getOrders(TreeMap<Long, AdminOrderStatsValue> results) throws AdminOrdersStatisticsNotFoundException {
         return results.values().stream()
                 .map(order -> order.statistics().orders())
                 .flatMap(Collection::stream)

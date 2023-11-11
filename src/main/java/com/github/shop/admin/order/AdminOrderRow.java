@@ -1,28 +1,33 @@
-package com.github.shop.adminorder;
+package com.github.shop.admin.order;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.Min;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
+import java.math.BigDecimal;
 
-@Entity
 @Getter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "order_log")
-public class AdminOrderLog {
+@Entity
+@Table(name = "admin_order_row")
+public class AdminOrderRow {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private Long orderId;
-    private LocalDateTime created;
-    private String description;
+    private Long productId;
+    private Long shipmentId;
+    @Min(0)
+    private int quantity;
+    @Min(0)
+    private BigDecimal price;
 }

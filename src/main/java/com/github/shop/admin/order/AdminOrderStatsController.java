@@ -1,6 +1,6 @@
-package com.github.shop.adminorder;
+package com.github.shop.admin.order;
 
-import com.github.shop.adminorder.dto.AdminOrderStats;
+import com.github.shop.admin.order.dto.AdminOrderStats;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,7 +15,7 @@ public class AdminOrderStatsController {
     private final AdminOrderStatsService orderStatsService;
 
     @GetMapping
-    public ResponseEntity<AdminOrderStats> readStatisticsOrder() throws StatisticsSalesNotFoundException, StatisticsOrdersNotFoundException {
+    public ResponseEntity<AdminOrderStats> readStatisticsOrder() throws AdminSalesStatisticsNotFoundException, AdminOrdersStatisticsNotFoundException {
             return ResponseEntity.ok().body(orderStatsService.getStatisticsOrder());
     }
 }

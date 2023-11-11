@@ -1,6 +1,7 @@
-package com.github.shop.adminorder;
+package com.github.shop.admin.order;
 
 import com.github.shop.mail.EmailNotificationForOrderStatusChange;
+import com.github.shop.order.Order;
 import com.github.shop.order.OrderStatus;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -47,28 +48,28 @@ public class AdminOrderService {
     }
 
     @Transactional
-    public void patchOrder(Long id, Map<String, String> values) throws UndefinedOrderStatus {
+    public void patchOrder(Long id, Map<String, String> values) throws AdminOrderStatusNotFound {
         AdminOrder adminOrder = adminOrderRepository.findById(id).orElseThrow();
         patchValues(adminOrder, values);
     }
 
-    private void patchValues(AdminOrder adminOrder, Map<String, String> values) throws UndefinedOrderStatus {
+    private void patchValues(AdminOrder adminOrder, Map<String, String> values) throws AdminOrderStatusNotFound {
         if (values.get("orderStatus") != null) {
             processOrderStatusChanged(adminOrder, values);
         }
     }
 
-    private void processOrderStatusChanged(AdminOrder adminOrder, Map<String, String> values) throws UndefinedOrderStatus {
-        OrderStatus oldAdminStatus = adminOrder.getOrderStatus();
-        AdminOrder newAdminOrderStatus = AdminOrder.builder()
+    private void processOrderStatusChanged(AdminOrder adminOrder, Map<String, String> values) throws AdminOrderStatusNotFound {
+        OrderStatus oldOrderStatus = adminOrder.getOrderStatus();
+        Order newOrder = Order.builder()
                 .id(adminOrder.getId())
                 .orderStatus(OrderStatus.valueOf(values.get("orderStatus")))
                 .build();
-        if(oldAdminStatus == newAdminOrderStatus.getOrderStatus()){
+        if(oldOrderStatus == newOrder.getOrderStatus()){
             return;
         }
-        logStatusChanged(adminOrder.getId(), oldAdminStatus, newAdminOrderStatus.getOrderStatus());
-        email.sendEmailNotification(newAdminOrderStatus.getOrderStatus(), adminOrder);
+        logStatusChanged(adminOrder.getId(), oldOrderStatus, newOrder.getOrderStatus());
+        email.sendEmailNotification(newOrder.getOrderStatus(), newOrder);
     }
 
     public void logStatusChanged(Long orderId, OrderStatus orderStatus, OrderStatus newOrderStatus) {
