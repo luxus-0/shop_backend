@@ -1,8 +1,8 @@
 package com.github.shop.mail;
 
-import com.github.shop.adminorder.AdminOrder;
 import com.github.shop.currency.Currency;
 import com.github.shop.mail.dto.EmailDto;
+import com.github.shop.order.Order;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
@@ -39,11 +39,16 @@ public class EmailService implements EmailSender {
         }
     }
 
-    public void sendEmail(AdminOrder order) {
-        send(new EmailDto(getEmail(order), getSubject(order), getBody(order)));
+    public void sendEmail(Order order) {
+        EmailDto emailDto = EmailDto.builder()
+                .email(getEmail(order))
+                .subject(getSubject(order))
+                .body(getBody(order))
+                .build();
+        send(emailDto);
     }
 
-    public String getBody(AdminOrder order) {
+    private String getBody(Order order) {
         return "<html><body><h2>Order Details</h2>"
                 + "<ul>"
                 + "<li><strong>Order ID:</strong> " + order.getId() + "</li>"
@@ -57,11 +62,11 @@ public class EmailService implements EmailSender {
                 + "</html>";
     }
 
-    public String getSubject(AdminOrder order) {
+    private String getSubject(Order order) {
         return "Order ID: " + order.getId();
     }
 
-    String getEmail(AdminOrder order) {
+    private String getEmail(Order order) {
         try {
             return readEmail(order);
         } catch (EmailNotFoundException e) {
