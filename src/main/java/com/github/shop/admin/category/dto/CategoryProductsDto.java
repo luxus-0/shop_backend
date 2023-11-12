@@ -1,6 +1,6 @@
-package com.github.shop.category.dto;
+package com.github.shop.admin.category.dto;
 
-import com.github.shop.category.Category;
+import com.github.shop.admin.category.Category;
 import com.github.shop.product.Product;
 import org.springframework.data.domain.Page;
 

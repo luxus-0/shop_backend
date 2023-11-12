@@ -1,4 +1,4 @@
-package com.github.shop.category;
+package com.github.shop.admin.category;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

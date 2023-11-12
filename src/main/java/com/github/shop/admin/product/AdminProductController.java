@@ -22,7 +22,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @CrossOrigin(origins = "*")
-@RequestMapping("api/v1/admin/products")
+@RequestMapping("admin/products")
 class AdminProductController {
 
     private final AdminProductManager adminProductManager;

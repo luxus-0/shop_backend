@@ -20,28 +20,28 @@ import java.nio.file.Path;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("api/v1/images")
+@RequestMapping("images")
 public class ImageController {
 
     private final ImageDataManager imageDataManager;
 
-    @PostMapping("/upload-image")
+    @PostMapping("/upload")
     public ResponseEntity<ResponseUploadImage> uploadImage(@RequestParam("image") MultipartFile file) throws ImageNotSavedException {
         ResponseUploadImage responseImage = imageDataManager.uploadImage(file);
         return ResponseEntity.status(HttpStatus.OK)
                 .body(responseImage);
     }
 
-    @PostMapping("/download-image-from-url/{filename}")
-    public ResponseEntity<ResponseUploadImage> downloadImageFromUrl(@PathVariable String filename) throws IOException, InterruptedException {
-        ResponseUploadImage responseImage = imageDataManager.serveImageFromUrl(filename);
+    @PostMapping("/download/{filename}/{url}")
+    public ResponseEntity<ResponseUploadImage> downloadImage(@PathVariable String filename, @PathVariable String url) throws IOException, InterruptedException {
+        ResponseUploadImage responseImage = imageDataManager.downloadImage(filename, url);
         return ResponseEntity.status(HttpStatus.OK)
                 .body(responseImage);
     }
 
-    @GetMapping("/download-image/{filename}")
+    @GetMapping("/download/{filename}")
     ResponseEntity<Resource> downloadImage(@PathVariable String filename) throws IOException {
-        Resource resource = imageDataManager.serveFiles(filename);
+        Resource resource = imageDataManager.downloadImage(filename);
         return ResponseEntity.ok()
                 .header(HttpHeaders.CONTENT_TYPE, Files.probeContentType(Path.of(filename)))
                 .body(resource);

@@ -1,4 +1,4 @@
-package com.github.shop.category;
+package com.github.shop.admin.category;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

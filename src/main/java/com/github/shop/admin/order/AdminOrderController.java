@@ -19,7 +19,7 @@ import static com.github.shop.admin.order.AdminOrderService.createAdminOrderStat
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/admin/orders")
+@RequestMapping("admin/orders")
 public class AdminOrderController {
 
     private final AdminOrderService adminOrderService;

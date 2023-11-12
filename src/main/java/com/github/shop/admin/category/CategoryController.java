@@ -1,7 +1,8 @@
-package com.github.shop.category;
+package com.github.shop.admin.category;
 
-import com.github.shop.category.dto.CategoryDto;
-import com.github.shop.category.dto.CategoryProductsDto;
+import com.github.shop.admin.category.dto.CategoryProductsDto;
+import com.github.shop.admin.category.dto.CategoryDto;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.Pattern;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.validator.constraints.Length;
@@ -19,7 +20,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("api/v1/admin/categories")
+@RequestMapping("admin/categories")
 class CategoryController {
 
     private final CategoryService categoryService;
@@ -42,12 +43,12 @@ class CategoryController {
     }
 
     @PostMapping
-    public Category createCategory(@RequestBody CategoryDto categoryDto) {
+    public Category createCategory(@RequestBody @Valid CategoryDto categoryDto) {
         return categoryService.saveCategory(categoryDto);
     }
 
     @PutMapping("/{id}")
-    Category updateCategory(@RequestBody CategoryDto categoryDto, @PathVariable Long id) {
+    Category updateCategory(@RequestBody @Valid CategoryDto categoryDto, @PathVariable Long id) {
         return categoryService.updateCategory(categoryDto, id);
     }
 

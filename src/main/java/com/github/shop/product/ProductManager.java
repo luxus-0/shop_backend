@@ -1,9 +1,14 @@
 package com.github.shop.product;
 
+import com.github.shop.image.ImageNameNotFoundException;
+import com.github.shop.image.ImagePathNotFoundException;
+import com.github.shop.image.ImageTypeNotFoundException;
 import com.github.shop.product.dto.ProductDto;
 import com.github.shop.review.Review;
 import com.github.shop.review.ReviewRepository;
+import com.github.shop.review.ReviewsNotFoundException;
 import lombok.AllArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -17,19 +22,19 @@ import static com.github.shop.product.ProductMapper.mapToProductDto;
 
 @Service
 @AllArgsConstructor
+@Log4j2
 class ProductManager {
     private final ProductRepository productRepository;
-    private final ReviewRepository reviewRepository;
 
-    List<Product> retrieveProduct() throws ProductNotFoundException {
+    List<Product> retrieveProducts() throws ProductNotFoundException {
         List<Product> products = productRepository.findAll();
-        if (products.isEmpty()) {
-            throw new ProductNotFoundException();
-        }
-        return products;
+        return products.stream()
+                .findAny()
+                .map(List::of)
+                .orElseThrow(ProductNotFoundException::new);
     }
 
-    Page<Product> retrieveProduct(int page, int size) {
+    Page<Product> retrieveProducts(int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
         return productRepository.findAll(pageable);
     }
@@ -53,9 +58,15 @@ class ProductManager {
 
     @Transactional(readOnly = true)
     public ProductDto readProductBySlug(String slug) {
-        Product product = productRepository.findBySlug(slug).orElseThrow();
-        List<Review> reviews = reviewRepository.findAllByProductIdAndModerated(product.getId(),
-                true);
-        return mapToProductDto(product, reviews);
+        try {
+            Product product = productRepository.findBySlug(slug).orElseThrow(ProductNotFoundException::new);
+            return mapToProductDto(product);
+        } catch (ProductNotFoundException | ImageTypeNotFoundException | ImagePathNotFoundException |
+                 ImageNameNotFoundException e) {
+            log.error(e.getMessage());
+        }
+        return ProductDto.builder().build();
     }
+
+
 }

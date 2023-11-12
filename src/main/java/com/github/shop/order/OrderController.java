@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import static org.springframework.http.HttpStatus.CREATED;
 
 @RestController
-@RequestMapping("/api/v1/orders")
+@RequestMapping("orders")
 @RequiredArgsConstructor
 public class OrderController {
 

@@ -8,7 +8,6 @@ import org.hibernate.validator.constraints.Length;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,21 +24,20 @@ import static com.github.shop.constant.Constants.REGEX_SLUG;
 
 @RestController
 @RequiredArgsConstructor
-@CrossOrigin(origins = "*")
-@RequestMapping("api/v1/products")
+@RequestMapping("products")
 class ProductController {
     private final ProductManager productManager;
 
     @GetMapping
     public ResponseEntity<List<Product>> getProducts() throws ProductNotFoundException {
-        List<Product> findProducts = productManager.retrieveProduct();
+        List<Product> findProducts = productManager.retrieveProducts();
         return new ResponseEntity<>(findProducts, HttpStatus.OK);
     }
 
     @GetMapping("/pagination")
     public ResponseEntity<Page<Product>> getProducts(@RequestParam(value = "page") int page,
                                                      @RequestParam(value = "size") int size) {
-        var findProductByPage = productManager.retrieveProduct(page, size);
+        var findProductByPage = productManager.retrieveProducts(page, size);
         return new ResponseEntity<>(findProductByPage, HttpStatus.OK);
     }
 

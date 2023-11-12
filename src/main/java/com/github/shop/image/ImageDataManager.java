@@ -26,8 +26,6 @@ public class ImageDataManager {
     private final ImageDataRepository imageRepository;
     @Value("${image.path}")
     private String imagePath;
-    @Value("${image.url}")
-    private String imageUrl;
 
     public ImageDataManager(ImageDataRepository imageRepository) {
         this.imageRepository = imageRepository;
@@ -71,7 +69,7 @@ public class ImageDataManager {
         }
     }
 
-    Resource serveFiles(String filename) throws IOException {
+    Resource downloadImage(String filename) throws IOException {
         FileSystemResourceLoader fileSystemResourceLoader = new FileSystemResourceLoader();
         Resource resource = fileSystemResourceLoader.getResource(imagePath + filename);
         if (resource.getFile().exists()) {
@@ -81,21 +79,21 @@ public class ImageDataManager {
         throw new FileNotFoundException("File not found");
     }
 
-    public ResponseUploadImage serveImageFromUrl(String fileName) throws IOException, InterruptedException {
+    ResponseUploadImage downloadImage(String fileName, String url) throws IOException, InterruptedException {
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(imageUrl))
+                .uri(URI.create(url))
                 .build();
 
         String changedFileName = UploadedFilesNameUtils.slugifyFileName(fileName);
         Path path = Path.of(imagePath, changedFileName);
 
         HttpResponse<InputStream> response = client.send(request, HttpResponse.BodyHandlers.ofInputStream());
-        isOkStatusCodeForDownloadedFile(response, path);
+        isOkStatusCodeForDownloadedImage(response, path);
         return new ResponseUploadImage(fileName);
     }
 
-    private static void isOkStatusCodeForDownloadedFile(HttpResponse<InputStream> response, Path path) throws IOException {
+    private static void isOkStatusCodeForDownloadedImage(HttpResponse<InputStream> response, Path path) throws IOException {
         if (response.statusCode() == 200) {
             log.info("File downloaded successfully");
             InputStream in = response.body();

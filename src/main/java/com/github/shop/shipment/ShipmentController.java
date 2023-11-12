@@ -17,7 +17,7 @@ import static org.springframework.http.HttpStatus.OK;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/shipments")
+@RequestMapping("shipments")
 public class ShipmentController {
 
     private final ShipmentService shipmentService;

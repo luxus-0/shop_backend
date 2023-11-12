@@ -6,6 +6,9 @@ import com.github.slugify.Slugify;
 
 import java.util.List;
 
+import static com.github.shop.image.ImageMapper.mapToImages;
+import static com.github.shop.slug.SlugifyMapper.slugify;
+
 class AdminProductMapper {
 
     public static AdminProduct mapToAdminProduct(AdminProductDto adminProduct, Long id) {
@@ -15,7 +18,7 @@ class AdminProductMapper {
                 .categoryId(adminProduct.categoryId())
                 .price(adminProduct.price())
                 .currency(adminProduct.currency())
-                .images(getImages(adminProduct))
+                .images(mapToImages(adminProduct))
                 .slug(slugify(adminProduct.slug()))
                 .description(adminProduct.description())
                 .fullDescription(adminProduct.fullDescription())
@@ -28,26 +31,10 @@ class AdminProductMapper {
                 .categoryId(adminProduct.categoryId())
                 .price(adminProduct.price())
                 .currency(adminProduct.currency())
-                .images(getImages(adminProduct))
+                .images(mapToImages(adminProduct))
                 .slug(slugify(adminProduct.slug()))
                 .description(adminProduct.description())
                 .fullDescription(adminProduct.fullDescription())
                 .build();
-    }
-
-
-    private static List<Image> getImages(AdminProductDto adminProduct) {
-        return List.of(Image.builder()
-                .name(adminProduct.image().name())
-                .type(adminProduct.image().type())
-                .path(adminProduct.image().path())
-                .build());
-    }
-
-    private static String slugify(String slug) {
-        return Slugify.builder()
-                .customReplacement("_", "-")
-                .build()
-                .slugify(slug);
     }
 }

@@ -1,7 +1,7 @@
-package com.github.shop.category;
+package com.github.shop.admin.category;
 
-import com.github.shop.category.dto.CategoryDto;
-import com.github.shop.category.dto.CategoryProductsDto;
+import com.github.shop.admin.category.dto.CategoryProductsDto;
+import com.github.shop.admin.category.dto.CategoryDto;
 import com.github.shop.product.Product;
 import com.github.shop.product.ProductRepository;
 import com.github.slugify.Slugify;
