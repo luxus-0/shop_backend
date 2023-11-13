@@ -5,7 +5,7 @@ import org.apache.commons.io.FilenameUtils;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-class ExistingFileNameUtils {
+public class ExistingFileNameUtils {
     public static String renameIfExists(Path path, String fileName) {
         if (Files.exists(path.resolve(fileName))) {
             return renameAndCheckFile(path, fileName);
