@@ -18,7 +18,7 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "admin_order_row")
+@Table(name = "order_row")
 public class AdminOrderRow {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
