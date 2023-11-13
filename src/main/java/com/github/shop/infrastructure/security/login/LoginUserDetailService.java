@@ -1,13 +1,12 @@
-package com.github.shop.security.login;
+package com.github.shop.infrastructure.security.login;
 
-import com.github.shop.security.login.dto.UserDto;
+import com.github.shop.infrastructure.security.login.dto.UserDto;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import java.util.Collections;
 
@@ -15,11 +14,11 @@ import java.util.Collections;
 @Log4j2
 public class LoginUserDetailService implements UserDetailsService {
 
-    private final LoginAndRegisterFacade loginAndRegisterFacade;
+    private final LoginFacade loginFacade;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws BadCredentialsException {
-            UserDto user = loginAndRegisterFacade.findByUsername(username);
+            UserDto user = loginFacade.findByUsername(username);
             return getUsers(user);
     }
 

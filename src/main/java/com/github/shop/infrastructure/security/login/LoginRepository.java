@@ -1,4 +1,4 @@
-package com.github.shop.security.login;
+package com.github.shop.infrastructure.security.login;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
