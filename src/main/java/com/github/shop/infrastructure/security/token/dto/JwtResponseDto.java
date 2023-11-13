@@ -1,4 +1,4 @@
-package com.github.shop.security.token.dto;
+package com.github.shop.infrastructure.security.token.dto;
 
 import lombok.Builder;
 

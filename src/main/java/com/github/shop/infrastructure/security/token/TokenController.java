@@ -1,7 +1,7 @@
-package com.github.shop.security.token;
+package com.github.shop.infrastructure.security.token;
 
-import com.github.shop.security.token.dto.JwtResponseDto;
-import com.github.shop.security.token.dto.TokenRequestDto;
+import com.github.shop.infrastructure.security.token.dto.JwtResponseDto;
+import com.github.shop.infrastructure.security.token.dto.TokenRequestDto;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

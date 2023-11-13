@@ -1,4 +1,4 @@
-package com.github.shop.security.token.error;
+package com.github.shop.infrastructure.security.token.error;
 
 import org.springframework.http.HttpStatus;
 
