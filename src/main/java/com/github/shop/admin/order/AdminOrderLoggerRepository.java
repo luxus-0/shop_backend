@@ -1,6 +1,0 @@
-package com.github.shop.admin.order;
-
-import org.springframework.data.jpa.repository.JpaRepository;
-
-public interface AdminOrderLoggerRepository extends JpaRepository<AdminOrderLog, Long> {
-}

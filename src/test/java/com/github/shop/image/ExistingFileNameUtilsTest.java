@@ -1,5 +1,6 @@
 package com.github.shop.image;
 
+import com.github.shop.domain.image.ExistingFileNameUtils;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 

@@ -1,8 +1,11 @@
 package com.github.shop.cart;
 
-import com.github.shop.cart.dto.CartProductDto;
-import com.github.shop.product.Product;
-import com.github.shop.product.ProductRepository;
+import com.github.shop.domain.cart.Cart;
+import com.github.shop.domain.cart.CartRepository;
+import com.github.shop.domain.cart.CartService;
+import com.github.shop.domain.cart.dto.CartProductDto;
+import com.github.shop.domain.product.Product;
+import com.github.shop.domain.product.ProductRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;

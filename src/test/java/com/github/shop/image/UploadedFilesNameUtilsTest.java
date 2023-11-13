@@ -1,5 +1,6 @@
 package com.github.shop.image;
 
+import com.github.shop.domain.image.UploadedFilesNameUtils;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
