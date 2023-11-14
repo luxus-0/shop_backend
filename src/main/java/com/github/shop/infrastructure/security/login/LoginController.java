@@ -1,6 +1,8 @@
 package com.github.shop.infrastructure.security.login;
 
-import com.github.shop.infrastructure.security.login.dto.UserDto;
+import com.github.shop.infrastructure.security.token.JwtAuthenticatorFacade;
+import com.github.shop.infrastructure.security.token.dto.JwtResponseDto;
+import com.github.shop.infrastructure.security.token.dto.TokenRequestDto;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -13,10 +15,10 @@ import static org.springframework.http.HttpStatus.CREATED;
 @AllArgsConstructor
 public class LoginController {
 
-    private final LoginFacade loginFacade;
+    private final JwtAuthenticatorFacade jwtAuthenticatorFacade;
     @PostMapping("/login")
-    public ResponseEntity<UserDto> login(@RequestBody Login login) {
-        UserDto user = loginFacade.findByUsername(login.username());
-        return ResponseEntity.status(CREATED).body(user);
+    public ResponseEntity<JwtResponseDto> login(@RequestBody TokenRequestDto tokenRequest) {
+        JwtResponseDto jwtResponse = jwtAuthenticatorFacade.authenticateAndGenerateToken(tokenRequest);
+        return ResponseEntity.status(CREATED).body(jwtResponse);
     }
 }

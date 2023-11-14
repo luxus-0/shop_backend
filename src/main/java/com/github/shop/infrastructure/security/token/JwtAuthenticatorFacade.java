@@ -2,12 +2,14 @@ package com.github.shop.infrastructure.security.token;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
+import com.github.shop.infrastructure.security.login.UserRole;
 import com.github.shop.infrastructure.security.token.dto.JwtResponseDto;
 import com.github.shop.infrastructure.security.token.dto.TokenRequestDto;
 import lombok.AllArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Component;
 
@@ -35,6 +37,15 @@ public class JwtAuthenticatorFacade {
                 .token(token)
                 .username(username)
                 .build();
+    }
+
+    private static Boolean checkAccessAdmin(User user) {
+        return user.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority)
+                .filter(authority -> UserRole.ROLE_ADMIN.name().equals(authority))
+                .map(isAdminRole -> true)
+                .findFirst()
+                .orElse(false);
     }
 
     private String createToken(User user) {

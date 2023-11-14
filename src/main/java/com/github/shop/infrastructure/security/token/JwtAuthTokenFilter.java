@@ -4,6 +4,7 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
+import com.github.shop.infrastructure.security.login.LoginUserDetailService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -11,6 +12,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -22,6 +24,7 @@ import java.util.Collections;
 public class JwtAuthTokenFilter extends OncePerRequestFilter {
 
     private final JwtConfigurationProperties properties;
+    private final LoginUserDetailService userDetailService;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
@@ -41,7 +44,8 @@ public class JwtAuthTokenFilter extends OncePerRequestFilter {
         JWTVerifier verifier = JWT.require(algorithm)
                 .build();
         DecodedJWT jwt = verifier.verify(token.substring(7));
-        return new UsernamePasswordAuthenticationToken(jwt.getSubject(), null, Collections.emptyList());
+        UserDetails userDetails = userDetailService.loadUserByUsername(jwt.getSubject());
+        return new UsernamePasswordAuthenticationToken(userDetails.getUsername(), null, userDetails.getAuthorities());
 
     }
 }
