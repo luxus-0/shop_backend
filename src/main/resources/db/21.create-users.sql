@@ -6,6 +6,8 @@ create table users(
     password varchar(500) not null
 );
 
+alter table users add created boolean default false;
+
 -- liquibase formatted sql
 -- changeset lnowogorski:21
 create table authorities(
