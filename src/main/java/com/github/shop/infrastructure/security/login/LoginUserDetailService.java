@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-import static com.github.shop.domain.constant.Constants.USER_ROLE_NOT_FOUND;
+import static com.github.shop.infrastructure.security.login.mapper.UserRoleMapper.getRole;
 
 @AllArgsConstructor
 @Service
@@ -32,12 +32,5 @@ public class LoginUserDetailService implements UserDetailsService {
                 user.username(),
                 user.password(),
                 List.of(new SimpleGrantedAuthority(getRole(user))));
-    }
-
-    private static String getRole(UserDto user) {
-        return user.roles().stream()
-                .map(UserRole::getRole)
-                .findAny()
-                .orElse(USER_ROLE_NOT_FOUND);
     }
 }
