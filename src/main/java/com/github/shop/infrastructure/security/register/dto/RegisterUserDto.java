@@ -10,5 +10,10 @@ public record RegisterUserDto(@Email
                               @NotBlank(message = "${not.blank.username}")
                               String username,
                               @Pattern (regexp = REGEX_PASSWORD)
-                              @NotBlank(message = "${not.blank.password}") String password) {
+                              @NotBlank(message = "${not.blank.password}")
+                              String password,
+                              @Pattern (regexp = REGEX_PASSWORD)
+                              String repeatPassword)
+
+{
 }
