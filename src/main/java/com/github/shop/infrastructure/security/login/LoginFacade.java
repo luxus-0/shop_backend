@@ -3,13 +3,10 @@ package com.github.shop.infrastructure.security.login;
 import com.github.shop.infrastructure.security.login.dto.UserDto;
 import lombok.AllArgsConstructor;
 import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Stream;
 
 import static com.github.shop.domain.constant.Constants.USER_NOT_FOUND;
 
@@ -28,7 +25,7 @@ public class LoginFacade {
     private List<UserRole> getRoles(User user) {
         return user.getAuthorities()
                 .stream()
-                .map(authority -> UserRole.valueOf(authority.getAuthority()))
+                .map(userRole -> UserRole.valueOf(userRole.getAuthority()))
                 .toList();
     }
 }
