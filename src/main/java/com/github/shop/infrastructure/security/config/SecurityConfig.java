@@ -2,6 +2,7 @@ package com.github.shop.infrastructure.security.config;
 
 import com.github.shop.infrastructure.security.login.LoginFacade;
 import com.github.shop.infrastructure.security.login.LoginUserDetailService;
+import com.github.shop.infrastructure.security.login.UserRole;
 import com.github.shop.infrastructure.security.token.JwtAuthTokenFilter;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -41,7 +42,7 @@ public class SecurityConfig {
         httpSecurity
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/admin/**").authenticated()
+                        .requestMatchers("/admin/**").hasRole(UserRole.ROLE_ADMIN.getRole())
                         .requestMatchers("/token/**").permitAll()
                         .requestMatchers("/swagger-ui/**").permitAll()
                         .requestMatchers("/v3/api-docs/**").permitAll()
