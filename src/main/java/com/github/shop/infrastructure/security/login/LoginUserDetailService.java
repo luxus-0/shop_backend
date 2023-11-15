@@ -9,6 +9,7 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -21,6 +22,7 @@ public class LoginUserDetailService implements UserDetailsService {
 
     private final LoginFacade loginFacade;
 
+    @Transactional
     @Override
     public UserDetails loadUserByUsername(String username) throws BadCredentialsException {
             UserDto user = loginFacade.findByUsername(username);
