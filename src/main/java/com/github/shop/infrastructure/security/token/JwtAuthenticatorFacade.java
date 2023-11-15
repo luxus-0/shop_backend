@@ -36,6 +36,7 @@ public class JwtAuthenticatorFacade {
         return JwtResponseDto.builder()
                 .token(token)
                 .username(username)
+                .checkAccessAdmin(checkAccessAdmin(user))
                 .build();
     }
 
