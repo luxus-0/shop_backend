@@ -2,6 +2,7 @@ package com.github.shop.infrastructure.security.register;
 
 import com.github.shop.infrastructure.security.register.dto.RegisterUserDto;
 import com.github.shop.infrastructure.security.register.dto.RegistrationResultDto;
+import com.github.shop.infrastructure.security.register.exception.PasswordNotTheSameException;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -18,9 +19,9 @@ public class RegisterController {
     private final RegisterFacade registerFacade;
 
     @PostMapping("/register")
-    public ResponseEntity<RegistrationResultDto> register(@RequestBody @Valid RegisterUserDto registerUser){
+    public ResponseEntity<RegistrationResultDto> register(@RequestBody @Valid RegisterUserDto registerUser) throws PasswordNotTheSameException, UserAlreadyExistsException {
         RegistrationResultDto registerResult = registerFacade.register(
-                new RegisterUserDto(registerUser.username(), registerUser.password()));
+                new RegisterUserDto(registerUser.username(), registerUser.password(), registerUser.repeatPassword()));
         return ResponseEntity.status(CREATED).body(registerResult);
     }
 }
