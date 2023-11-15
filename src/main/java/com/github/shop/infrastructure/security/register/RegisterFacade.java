@@ -6,6 +6,9 @@ import com.github.shop.infrastructure.security.login.UserRole;
 import com.github.shop.infrastructure.security.register.dto.RegisterUserDto;
 import com.github.shop.infrastructure.security.register.dto.RegistrationResultDto;
 import com.github.shop.infrastructure.security.register.exception.PasswordNotTheSameException;
+import com.github.shop.infrastructure.security.token.JwtAuthenticatorFacade;
+import com.github.shop.infrastructure.security.token.dto.JwtResponseDto;
+import com.github.shop.infrastructure.security.token.dto.TokenRequestDto;
 import com.github.shop.infrastructure.security.validation.ValidateRegistration;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -21,6 +24,7 @@ public class RegisterFacade {
     private final LoginRepository repository;
     private final PasswordEncoder bCryptPasswordEncoder;
     private final ValidateRegistration validator;
+    private final JwtAuthenticatorFacade jwtAuthenticatorFacade;
 
     public RegistrationResultDto register(RegisterUserDto registerUser) throws PasswordNotTheSameException, UserAlreadyExistsException {
        validator.validateRegistration(registerUser);
@@ -31,6 +35,12 @@ public class RegisterFacade {
                 .authorities(List.of(UserRole.ROLE_CUSTOMER))
                 .build();
         User savedUser = repository.save(user);
-        return new RegistrationResultDto(savedUser.getId(), savedUser.isCreated(), savedUser.getUsername());
+        JwtResponseDto jwt = jwtAuthenticatorFacade.authenticateAndGenerateToken(new TokenRequestDto(savedUser.getUsername(), savedUser.getPassword()));
+        return RegistrationResultDto.builder()
+                .id(savedUser.getId())
+                .username(jwt.username())
+                .created(savedUser.isCreated())
+                .token(jwt.token())
+                .build();
     }
 }
