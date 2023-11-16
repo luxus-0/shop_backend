@@ -31,6 +31,7 @@ public class ImageMapper {
                 .path(adminProduct.image().path())
                 .build());
     }
+
     private static String getType(Product product) throws ImageTypeNotFoundException {
         return product.getImages().stream()
                 .map(Image::getType)

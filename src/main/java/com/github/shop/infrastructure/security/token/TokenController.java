@@ -16,7 +16,7 @@ public class TokenController {
     private final JwtAuthenticatorFacade jwtAuthenticatorFacade;
 
     @PostMapping("/token")
-    ResponseEntity<JwtResponseDto> authenticateAndGenerateToken(@Valid @RequestBody TokenRequestDto tokenRequest){
+    ResponseEntity<JwtResponseDto> authenticateAndGenerateToken(@Valid @RequestBody TokenRequestDto tokenRequest) {
         final JwtResponseDto jwtResponseDto = jwtAuthenticatorFacade.authenticateAndGenerateToken(tokenRequest);
         return ResponseEntity.ok(jwtResponseDto);
     }

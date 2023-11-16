@@ -3,7 +3,6 @@ package com.github.shop.domain.admin.product;
 import com.github.shop.domain.admin.product.dto.AdminProductDto;
 import com.github.shop.domain.image.ImageMapper;
 
-import static com.github.shop.domain.image.ImageMapper.mapToImages;
 import static com.github.shop.domain.slug.SlugifyMapper.slugify;
 
 class AdminProductMapper {

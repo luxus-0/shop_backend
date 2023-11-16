@@ -1,9 +1,9 @@
 package com.github.shop.domain.admin.order;
 
 import com.github.shop.domain.address.Address;
+import com.github.shop.domain.constant.Constants;
 import com.github.shop.domain.contact.Contact;
 import com.github.shop.domain.customer.Customer;
-import com.github.shop.domain.constant.Constants;
 import com.github.shop.domain.order.OrderStatus;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;

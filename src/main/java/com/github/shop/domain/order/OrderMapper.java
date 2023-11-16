@@ -1,17 +1,9 @@
 package com.github.shop.domain.order;
 
-import com.github.shop.domain.cart.Cart;
-import com.github.shop.domain.cartitem.CartItem;
-import com.github.shop.domain.order.dto.OrderDto;
 import com.github.shop.domain.order.dto.OrderListDto;
 import com.github.shop.domain.order.dto.OrderSummary;
-import com.github.shop.domain.payment.Payment;
-import com.github.shop.domain.shipment.Shipment;
 
-import java.math.BigDecimal;
 import java.util.List;
-
-import static com.github.shop.domain.customer.CustomerService.createCustomers;
 
 public class OrderMapper {
 

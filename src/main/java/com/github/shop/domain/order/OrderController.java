@@ -10,7 +10,6 @@ import com.github.shop.domain.payment.PaymentNotFoundException;
 import com.github.shop.domain.payment.PaymentService;
 import com.github.shop.domain.shipment.ShipmentNotFoundException;
 import com.github.shop.domain.shipment.ShipmentService;
-import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -40,7 +39,7 @@ public class OrderController {
     }
 
     @GetMapping("/init-order")
-    public ResponseEntity<InitOrder> initOrder(){
+    public ResponseEntity<InitOrder> initOrder() {
         InitOrder initOrder = InitOrder.builder()
                 .shipments(shipmentService.getShipments())
                 .payments(paymentService.getPayments())
@@ -49,7 +48,7 @@ public class OrderController {
     }
 
     @GetMapping
-    public ResponseEntity<List<OrderListDto>> getOrders(@AuthenticationPrincipal String username){
+    public ResponseEntity<List<OrderListDto>> getOrders(@AuthenticationPrincipal String username) {
         List<OrderListDto> orders = orderManager.getOrdersForCustomer(username);
         return ResponseEntity.ok(orders);
     }

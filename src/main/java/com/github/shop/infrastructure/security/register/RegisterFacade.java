@@ -28,7 +28,7 @@ public class RegisterFacade {
     private final JwtAuthenticatorFacade jwtAuthenticatorFacade;
 
     public RegistrationResultDto register(RegisterUserDto registerUser) throws PasswordNotTheSameException, UserAlreadyExistsException {
-       validator.validateRegistration(registerUser);
+        validator.validateRegistration(registerUser);
         final User user = User.builder()
                 .username(registerUser.username())
                 .password(bCryptPasswordEncoder.encode(registerUser.password()))

@@ -61,7 +61,7 @@ public class CartMapper {
         return cartItem.getProduct().getPrice().multiply(BigDecimal.valueOf(cartItem.getQuantity()));
     }
 
-    private static ProductDto mapToProductDto(Product product){
+    private static ProductDto mapToProductDto(Product product) {
         try {
             return ProductDto.builder()
                     .name(product.getName())

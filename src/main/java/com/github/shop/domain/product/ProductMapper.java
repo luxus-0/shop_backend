@@ -1,9 +1,9 @@
 package com.github.shop.domain.product;
 
-import com.github.shop.domain.product.dto.ProductDto;
 import com.github.shop.domain.image.ImageNameNotFoundException;
 import com.github.shop.domain.image.ImagePathNotFoundException;
 import com.github.shop.domain.image.ImageTypeNotFoundException;
+import com.github.shop.domain.product.dto.ProductDto;
 
 import static com.github.shop.domain.image.ImageMapper.mapToImageDto;
 import static com.github.shop.domain.image.ImageMapper.mapToImages;

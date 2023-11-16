@@ -1,6 +1,5 @@
 package com.github.shop;
 
-import com.github.shop.infrastructure.security.register.dto.RegisterUserDto;
 import com.github.shop.infrastructure.security.token.JwtConfigurationProperties;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

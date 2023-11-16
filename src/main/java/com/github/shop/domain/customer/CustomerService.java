@@ -1,9 +1,5 @@
 package com.github.shop.domain.customer;
 
-import com.github.shop.domain.admin.order.AdminOrder;
-import com.github.shop.domain.contact.Contact;
-import com.github.shop.domain.mail.EmailNotFoundException;
-import com.github.shop.domain.order.Order;
 import com.github.shop.domain.order.dto.OrderDto;
 
 import java.util.List;

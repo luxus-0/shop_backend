@@ -25,9 +25,19 @@ public class JwtAuthenticatorFacade {
     private final AuthenticationManager authenticationManager;
     private final Clock clock;
     private final JwtConfigurationProperties properties;
+
+    private static Boolean checkAccessAdmin(User user) {
+        return user.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority)
+                .filter(authority -> UserRole.ROLE_ADMIN.name().equals(authority))
+                .map(isAdminRole -> true)
+                .findFirst()
+                .orElse(false);
+    }
+
     public JwtResponseDto authenticateAndGenerateToken(TokenRequestDto tokenRequest) {
         Authentication authenticate = authenticationManager.authenticate(
-            new UsernamePasswordAuthenticationToken(tokenRequest.username(), tokenRequest.password())
+                new UsernamePasswordAuthenticationToken(tokenRequest.username(), tokenRequest.password())
         );
 
         User user = (User) authenticate.getPrincipal();
@@ -40,26 +50,17 @@ public class JwtAuthenticatorFacade {
                 .build();
     }
 
-    private static Boolean checkAccessAdmin(User user) {
-        return user.getAuthorities().stream()
-                .map(GrantedAuthority::getAuthority)
-                .filter(authority -> UserRole.ROLE_ADMIN.name().equals(authority))
-                .map(isAdminRole -> true)
-                .findFirst()
-                .orElse(false);
-    }
-
     private String createToken(User user) {
-            String secretKey = properties.secret();
-            Algorithm algorithm = Algorithm.HMAC256(secretKey);
-            Instant now = LocalDateTime.now(clock).toInstant(ZoneOffset.UTC);
-            Instant expiresAt = now.plusMillis(properties.expirationDays());
-            String issuer = properties.issuer();
-            return JWT.create()
-                    .withSubject(user.getUsername())
-                    .withIssuedAt(now)
-                    .withExpiresAt(expiresAt)
-                    .withIssuer(issuer)
-                    .sign(algorithm);
+        String secretKey = properties.secret();
+        Algorithm algorithm = Algorithm.HMAC256(secretKey);
+        Instant now = LocalDateTime.now(clock).toInstant(ZoneOffset.UTC);
+        Instant expiresAt = now.plusMillis(properties.expirationDays());
+        String issuer = properties.issuer();
+        return JWT.create()
+                .withSubject(user.getUsername())
+                .withIssuedAt(now)
+                .withExpiresAt(expiresAt)
+                .withIssuer(issuer)
+                .sign(algorithm);
     }
 }

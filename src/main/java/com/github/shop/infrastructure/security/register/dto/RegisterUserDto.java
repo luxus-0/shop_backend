@@ -9,11 +9,9 @@ import static com.github.shop.infrastructure.security.constant.Constant.REGEX_PA
 public record RegisterUserDto(@Email
                               @NotBlank(message = "${not.blank.username}")
                               String username,
-                              @Pattern (regexp = REGEX_PASSWORD)
+                              @Pattern(regexp = REGEX_PASSWORD)
                               @NotBlank(message = "${not.blank.password}")
                               String password,
-                              @Pattern (regexp = REGEX_PASSWORD)
-                              String repeatPassword)
-
-{
+                              @Pattern(regexp = REGEX_PASSWORD)
+                              String repeatPassword) {
 }

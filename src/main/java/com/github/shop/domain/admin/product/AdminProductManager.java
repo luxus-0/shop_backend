@@ -8,8 +8,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-import static com.github.shop.domain.admin.product.AdminProductMapper.mapToAdminProduct;
-
 @Service
 @AllArgsConstructor
 class AdminProductManager {

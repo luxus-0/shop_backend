@@ -1,6 +1,5 @@
 package com.github.shop.domain.mail;
 
-import com.github.shop.domain.admin.order.AdminOrder;
 import com.github.shop.domain.contact.Contact;
 import com.github.shop.domain.currency.Currency;
 import com.github.shop.domain.mail.dto.EmailDto;

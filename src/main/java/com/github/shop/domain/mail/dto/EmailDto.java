@@ -6,5 +6,5 @@ import lombok.Builder;
 
 
 @Builder
-public record EmailDto(@Email String email, @NotNull String subject,@NotNull String body) {
+public record EmailDto(@Email String email, @NotNull String subject, @NotNull String body) {
 }

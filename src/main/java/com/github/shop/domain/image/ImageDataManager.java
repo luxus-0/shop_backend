@@ -31,6 +31,31 @@ public class ImageDataManager {
         this.imageRepository = imageRepository;
     }
 
+    private static void saveImageToFile(MultipartFile file, Path filePath) throws ImageNotSavedException {
+        try (InputStream inputStream = file.getInputStream()) {
+            OutputStream outputStream = Files.newOutputStream(filePath);
+            inputStream.transferTo(outputStream);
+
+        } catch (IOException e) {
+            throw new ImageNotSavedException("Image cannot be saved");
+        }
+    }
+
+    private static void isOkStatusCodeForDownloadedImage(HttpResponse<InputStream> response, Path path) throws IOException {
+        if (response.statusCode() == 200) {
+            log.info("File downloaded successfully");
+            InputStream in = response.body();
+            OutputStream out = Files.newOutputStream(path);
+
+            int bytesRead;
+            while ((bytesRead = in.read()) != -1) {
+                out.write(bytesRead);
+            }
+        } else {
+            throw new FileNotFoundException();
+        }
+    }
+
     public ResponseUploadImage uploadImage(MultipartFile file) throws ImageNotSavedException {
         String fileName = file.getOriginalFilename();
         String changedFileName = UploadedFilesNameUtils.slugifyFileName(fileName);
@@ -59,16 +84,6 @@ public class ImageDataManager {
                 .build();
     }
 
-    private static void saveImageToFile(MultipartFile file, Path filePath) throws ImageNotSavedException {
-        try (InputStream inputStream = file.getInputStream()) {
-            OutputStream outputStream = Files.newOutputStream(filePath);
-            inputStream.transferTo(outputStream);
-
-        } catch (IOException e) {
-            throw new ImageNotSavedException("Image cannot be saved");
-        }
-    }
-
     Resource downloadImage(String filename) throws IOException {
         FileSystemResourceLoader fileSystemResourceLoader = new FileSystemResourceLoader();
         Resource resource = fileSystemResourceLoader.getResource(imagePath + filename);
@@ -91,20 +106,5 @@ public class ImageDataManager {
         HttpResponse<InputStream> response = client.send(request, HttpResponse.BodyHandlers.ofInputStream());
         isOkStatusCodeForDownloadedImage(response, path);
         return new ResponseUploadImage(fileName);
-    }
-
-    private static void isOkStatusCodeForDownloadedImage(HttpResponse<InputStream> response, Path path) throws IOException {
-        if (response.statusCode() == 200) {
-            log.info("File downloaded successfully");
-            InputStream in = response.body();
-            OutputStream out = Files.newOutputStream(path);
-
-            int bytesRead;
-            while ((bytesRead = in.read()) != -1) {
-                out.write(bytesRead);
-            }
-        } else {
-            throw new FileNotFoundException();
-        }
     }
 }

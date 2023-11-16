@@ -16,6 +16,6 @@ public class AdminOrderStatsController {
 
     @GetMapping
     public ResponseEntity<AdminOrderStats> readStatisticsOrder() throws AdminSalesStatisticsNotFoundException, AdminOrdersStatisticsNotFoundException {
-            return ResponseEntity.ok().body(orderStatsService.getStatisticsOrder());
+        return ResponseEntity.ok().body(orderStatsService.getStatisticsOrder());
     }
 }

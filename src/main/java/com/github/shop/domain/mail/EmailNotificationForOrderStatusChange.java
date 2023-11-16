@@ -1,9 +1,9 @@
 package com.github.shop.domain.mail;
 
 import com.github.shop.domain.admin.order.AdminOrderStatusNotFound;
+import com.github.shop.domain.mail.dto.EmailDto;
 import com.github.shop.domain.order.Order;
 import com.github.shop.domain.order.OrderStatus;
-import com.github.shop.domain.mail.dto.EmailDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
@@ -31,7 +31,7 @@ public class EmailNotificationForOrderStatusChange {
     }
 
     public void sendEmailNotification(OrderStatus newOrderStatus, Order order) throws AdminOrderStatusNotFound, EmailNotFoundException {
-       EmailMessage emailMessage = readEmailNotificationForOrderStatus(newOrderStatus);
+        EmailMessage emailMessage = readEmailNotificationForOrderStatus(newOrderStatus);
         EmailDto emailDto = EmailDto.builder()
                 .email(emailService.readEmail(order))
                 .body(emailMessage.getBody(order, newOrderStatus))

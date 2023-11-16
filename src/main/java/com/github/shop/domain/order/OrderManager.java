@@ -41,18 +41,6 @@ public class OrderManager {
     private final PaymentRepository paymentRepository;
     private final EmailService emailService;
 
-    @Transactional
-    public OrderSummary placeOrder(OrderDto orderDto, String username) throws ShipmentNotFoundException, PaymentNotFoundException, CartNotFoundException, EmailNotFoundException {
-        Cart cart = cartRepository.findById(orderDto.cartId()).orElseThrow(CartNotFoundException::new);
-        Shipment shipment = shipmentRepository.findById(orderDto.shipmentId()).orElseThrow(ShipmentNotFoundException::new);
-        Payment payment = paymentRepository.findById(orderDto.paymentId()).orElseThrow(PaymentNotFoundException::new);
-        Order savedOrder = orderRepository.save(createOrder(orderDto, cart, shipment, payment, username));
-        orderRowManager.saveOrderRows(cart, savedOrder.getId(), shipment);
-        removeOrderCart(orderDto);
-        emailService.sendEmail(savedOrder);
-        return OrderMapper.createOrderSummary(savedOrder);
-    }
-
     private static Order createOrder(OrderDto orderDto, Cart cart, Shipment shipment, Payment payment, String username) {
         return Order.builder()
                 .customers(createCustomers(orderDto))
@@ -70,6 +58,18 @@ public class OrderManager {
                 .reduce(BigDecimal::add)
                 .orElse(BigDecimal.ZERO)
                 .add(shipment.getPrice());
+    }
+
+    @Transactional
+    public OrderSummary placeOrder(OrderDto orderDto, String username) throws ShipmentNotFoundException, PaymentNotFoundException, CartNotFoundException, EmailNotFoundException {
+        Cart cart = cartRepository.findById(orderDto.cartId()).orElseThrow(CartNotFoundException::new);
+        Shipment shipment = shipmentRepository.findById(orderDto.shipmentId()).orElseThrow(ShipmentNotFoundException::new);
+        Payment payment = paymentRepository.findById(orderDto.paymentId()).orElseThrow(PaymentNotFoundException::new);
+        Order savedOrder = orderRepository.save(createOrder(orderDto, cart, shipment, payment, username));
+        orderRowManager.saveOrderRows(cart, savedOrder.getId(), shipment);
+        removeOrderCart(orderDto);
+        emailService.sendEmail(savedOrder);
+        return OrderMapper.createOrderSummary(savedOrder);
     }
 
     public void removeOrderCart(OrderDto orderDto) {

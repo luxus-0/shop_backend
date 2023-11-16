@@ -1,9 +1,9 @@
 package com.github.shop.infrastructure.security.validation;
 
 import com.github.shop.infrastructure.security.login.LoginRepository;
-import com.github.shop.infrastructure.security.register.exception.UserAlreadyExistsException;
 import com.github.shop.infrastructure.security.register.dto.RegisterUserDto;
 import com.github.shop.infrastructure.security.register.exception.PasswordNotTheSameException;
+import com.github.shop.infrastructure.security.register.exception.UserAlreadyExistsException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 

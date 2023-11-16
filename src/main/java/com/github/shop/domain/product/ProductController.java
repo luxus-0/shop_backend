@@ -43,8 +43,8 @@ class ProductController {
 
     @GetMapping("/{slug}")
     public ResponseEntity<ProductDto> getProductBySlug(@PathVariable
-                                                          @Pattern(regexp = REGEX_SLUG)
-                                                          @Length(max = 255) String slug) {
+                                                       @Pattern(regexp = REGEX_SLUG)
+                                                       @Length(max = 255) String slug) {
         ProductDto findProductBySlug = productManager.readProductBySlug(slug);
         return new ResponseEntity<>(findProductBySlug, HttpStatus.OK);
     }

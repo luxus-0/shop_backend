@@ -1,7 +1,7 @@
 package com.github.shop.domain.mail;
 
-import com.github.shop.domain.order.OrderStatus;
 import com.github.shop.domain.order.Order;
+import com.github.shop.domain.order.OrderStatus;
 
 public class EmailMessageForOrderStatusRefund implements EmailMessage {
     @Override

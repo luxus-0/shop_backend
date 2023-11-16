@@ -16,6 +16,7 @@ import static org.springframework.http.HttpStatus.CREATED;
 public class LoginController {
 
     private final JwtAuthenticatorFacade jwtAuthenticatorFacade;
+
     @PostMapping("/login")
     public ResponseEntity<JwtResponseDto> login(@RequestBody TokenRequestDto tokenRequest) {
         JwtResponseDto jwtResponse = jwtAuthenticatorFacade.authenticateAndGenerateToken(tokenRequest);

@@ -14,6 +14,7 @@ import static com.github.shop.domain.orderrow.OderRowMapper.mapToOrderRow;
 @Log4j2
 public class OrderRowManager {
     private final OrderRowRepository orderRowRepository;
+
     public void saveOrderRows(Cart cart, Long orderId, Shipment shipment) {
         saveProductRows(cart, orderId);
         saveShipmentRow(cart, orderId, shipment);
