@@ -33,9 +33,9 @@ public class OrderController {
     private final PaymentService paymentService;
 
     @PostMapping
-    public ResponseEntity<OrderSummary> placeOrder(@RequestBody OrderDto orderDto, @AuthenticationPrincipal String username) throws ShipmentNotFoundException, PaymentNotFoundException, CartNotFoundException, EmailNotFoundException {
+    public ResponseEntity<OrderSummary> placeOrder(@RequestBody OrderDto orderDto, @AuthenticationPrincipal Long userId) throws ShipmentNotFoundException, PaymentNotFoundException, CartNotFoundException, EmailNotFoundException {
         return ResponseEntity.status(CREATED)
-                .body(orderManager.placeOrder(orderDto, username));
+                .body(orderManager.placeOrder(orderDto, userId));
     }
 
     @GetMapping("/init-order")

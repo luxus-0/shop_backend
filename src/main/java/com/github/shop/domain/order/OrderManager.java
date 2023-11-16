@@ -61,11 +61,11 @@ public class OrderManager {
     }
 
     @Transactional
-    public OrderSummary placeOrder(OrderDto orderDto, String username) throws ShipmentNotFoundException, PaymentNotFoundException, CartNotFoundException, EmailNotFoundException {
+    public OrderSummary placeOrder(OrderDto orderDto, Long userId) throws ShipmentNotFoundException, PaymentNotFoundException, CartNotFoundException, EmailNotFoundException {
         Cart cart = cartRepository.findById(orderDto.cartId()).orElseThrow(CartNotFoundException::new);
         Shipment shipment = shipmentRepository.findById(orderDto.shipmentId()).orElseThrow(ShipmentNotFoundException::new);
         Payment payment = paymentRepository.findById(orderDto.paymentId()).orElseThrow(PaymentNotFoundException::new);
-        Order savedOrder = orderRepository.save(createOrder(orderDto, cart, shipment, payment, username));
+        Order savedOrder = orderRepository.save(createOrder(orderDto, cart, shipment, payment, userId));
         orderRowManager.saveOrderRows(cart, savedOrder.getId(), shipment);
         removeOrderCart(orderDto);
         emailService.sendEmail(savedOrder);
