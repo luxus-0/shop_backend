@@ -78,7 +78,7 @@ public class OrderManager {
     }
 
     public List<OrderListDto> getOrdersForCustomer(Long userId) throws UserNotFoundException {
-        if(userId == null){
+        if (userId == null) {
             throw new UserNotFoundException();
         }
         return mapToOrderListDto(orderRepository.findByUserId(userId));
