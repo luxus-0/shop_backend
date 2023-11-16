@@ -41,14 +41,14 @@ public class OrderManager {
     private final PaymentRepository paymentRepository;
     private final EmailService emailService;
 
-    private static Order createOrder(OrderDto orderDto, Cart cart, Shipment shipment, Payment payment, String username) {
+    private static Order createOrder(OrderDto orderDto, Cart cart, Shipment shipment, Payment payment, Long userId) {
         return Order.builder()
                 .customers(createCustomers(orderDto))
                 .orderStatus(OrderStatus.NEW)
                 .grossValue(calculateGrossValue(cart.getItems(), shipment))
                 .placeDate(orderDto.placeDate())
                 .payment(payment)
-                .username(username)
+                .userId(userId)
                 .build();
     }
 
@@ -77,7 +77,10 @@ public class OrderManager {
         cartRepository.deleteCartById(orderDto.cartId());
     }
 
-    public List<OrderListDto> getOrdersForCustomer(String username) {
-        return mapToOrderListDto(orderRepository.findByUsername(username));
+    public List<OrderListDto> getOrdersForCustomer(Long userId) throws UserNotFoundException {
+        if(userId == null){
+            throw new UserNotFoundException();
+        }
+        return mapToOrderListDto(orderRepository.findByUserId(userId));
     }
 }

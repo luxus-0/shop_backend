@@ -48,8 +48,8 @@ public class OrderController {
     }
 
     @GetMapping
-    public ResponseEntity<List<OrderListDto>> getOrders(@AuthenticationPrincipal String username) {
-        List<OrderListDto> orders = orderManager.getOrdersForCustomer(username);
+    public ResponseEntity<List<OrderListDto>> getOrders(@AuthenticationPrincipal Long userId) throws UserNotFoundException {
+        List<OrderListDto> orders = orderManager.getOrdersForCustomer(userId);
         return ResponseEntity.ok(orders);
     }
 }

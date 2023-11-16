@@ -50,5 +50,5 @@ public class Order {
     private List<Customer> customers;
     @OneToOne
     private Payment payment;
-    private String username;
+    private Long userId;
 }
