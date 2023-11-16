@@ -1,4 +1,4 @@
-package com.github.shop.domain.clock;
+package com.github.shop.infrastructure.security.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
