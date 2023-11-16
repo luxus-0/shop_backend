@@ -13,7 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-import static com.github.shop.infrastructure.security.login.mapper.UserRoleMapper.getRole;
+import static com.github.shop.infrastructure.security.login.dto.mapper.UserRoleMapper.getRole;
 
 @AllArgsConstructor
 @Service

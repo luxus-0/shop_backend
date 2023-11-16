@@ -21,20 +21,4 @@ public class CustomerService {
                 .contacts(getContacts(orderDto))
                 .build());
     }
-
-    public static String readEmail(Order order) throws EmailNotFoundException {
-        return order.getCustomers().stream()
-                .flatMap(customer -> customer.getContacts().stream())
-                .map(Contact::getEmail)
-                .findAny()
-                .orElseThrow(EmailNotFoundException::new);
-    }
-
-    public static String readEmail(AdminOrder adminOrder) throws EmailNotFoundException {
-        return adminOrder.getCustomers().stream()
-                .flatMap(customer -> customer.getContacts().stream())
-                .map(Contact::getEmail)
-                .findAny()
-                .orElseThrow(EmailNotFoundException::new);
-    }
 }

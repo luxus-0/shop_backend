@@ -7,7 +7,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
 import static com.github.shop.domain.constant.Constants.USER_NOT_FOUND;
-import static com.github.shop.infrastructure.security.login.mapper.UserRoleMapper.getRoles;
+import static com.github.shop.infrastructure.security.login.dto.mapper.UserRoleMapper.getRoles;
 
 @AllArgsConstructor
 @Component

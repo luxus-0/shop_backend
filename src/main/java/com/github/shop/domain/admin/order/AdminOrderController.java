@@ -2,6 +2,7 @@ package com.github.shop.domain.admin.order;
 
 import com.github.shop.domain.admin.order.dto.AdminOrderDto;
 import com.github.shop.domain.admin.order.dto.AdminOrderStatusesDto;
+import com.github.shop.domain.mail.EmailNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -33,9 +34,8 @@ public class AdminOrderController {
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<Void> actualizeOrder(@PathVariable Long id, @RequestBody Map<String, String> values) throws AdminOrderStatusNotFound {
+    public void actualizeOrder(@PathVariable Long id, @RequestBody Map<String, String> values) throws AdminOrderStatusNotFound, EmailNotFoundException {
         adminOrderService.patchOrder(id, values);
-        return ResponseEntity.ok().build();
     }
 
     @GetMapping("/statuses")

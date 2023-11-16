@@ -30,10 +30,10 @@ public class EmailNotificationForOrderStatusChange {
         }
     }
 
-    public void sendEmailNotification(OrderStatus newOrderStatus, Order order) throws AdminOrderStatusNotFound {
+    public void sendEmailNotification(OrderStatus newOrderStatus, Order order) throws AdminOrderStatusNotFound, EmailNotFoundException {
        EmailMessage emailMessage = readEmailNotificationForOrderStatus(newOrderStatus);
         EmailDto emailDto = EmailDto.builder()
-                .email(emailService.getEmail(order))
+                .email(emailService.readEmail(order))
                 .body(emailMessage.getBody(order, newOrderStatus))
                 .subject(emailMessage.getSubject(order, newOrderStatus))
                 .build();

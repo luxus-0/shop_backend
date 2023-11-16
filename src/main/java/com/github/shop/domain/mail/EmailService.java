@@ -1,5 +1,7 @@
 package com.github.shop.domain.mail;
 
+import com.github.shop.domain.admin.order.AdminOrder;
+import com.github.shop.domain.contact.Contact;
 import com.github.shop.domain.currency.Currency;
 import com.github.shop.domain.mail.dto.EmailDto;
 import com.github.shop.domain.order.Order;
@@ -13,8 +15,6 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.time.format.DateTimeFormatter;
-
-import static com.github.shop.domain.customer.CustomerService.readEmail;
 
 @RequiredArgsConstructor
 @Log4j2
@@ -39,9 +39,9 @@ public class EmailService implements EmailSender {
         }
     }
 
-    public void sendEmail(Order order) {
+    public void sendEmail(Order order) throws EmailNotFoundException {
         EmailDto emailDto = EmailDto.builder()
-                .email(getEmail(order))
+                .email(readEmail(order))
                 .subject(getSubject(order))
                 .body(getBody(order))
                 .build();
@@ -66,12 +66,11 @@ public class EmailService implements EmailSender {
         return "Order ID: " + order.getId();
     }
 
-    String getEmail(Order order) {
-        try {
-            return readEmail(order);
-        } catch (EmailNotFoundException e) {
-            log.error(e.getMessage());
-        }
-        return "";
+    public String readEmail(Order order) throws EmailNotFoundException {
+        return order.getCustomers().stream()
+                .flatMap(customer -> customer.getContacts().stream())
+                .map(Contact::getEmail)
+                .findAny()
+                .orElseThrow(EmailNotFoundException::new);
     }
 }

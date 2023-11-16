@@ -1,5 +1,6 @@
 package com.github.shop.domain.admin.order;
 
+import com.github.shop.domain.mail.EmailNotFoundException;
 import com.github.shop.domain.mail.EmailNotificationForOrderStatusChange;
 import com.github.shop.domain.order.Order;
 import com.github.shop.domain.order.OrderStatus;
@@ -48,18 +49,18 @@ public class AdminOrderService {
     }
 
     @Transactional
-    public void patchOrder(Long id, Map<String, String> values) throws AdminOrderStatusNotFound {
+    public void patchOrder(Long id, Map<String, String> values) throws AdminOrderStatusNotFound, EmailNotFoundException {
         AdminOrder adminOrder = adminOrderRepository.findById(id).orElseThrow();
         patchValues(adminOrder, values);
     }
 
-    private void patchValues(AdminOrder adminOrder, Map<String, String> values) throws AdminOrderStatusNotFound {
+    private void patchValues(AdminOrder adminOrder, Map<String, String> values) throws AdminOrderStatusNotFound, EmailNotFoundException {
         if (values.get("orderStatus") != null) {
             processOrderStatusChanged(adminOrder, values);
         }
     }
 
-    private void processOrderStatusChanged(AdminOrder adminOrder, Map<String, String> values) throws AdminOrderStatusNotFound {
+    private void processOrderStatusChanged(AdminOrder adminOrder, Map<String, String> values) throws AdminOrderStatusNotFound, EmailNotFoundException {
         OrderStatus oldOrderStatus = adminOrder.getOrderStatus();
         Order newOrder = Order.builder()
                 .id(adminOrder.getId())
