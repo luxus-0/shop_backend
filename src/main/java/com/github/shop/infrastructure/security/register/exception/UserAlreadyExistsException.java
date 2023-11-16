@@ -1,4 +1,4 @@
-package com.github.shop.infrastructure.security.register;
+package com.github.shop.infrastructure.security.register.exception;
 
 public class UserAlreadyExistsException extends Exception {
     public UserAlreadyExistsException(String username){

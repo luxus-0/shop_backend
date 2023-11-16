@@ -1,8 +1,8 @@
-package com.github.shop.infrastructure.security.login.mapper;
+package com.github.shop.infrastructure.security.login.dto.mapper;
 
 import com.github.shop.infrastructure.security.login.User;
 import com.github.shop.infrastructure.security.login.UserRole;
-import com.github.shop.infrastructure.security.login.UserRoleNotFoundException;
+import com.github.shop.infrastructure.security.login.exception.UserRoleNotFoundException;
 import com.github.shop.infrastructure.security.login.dto.UserDto;
 import org.springframework.stereotype.Service;
 
