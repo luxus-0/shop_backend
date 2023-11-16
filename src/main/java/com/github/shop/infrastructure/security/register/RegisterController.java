@@ -3,6 +3,7 @@ package com.github.shop.infrastructure.security.register;
 import com.github.shop.infrastructure.security.register.dto.RegisterUserDto;
 import com.github.shop.infrastructure.security.register.dto.RegistrationResultDto;
 import com.github.shop.infrastructure.security.register.exception.PasswordNotTheSameException;
+import com.github.shop.infrastructure.security.register.exception.UserAlreadyExistsException;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;

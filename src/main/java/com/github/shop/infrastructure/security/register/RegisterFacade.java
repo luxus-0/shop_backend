@@ -6,6 +6,7 @@ import com.github.shop.infrastructure.security.login.UserRole;
 import com.github.shop.infrastructure.security.register.dto.RegisterUserDto;
 import com.github.shop.infrastructure.security.register.dto.RegistrationResultDto;
 import com.github.shop.infrastructure.security.register.exception.PasswordNotTheSameException;
+import com.github.shop.infrastructure.security.register.exception.UserAlreadyExistsException;
 import com.github.shop.infrastructure.security.token.JwtAuthenticatorFacade;
 import com.github.shop.infrastructure.security.token.dto.JwtResponseDto;
 import com.github.shop.infrastructure.security.token.dto.TokenRequestDto;

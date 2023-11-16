@@ -24,7 +24,7 @@ public class PaymentController {
     @GetMapping
     public ResponseEntity<List<Payment>> readPayment() {
         return ResponseEntity.status(OK)
-                .body(paymentService.getPayment());
+                .body(paymentService.getPayments());
     }
 
     @PostMapping
