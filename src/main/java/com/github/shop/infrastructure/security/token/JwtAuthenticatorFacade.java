@@ -26,15 +26,6 @@ public class JwtAuthenticatorFacade {
     private final Clock clock;
     private final JwtConfigurationProperties properties;
 
-    private static Boolean checkAccessAdmin(User user) {
-        return user.getAuthorities().stream()
-                .map(GrantedAuthority::getAuthority)
-                .filter(authority -> UserRole.ROLE_ADMIN.name().equals(authority))
-                .map(isAdminRole -> true)
-                .findFirst()
-                .orElse(false);
-    }
-
     public JwtResponseDto authenticateAndGenerateToken(TokenRequestDto tokenRequest) {
         Authentication authenticate = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(tokenRequest.username(), tokenRequest.password())
@@ -48,6 +39,14 @@ public class JwtAuthenticatorFacade {
                 .username(username)
                 .checkAccessAdmin(checkAccessAdmin(user))
                 .build();
+    }
+    private static Boolean checkAccessAdmin(User user) {
+        return user.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority)
+                .filter(authority -> UserRole.ROLE_ADMIN.name().equals(authority))
+                .map(isAdminRole -> true)
+                .findFirst()
+                .orElse(false);
     }
 
     private String createToken(User user) {

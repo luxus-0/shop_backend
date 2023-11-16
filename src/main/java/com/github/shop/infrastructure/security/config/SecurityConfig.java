@@ -21,6 +21,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import static com.github.shop.infrastructure.security.login.UserRole.ROLE_ADMIN;
+import static com.github.shop.infrastructure.security.login.UserRole.ROLE_CUSTOMER;
+
 @Configuration
 @AllArgsConstructor
 public class SecurityConfig {
@@ -42,12 +45,13 @@ public class SecurityConfig {
         httpSecurity
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/admin/**").hasRole(UserRole.ROLE_ADMIN.getRole())
+                        .requestMatchers("/admin/**").hasRole(ROLE_ADMIN.getRole())
                         .requestMatchers("/token/**").permitAll()
                         .requestMatchers("/swagger-ui/**").permitAll()
                         .requestMatchers("/v3/api-docs/**").permitAll()
                         .requestMatchers("/webjars/**").permitAll()
-                        .requestMatchers("/register/**").permitAll()
+                        .requestMatchers("/register/**").hasAnyRole(ROLE_CUSTOMER.getRole())
+                        .requestMatchers("/login").hasAnyRole(ROLE_CUSTOMER.getRole(),ROLE_ADMIN.getRole())
                         .requestMatchers("/swagger-resources/**").permitAll()
                         .anyRequest().permitAll())
                 .formLogin(FormLoginConfigurer::permitAll)
