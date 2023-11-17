@@ -33,3 +33,4 @@ build/
 ### VS Code ###
 .vscode/
 /src/main/resources/image/
+/src/main/resources/db/21.create-users.sql
