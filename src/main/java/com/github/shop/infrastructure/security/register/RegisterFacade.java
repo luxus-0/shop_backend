@@ -29,19 +29,27 @@ public class RegisterFacade {
 
     public RegistrationResultDto register(RegisterUserDto registerUser) throws PasswordNotTheSameException, UserAlreadyExistsException {
         validator.validateRegistration(registerUser);
-        final User user = User.builder()
-                .username(registerUser.username())
-                .password(bCryptPasswordEncoder.encode(registerUser.password()))
-                .created(true)
-                .authorities(List.of(UserRole.ROLE_CUSTOMER))
-                .build();
+        final User user = createUser(registerUser);
         User savedUser = repository.save(user);
-        JwtResponseDto jwt = jwtAuthenticatorFacade.authenticateAndGenerateToken(new TokenRequestDto(savedUser.getUsername(), savedUser.getPassword()));
+        JwtResponseDto jwt = jwtAuthenticatorFacade.authenticateAndGenerateToken(new TokenRequestDto(savedUser.getUsername(), savedUser.getPassword(), savedUser.isCreated()));
+        return getRegistrationResult(savedUser, jwt);
+    }
+
+    private static RegistrationResultDto getRegistrationResult(User savedUser, JwtResponseDto jwt) {
         return RegistrationResultDto.builder()
                 .id(savedUser.getId())
                 .username(jwt.username())
                 .created(savedUser.isCreated())
                 .token(jwt.token())
+                .build();
+    }
+
+    private User createUser(RegisterUserDto registerUser) {
+        return User.builder()
+                .username(registerUser.username())
+                .password(bCryptPasswordEncoder.encode(registerUser.password()))
+                .created(true)
+                .authorities(List.of(UserRole.ROLE_CUSTOMER))
                 .build();
     }
 }
