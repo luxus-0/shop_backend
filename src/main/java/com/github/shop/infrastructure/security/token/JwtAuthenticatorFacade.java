@@ -37,10 +37,10 @@ public class JwtAuthenticatorFacade {
         return JwtResponseDto.builder()
                 .token(token)
                 .username(username)
-                .checkAccessAdmin(checkAccessAdmin(user))
+                .checkAdmin(checkAdmin(user))
                 .build();
     }
-    private static Boolean checkAccessAdmin(User user) {
+    private static Boolean checkAdmin(User user) {
         return user.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
                 .filter(authority -> UserRole.ROLE_ADMIN.name().equals(authority))
