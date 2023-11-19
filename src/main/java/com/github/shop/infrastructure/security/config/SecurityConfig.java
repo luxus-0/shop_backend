@@ -2,7 +2,6 @@ package com.github.shop.infrastructure.security.config;
 
 import com.github.shop.infrastructure.security.login.LoginFacade;
 import com.github.shop.infrastructure.security.login.LoginUserDetailService;
-import com.github.shop.infrastructure.security.login.UserRole;
 import com.github.shop.infrastructure.security.token.JwtAuthTokenFilter;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
